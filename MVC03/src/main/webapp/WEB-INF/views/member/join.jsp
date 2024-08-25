@@ -81,7 +81,7 @@
 		}		
 	}
 	
-	/* 비밀번호1,2 일치 여부 확인 및 찐비밀번호 설정 */
+	/* 비밀번호1,2 일치 여부 확인 및 찐비밀번호 설정! */
 	function checkPasswordConfirm(){
 		let memPassword1 = $('#memPassword1');
 		let memPassword2 = $('#memPassword2');
@@ -146,11 +146,11 @@
     			</tr>
     			<tr>
     				<th style="width: 110px; vertical-align: middle;">이름</th>
-    				<td colspan="2"><input id="memName" name="memName" class="form-control width" type="text" placeholder="성함을 입력하세요" /></td>
+    				<td colspan="2"><input id="memName" name="memName" class="form-control width" type="text" placeholder="성함을 입력하세요" required /></td>
     			</tr>
     			<tr>
     				<th style="width: 110px; vertical-align: middle;">나이</th>
-    				<td colspan="2"><input id="memAge" name="memAge" class="form-control width" type="number" placeholder="나이를 입력하세요" /></td>
+    				<td colspan="2"><input id="memAge" name="memAge" class="form-control width" type="number" placeholder="나이를 입력하세요" required/></td>
     			</tr>
     			<tr>
     				<th style="width: 110px; vertical-align: middle;">성별</th>
@@ -186,6 +186,7 @@
 	    		</tr>
     		</table>
     	</form>
+    	
 			<!-- The Modal -->
 			<div class="modal fade" id="myModal">
 			  <div class="modal-dialog">

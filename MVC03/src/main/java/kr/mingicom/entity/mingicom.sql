@@ -29,15 +29,17 @@ CREATE TABLE mem_tbl(
 	memID VARCHAR(20) NOT NULL,
 	memPassword VARCHAR(20) NOT NULL,
 	memName VARCHAR(20) NOT NULL,
-	memAge INT,
+	memAge INT DEFAULT 0,
 	memGender VARCHAR(20),
 	memEmail VARCHAR(50),
 	memProfile VARCHAR(50)
 );
 
-SHOW COLUMNS FROM mem_tbl;
+SELECT * FROM mem_tbl;
 
 INSERT INTO mem_tbl (memID, memPassword, memName)VALUES('testID', 'testPassword1234', 'testUser');
 SELECT * FROM mem_tbl;
 
-SELECT * FROM mem_tbl WHERE memID = 'av';
+
+
+

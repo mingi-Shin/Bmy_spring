@@ -51,7 +51,7 @@ public class MemberController {
 			m.getMemEmail() == null || m.getMemEmail().equals("") ) {
 			
 			//누락메세지를 가지고 가기 => 객체바인딩(Model, HttpServletRequest, HttpSession)은 jsp에 하는데.. 어떡하지?
-			rttr.addFlashAttribute("msgType", "메시지 누락 발생");
+			rttr.addFlashAttribute("msgType", "회원가입 실패");
 			rttr.addFlashAttribute("msg", "모든 내용을 입력하세요.");
 			
 			return "redirect:/member/memJoin.do"; // ${smgType}, ${msg} 사용가능, Flash니까 한번만 가능
@@ -61,9 +61,10 @@ public class MemberController {
 		// 가입성공 : 회원을 테이블에 저장
 		int result = memMapper.register(m);
 		
-		if(result == 1) { //회원가입 성공
+		if(result == 1) { //회원가입 성공: ruturn값은 해당 쿼리에 의해 영향받은 행의 수가 반환됨, 따라서 1 
 			//회원가입 성공하면 바로 로그인 처리해주기
 			session.setAttribute("loginM", m); //${!empty loginM}
+			rttr.addFlashAttribute("welcome", "님 가입을 환영합니다.");
 			return "redirect:/";
 		}else {
 			rttr.addFlashAttribute("msgType", "가입 실패");

@@ -40,7 +40,7 @@
         <button class="btn btn-primary" type="button">search</button>
       </form>
       
-      <c:if test="${empty loginM}">
+      <c:if test="${empty loginM}"> 
 	      <ul class="navbar-nav navbar-right">
 	      	<li class="nav-item dropdown">
 	          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">접속</a>
