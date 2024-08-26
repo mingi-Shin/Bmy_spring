@@ -40,11 +40,14 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/memRegister.do")
-	public String memRegister(Member m, RedirectAttributes rttr, HttpSession session) {
+	public String memRegister(Member m, String memPassword1, String memPassword2, RedirectAttributes rttr, HttpSession session) {
 		System.out.println("member: " + m);
+		System.out.println("memPassword1: " + memPassword1);
+		System.out.println("memPassword2: " + memPassword2);
+		
 		// 회원가입 실패 (서버 사이드 검증) 
 		if(m.getMemID() == null || m.getMemID().equals("") || 
-			m.getMemPassword() == null || m.getMemPassword().equals("") ||
+			
 			m.getMemName() == null || m.getMemName().equals("") ||
 			m.getMemAge() == 0 || 
 			m.getMemGender() == null || m.getMemGender().equals("") ||
@@ -56,6 +59,14 @@ public class MemberController {
 			
 			return "redirect:/member/memJoin.do"; // ${smgType}, ${msg} 사용가능, Flash니까 한번만 가능
 		}
+		if(m.getMemPassword() == null || m.getMemPassword().equals("") ||
+			!memPassword1.equals(memPassword2)  ) {
+			
+			rttr.addFlashAttribute("msgType", "회원가입 실패");
+			rttr.addFlashAttribute("msg", "비밀번호가 서로 일치하지 않습니다.");
+			
+			return "redirect:/member/memJoin.do"; // ${smgType}, ${msg} 사용가능, Flash니까 한번만 가능
+		}
 		m.setMemProfile(""); //사진이미지는 없다는 의미 -> "" (안그러면 null이 들어가니까 공백으로 넣어주자.)
 		
 		// 가입성공 : 회원을 테이블에 저장
@@ -64,7 +75,7 @@ public class MemberController {
 		if(result == 1) { //회원가입 성공: ruturn값은 해당 쿼리에 의해 영향받은 행의 수가 반환됨, 따라서 1 
 			//회원가입 성공하면 바로 로그인 처리해주기
 			session.setAttribute("loginM", m); //${!empty loginM}
-			rttr.addFlashAttribute("welcome", "님 가입을 환영합니다.");
+			rttr.addFlashAttribute("welcome", m.getMemName() + "님 회원가입을 환영합니다.");
 			return "redirect:/";
 		}else {
 			rttr.addFlashAttribute("msgType", "가입 실패");

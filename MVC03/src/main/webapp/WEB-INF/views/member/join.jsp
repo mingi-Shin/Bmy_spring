@@ -19,6 +19,7 @@
 	  checkRegisterDuple();
 	  checkPasswordNum(); 
 	  checkPasswordConfirm();
+	  checkSubmit();
 	  if(${!empty msgType}){
 		  $("#myMessage").modal("show"); //회원가입 오류시 실패 모달창show
 	  }
@@ -101,12 +102,27 @@
 				$('#memPassword2').css('border','3px solid green');
 				$('#confirmPW').css('color','green');
 				$('#memPassword').val(memPassword2.val());
-				console.log(memPassword2.val());
 			}
 		}
 	}
 	
-	
+	/* submit시 조건 체크 */
+	function checkSubmit(){
+		
+		// 나이 값 체크 
+		let submitButton = $("#submitButton");
+		
+		submitButton.on('click', checkSubmit);
+		
+		function checkSubmit(){
+			let memAge = $("#memAge").val();
+			if(memAge == null || memAge == "" || memAge == 0){
+				alert("나이를 입력하세요");
+				return false;
+			}
+			document.frm.submit();
+		}
+	}
 	
 	
 </script>
@@ -121,7 +137,7 @@
 
     <div class="card-header">회원가입</div>
     <div class="card-body">
-    	<form method="post" action="${contextPath }/member/memRegister.do" >     
+    	<form name="frm" method="post" action="${contextPath }/member/memRegister.do" >     
     		<table class="table table-bordered" style="width:100%; text-align: center; border: 1px solid #dddddd; ">
     			<tr>
     				<th style="width: 110px; vertical-align: middle;">아이디</th>
@@ -146,11 +162,11 @@
     			</tr>
     			<tr>
     				<th style="width: 110px; vertical-align: middle;">이름</th>
-    				<td colspan="2"><input id="memName" name="memName" class="form-control width" type="text" placeholder="성함을 입력하세요" required /></td>
+    				<td colspan="2"><input id="memName" name="memName" class="form-control width" type="text" placeholder="성함을 입력하세요" required/></td>
     			</tr>
     			<tr>
     				<th style="width: 110px; vertical-align: middle;">나이</th>
-    				<td colspan="2"><input id="memAge" name="memAge" class="form-control width" type="number" placeholder="나이를 입력하세요" required/></td>
+    				<td colspan="2"><input id="memAge" name="memAge" class="form-control width" type="number" placeholder="나이를 입력하세요" /></td>
     			</tr>
     			<tr>
     				<th style="width: 110px; vertical-align: middle;">성별</th>
@@ -180,7 +196,7 @@
 	    		<tr>
 	    			<td colspan="3" >
 		    			<div class="d-flex">
-		    				<input type="submit" class="btn btn-primary btn-sm ms-auto" value="등록" />
+		    				<input type="button" id="submitButton" class="btn btn-primary btn-sm ms-auto" value="등록" />
 		    			</div>
 	    			</td>
 	    		</tr>

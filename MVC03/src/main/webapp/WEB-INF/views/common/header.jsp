@@ -57,7 +57,8 @@
 	      	<li class="nav-item dropdown">
 	          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">${loginM.memID }님, 접속중입니다.</a>
 	          <ul class="dropdown-menu dropdown-menu-end">
-	            <li><a class="dropdown-item" href="#">정보수정</a></li>
+	            <li><a class="dropdown-item" href="#">회원정보수정</a></li>
+	            <li><a class="dropdown-item" href="#">프로필사진등록</a></li>
 	            <li><a class="dropdown-item" href="#">로그아웃</a></li>
 	          </ul>
 	        </li>
