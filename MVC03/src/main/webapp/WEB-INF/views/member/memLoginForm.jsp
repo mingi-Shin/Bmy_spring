@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>template</title>
+	<title>Login Form</title>
 	<meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -15,9 +15,8 @@
 <body>
 
 <div class="container">
-<jsp:include page="common/header.jsp"></jsp:include>
-
-  <h2>Spring MVC03</h2>
+<jsp:include page="../common/header.jsp"></jsp:include>
+  <h2>Login Form</h2>
   <div class="card card-default">
 
     <div class="card-header" >card title</div>

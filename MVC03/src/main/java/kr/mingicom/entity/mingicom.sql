@@ -40,6 +40,6 @@ SELECT * FROM mem_tbl;
 INSERT INTO mem_tbl (memID, memPassword, memName)VALUES('testID', 'testPassword1234', 'testUser');
 SELECT * FROM mem_tbl;
 
-
+TRUNCATE TABLE mem_tbl;
 
 

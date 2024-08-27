@@ -85,4 +85,16 @@ public class MemberController {
 		}
 	}
 	
+	@RequestMapping("/memLogout.do")
+	public String memLogout(HttpSession session, RedirectAttributes rttr) {
+		session.invalidate(); //세션무효화
+		rttr.addFlashAttribute("msgType", "로그아웃 성공");
+		rttr.addFlashAttribute("welcome", "로그아웃 되었습니다.");
+		return "redirect:/";
+	}
+	
+	@RequestMapping("/memLoginForm.do")
+	public String memLoginForm() {
+		return "member/memLoginForm";
+	}
 }

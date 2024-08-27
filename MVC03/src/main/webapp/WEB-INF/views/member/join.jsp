@@ -63,12 +63,6 @@
 	
 	/* 비밀번호 최소자릿수 확인 */
 	function checkPasswordNum(){
-/* 		 
-		let memPassword1vjs = document.getElementById('memPassword1'); 
-		let memPassword1jq = $('#memPassword1');
-		
-		console.log(memPassword1vjs == memPassword1jq); //false. 서로 다르다. 
- */
 		let memPassword1 = document.getElementById('memPassword1');
 		memPassword1.addEventListener('keyup',ColorBorder );
 		

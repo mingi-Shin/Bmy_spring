@@ -45,7 +45,7 @@
 	      	<li class="nav-item dropdown">
 	          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">접속</a>
 	          <ul class="dropdown-menu dropdown-menu-end">
-	            <li><a class="dropdown-item" href="#">로그인</a></li>
+	            <li><a class="dropdown-item" href="${contextPath}/member/memLoginForm.do">로그인</a></li>
 	            <li><a class="dropdown-item" href="${contextPath}/member/memJoin.do">회원가입</a></li>
 	          </ul>
 	        </li>
@@ -59,7 +59,7 @@
 	          <ul class="dropdown-menu dropdown-menu-end">
 	            <li><a class="dropdown-item" href="#">회원정보수정</a></li>
 	            <li><a class="dropdown-item" href="#">프로필사진등록</a></li>
-	            <li><a class="dropdown-item" href="#">로그아웃</a></li>
+	            <li><a class="dropdown-item" href="${contextPath}/member/memLogout.do">로그아웃</a></li>
 	          </ul>
 	        </li>
 	      </ul>
