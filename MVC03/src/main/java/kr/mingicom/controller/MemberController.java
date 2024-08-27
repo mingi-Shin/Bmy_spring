@@ -75,6 +75,7 @@ public class MemberController {
 		if(result == 1) { //회원가입 성공: ruturn값은 해당 쿼리에 의해 영향받은 행의 수가 반환됨, 따라서 1 
 			//회원가입 성공하면 바로 로그인 처리해주기
 			session.setAttribute("loginM", m); //${!empty loginM}
+			rttr.addFlashAttribute("msgType", "회원가입 성공");
 			rttr.addFlashAttribute("welcome", m.getMemName() + "님 회원가입을 환영합니다.");
 			return "redirect:/";
 		}else {
