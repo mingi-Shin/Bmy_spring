@@ -90,7 +90,7 @@
 	  		$("#view").css("display", "none"); //감춰
 	  		$("#writeForm").css("display", "block"); //보여줘
 	  		
-	  		document.getElementById('writeBoardButton').innerText = "목록으로"; // 버튼 텍스트 수정 
+	  		document.getElementById('writeBoardButton').innerText = "목록으로"; // innerHTML은 XSS공격에 취약. 
 	  		
 	  		document.getElementById('writeBoardButton').removeEventListener('click', showForm);
 	  		document.getElementById('writeBoardButton').addEventListener('click', goBackMain);
