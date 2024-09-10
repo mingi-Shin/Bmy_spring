@@ -32,9 +32,16 @@
 		let checkDupleButton = document.getElementById('checkRegisterDuple');
 		checkDupleButton.addEventListener('click', checkDuple);
 		
+		//아이디 중복확인 버튼 활성/비활성 (등록버튼 활성/비활성 연계 )
+		$('#memID').on('keyup', ableButton);
+		function ableButton(){
+			$('#checkRegisterDuple').attr('disabled', false);
+			$('#submitButton').attr('disabled', true); //등록 버튼 비활성 
+
+		}
+		
 		function checkDuple(){
 			let memID = $('#memID').val(); 
-			console.log('memID : ' + memID);
 			
 			$.ajax({
 				url : "${contextPath}/member/checkDuple.do",
@@ -49,7 +56,11 @@
 					} else {
 						//사용 가능
 						$('#checkMessage').html("사용 가능한 아이디입니다.");
+						console.log('확인');
+						$('#checkRegisterDuple').attr('disabled', true); //중복확인 버튼 비활성 
+						$('#submitButton').attr('disabled', false); //등록 버튼 활성 
 					}	
+					
 					$('#myModal').modal("show");
 				},
 				error : function(){
@@ -102,15 +113,18 @@
 	
 	/* submit시 조건 체크 */
 	function checkSubmit(){
-		
-		// 나이 값 체크 
 		let submitButton = $("#submitButton");
+		
+		// 초기 등록버튼 비활성화
+		submitButton.attr('disabled', true);
+		
+		// 나이 값 체크, 아이디 중복확인 유무 체크  
 		
 		submitButton.on('click', checkSubmit);
 		
 		function checkSubmit(){
 			let memAge = $("#memAge").val();
-			if(memAge == null || memAge == "" || memAge == 0){
+			if (memAge == null || memAge == "" || memAge == 0){
 				alert("나이를 입력하세요");
 				return false;
 			}

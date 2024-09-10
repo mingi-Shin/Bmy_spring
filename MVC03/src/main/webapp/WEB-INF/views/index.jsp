@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <head>
@@ -25,9 +26,17 @@
 <div class="container">
 <jsp:include page="common/header.jsp" />
 	<h1>Main page</h1>
+	<c:if test="${!empty loginM}">
+		<label>[사진]${loginM.memName}님 방문을 환영합니다. </laber>
+	</c:if>
+	<c:if test="${empty loginM}">
+		<label>현재 비회원으로 로그인 중입니다. </label>
+	</c:if>
+	
+	<h2></h2>
 </div>
 
-<!-- 회원가입 축하 모달창 -->
+<!-- 회원 관련 모달창 -->
 <div class="modal fade" id="myMessage" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">

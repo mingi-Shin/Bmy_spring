@@ -6,11 +6,14 @@
 		SELECT * FROM mem_tbl WHERE memID = #{memID}
 	</select>
 	
-	<insert id="register" parameterType="kr.mingicom.entity.Member">
+	<insert id="register" parameterType="kr.mingicom.entity.Member" >
 		INSERT INTO mem_tbl(memID, memPassword, memName, memAge, memGender, memEmail, memProfile)
 		VALUES(#{memID}, #{memPassword}, #{memName}, #{memAge}, #{memGender}, #{memEmail}, #{memProfile})
 	</insert>
 	
+	<select id="login" parameterType="kr.mingicom.entity.Member" resultType="kr.mingicom.entity.Member"> 
+		SELECT * FROM mem_tbl WHERE memID = #{memID} AND memPassword = #{memPassword}
+	</select>
 	
   
 </mapper>

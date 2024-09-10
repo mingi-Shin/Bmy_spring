@@ -122,6 +122,7 @@
   		
   		function insertBoard(){
   			let fData = $("#frm").serialize(); //폼의 모든 파라미터 직렬화
+  			console.log(fData);
   	  		
  	  		$.ajax({
  	  			url : "board/new",

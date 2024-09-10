@@ -35,11 +35,13 @@ CREATE TABLE mem_tbl(
 	memProfile VARCHAR(50)
 );
 
-SELECT * FROM mem_tbl;
+TRUNCATE TABLE mem_tbl;
 
 INSERT INTO mem_tbl (memID, memPassword, memName)VALUES('testID', 'testPassword1234', 'testUser');
+
 SELECT * FROM mem_tbl;
 
-TRUNCATE TABLE mem_tbl;
+SELECT * FROM mem_tbl WHERE memID = 'shinmingi01' AND memPassword = 'tlsalsrl4260!';
+
 
 

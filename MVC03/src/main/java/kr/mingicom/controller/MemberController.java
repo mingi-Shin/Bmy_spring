@@ -2,8 +2,11 @@ package kr.mingicom.controller;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -75,6 +78,7 @@ public class MemberController {
 		if(result == 1) { //회원가입 성공: ruturn값은 해당 쿼리에 의해 영향받은 행의 수가 반환됨, 따라서 1 
 			//회원가입 성공하면 바로 로그인 처리해주기
 			session.setAttribute("loginM", m); //${!empty loginM}
+			
 			rttr.addFlashAttribute("msgType", "회원가입 성공");
 			rttr.addFlashAttribute("welcome", m.getMemName() + "님 회원가입을 환영합니다.");
 			return "redirect:/";
@@ -95,6 +99,30 @@ public class MemberController {
 	
 	@RequestMapping("/memLoginForm.do")
 	public String memLoginForm() {
-		return "member/memLoginForm";
+		return "member/loginForm";
+	}
+	
+	@RequestMapping("/memLogin.do")
+	public String memLogin(HttpSession session, RedirectAttributes rttr, Member m) {
+		if(m.getMemID() == null || m.getMemID().equals("") ||
+				m.getMemPassword() == null || m.getMemPassword().equals("")) {
+			rttr.addFlashAttribute("msgType", "로그인 실패");
+			rttr.addFlashAttribute("welcome", "모든 정보를 입력해주세요.");
+			return "redirect:/member/memLoginForm.do";
+		}
+		Member mvo = memMapper.login(m);
+		System.out.println(m.getMemID() + m.getMemPassword());
+		System.out.println(mvo);
+		
+		if(mvo != null ) {
+			session.setAttribute("loginM", mvo);
+			rttr.addFlashAttribute("msgType", "로그인 성공");
+			rttr.addFlashAttribute("welcome", mvo.getMemName() + "님 로그인을 환영합니다.");
+			return "redirect:/";
+		}else {
+			rttr.addFlashAttribute("msgType", "로그인 실패");
+			rttr.addFlashAttribute("welcome", "회원정보를 다시 한번 확인해주세요.");
+			return "redirect:/member/memLoginForm.do";
+		}
 	}
 }
