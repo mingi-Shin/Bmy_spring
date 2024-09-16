@@ -165,9 +165,7 @@
   				error : function(){alert("error");}
   				
   			});
-  			
-  	
-  			
+
 	  		$("#c"+idx).css("display", "table-row"); // block이 아니라 table-row 
   		}else{
 	  		$("#c"+idx).css("display", "none"); // block이 아니라 table-row 

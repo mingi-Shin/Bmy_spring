@@ -111,8 +111,6 @@ public class MemberController {
 			return "redirect:/member/memLoginForm.do";
 		}
 		Member mvo = memMapper.login(m);
-		System.out.println(m.getMemID() + m.getMemPassword());
-		System.out.println(mvo);
 		
 		if(mvo != null ) {
 			session.setAttribute("loginM", mvo);
