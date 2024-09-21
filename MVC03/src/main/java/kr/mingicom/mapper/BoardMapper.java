@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
 
 import kr.mingicom.entity.Board;
+import kr.mingicom.entity.Member;
 
 @Mapper //- Mybatis API
 public interface BoardMapper {	 
@@ -23,6 +24,5 @@ public interface BoardMapper {
      
      public void boardUpdate(Board vo);
 
-     
      
 }

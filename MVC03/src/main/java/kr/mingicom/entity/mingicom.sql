@@ -44,4 +44,3 @@ SELECT * FROM mem_tbl;
 SELECT * FROM mem_tbl WHERE memID = 'shinmingi01' AND memPassword = 'tlsalsrl4260!';
 
 
-

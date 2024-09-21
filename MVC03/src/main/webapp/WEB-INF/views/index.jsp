@@ -11,7 +11,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   
-  
   <script type="text/javascript">
   	$(document).ready(function(){
   	  if(${!empty welcome}){
@@ -32,9 +31,50 @@
 	<c:if test="${empty loginM}">
 		<label>현재 비회원으로 로그인 중입니다. </label>
 	</c:if>
-	
-	<h2></h2>
+  
+  <div class="card card-default">
+    <div>
+    	<img src="${contextPath }/resources/images/winter.jpg" style="width: 25%; height: 25%;">
+    </div>
+    <div class="card-body" >
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs">
+			  <li class="nav-item">
+			    <a class="nav-link active" data-bs-toggle="tab" href="#home">Home</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" data-bs-toggle="tab" href="#menu1">게시판</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" data-bs-toggle="tab" href="#menu2">공지사항</a>
+			  </li>
+			</ul>
+			
+			<!-- Tab panes -->
+			<div class="tab-content">
+			  <div class="tab-pane container active" id="home">
+			  	<h3>HOME</h3>
+			  	
+			  </div>
+			  <div class="tab-pane container fade" id="menu1">
+			  	<h3>게시판</h3>
+			  	
+			  </div>
+			  <div class="tab-pane container fade" id="menu2">
+			  	<h3>공지사항</h3>
+			  	
+			  </div>
+			</div>
+    </div>
+    <div class="card-footer">
+    
+    </div>
+  </div>
+  
 </div>
+
+
+
 
 <!-- 회원 관련 모달창 -->
 <div class="modal fade" id="myMessage" role="dialog">

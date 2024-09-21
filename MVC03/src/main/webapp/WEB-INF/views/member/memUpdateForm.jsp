@@ -16,7 +16,6 @@
 <script type="text/javascript">
   
   $(document).ready(function(){
-	  checkRegisterDuple();
 	  checkPasswordNum(); 
 	  checkPasswordConfirm();
 	  checkSubmit();
@@ -27,51 +26,7 @@
 	  
   });
   
-	/* 아이디 중복확인 */
-	function checkRegisterDuple(){
-		let checkDupleButton = document.getElementById('checkRegisterDuple');
-		checkDupleButton.addEventListener('click', checkDuple);
-		
-		//아이디 중복확인 버튼 활성/비활성 (등록버튼 활성/비활성 연계 )
-		$('#memID').on('keyup', ableButton);
-		function ableButton(){
-			$('#checkRegisterDuple').attr('disabled', false);
-			$('#submitButton').attr('disabled', true); //등록 버튼 비활성 
 
-		}
-		
-		function checkDuple(){
-			let memID = $('#memID').val(); 
-			
-			$.ajax({
-				url : "${contextPath}/member/checkDuple.do",
-				type : "get",
-				data : {
-					"memID" : memID
-				},
-				success : function(result){
-					if(result == 0){
-						//사용 불가능
-						$('#checkMessage').html("사용 불가한 아이디입니다.");
-					} else {
-						//사용 가능
-						$('#checkMessage').html("사용 가능한 아이디입니다.");
-						console.log('확인');
-						$('#checkRegisterDuple').attr('disabled', true); //중복확인 버튼 비활성 
-						$('#submitButton').attr('disabled', false); //등록 버튼 활성 
-					}	
-					
-					$('#myModal').modal("show");
-				},
-				error : function(){
-	  				alert("error");
-	  		}
-			});
-		}
-	}
-  
-  
-	
 	/* 비밀번호 최소자릿수 확인 */
 	function checkPasswordNum(){
 		let memPassword1 = document.getElementById('memPassword1');
@@ -115,11 +70,7 @@
 	function checkSubmit(){
 		let submitButton = $("#submitButton");
 		
-		// 초기 등록버튼 비활성화
-		submitButton.attr('disabled', true);
-		
-		// 나이 값 체크, 아이디 중복확인 유무 체크  
-		
+		// 나이 값 체크 
 		submitButton.on('click', checkSubmit);
 		
 		function checkSubmit(){
@@ -140,19 +91,16 @@
 
 <div class="container">
 <jsp:include page="../common/header.jsp"></jsp:include>
-  <h2>Join Page (memJoin.do)</h2>
+  <h2>회원정보 수정 페이지</h2>
   <div class="card card-default">
 
-    <div class="card-header">회원가입</div>
+    <div class="card-header">회원정보 수정</div>
     <div class="card-body">
-    	<form name="frm" method="post" action="${contextPath }/member/memRegister.do" >     
+    	<form name="frm" method="post" action="${contextPath }/member/memUpdate.do" >     
     		<table class="table table-bordered" style="width:100%; text-align: center; border: 1px solid #dddddd; ">
     			<tr>
     				<th style="width: 110px; vertical-align: middle;">아이디</th>
-    				<td><input id="memID" name="memID" class="form-control width" type="text" placeholder="아이디를 입력하세요 (20자 이하)" maxlength="20" /></td>
-    				<td style="width: 110px; vertical-align: middle;">
-    					<button id="checkRegisterDuple" type="button" class="btn btn-primary">중복확인</button>
-   					</td>
+    				<td><input id="memID" name="memID" class="form-control width" type="text" value="${loginM.memID}" maxlength="20" readonly /></td>
     			</tr>
     			<tr>
     				<th style="width: 110px; vertical-align: middle;">비밀번호</th>
@@ -170,7 +118,7 @@
     			</tr>
     			<tr>
     				<th style="width: 110px; vertical-align: middle;">이름</th>
-    				<td colspan="2"><input id="memName" name="memName" class="form-control width" type="text" placeholder="성함을 입력하세요" required/></td>
+    				<td colspan="2"><input id="memName" name="memName" class="form-control width" type="text" value="${loginM.memName}" readonly/></td>
     			</tr>
     			<tr>
     				<th style="width: 110px; vertical-align: middle;">나이</th>
@@ -181,11 +129,13 @@
     				<td colspan="2">
     					<div>
     						<div class="form-check">
-							    <input id="memGender" name="memGender" class="form-check-input" type="radio" name="memGender" value="남자" style="float: none" checked>
+							    <input id="memGender" name="memGender" class="form-check-input" type="radio" name="memGender" value="남자" style="float: none" 
+							     	<c:if test="${loginM.memGender eq '남자'}"> checked</c:if> />
 							    <label class="form-check-label" for="flexRadioDefault1">남자</label>
 								</div>
 								<div class="form-check">
-							    <input id="memGender" name="memGender" class="form-check-input" type="radio" name="memGender" value="여자" style="float: none" >
+							    <input id="memGender" name="memGender" class="form-check-input" type="radio" name="memGender" value="여자" style="float: none" 
+							    	<c:if test="${loginM.memGender eq '여자'}"> checked</c:if> />
 							    <label class="form-check-label" for="flexRadioDefault2">여자</label>
 								</div>
 							</div>
@@ -198,7 +148,7 @@
 	    		<tr>
 	    			<td colspan="3" >
 		    			<div class="d-flex">
-		    				<input type="button" id="submitButton" class="btn btn-primary btn-sm ms-auto" value="등록" />
+		    				<input type="button" id="submitButton" class="btn btn-primary btn-sm ms-auto" value="수정" />
 		    			</div>
 	    			</td>
 	    		</tr>

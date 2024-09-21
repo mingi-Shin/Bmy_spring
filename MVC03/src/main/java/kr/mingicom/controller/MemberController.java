@@ -123,4 +123,50 @@ public class MemberController {
 			return "redirect:/member/memLoginForm.do";
 		}
 	}
+	
+	@RequestMapping("/memUpdateForm.do")
+	public String memUpdateForm() {
+		return "member/memUpdateForm";
+	}
+	
+	@RequestMapping("/memUpdate.do")
+	public String memUpdate(HttpSession session, Member m, RedirectAttributes rttr, String memPassword1, String memPassword2) {
+		if(m.getMemID() == null || m.getMemID().equals("") || 
+			m.getMemName() == null || m.getMemName().equals("") ||
+			m.getMemAge() == 0 || 
+			m.getMemGender() == null || m.getMemGender().equals("") ||
+			m.getMemEmail() == null || m.getMemEmail().equals("") ) {
+			
+			//누락메세지를 가지고 가기 => 객체바인딩(Model, HttpServletRequest, HttpSession)은 jsp에 하는데.. 어떡하지?
+			rttr.addFlashAttribute("msgType", "정보수정 실패");
+			rttr.addFlashAttribute("msg", "모든 내용을 입력하세요.");
+			
+			return "redirect:/member/memUpdateForm.do"; // ${smgType}, ${msg} 사용가능, Flash니까 한번만 가능
+		}
+		if(m.getMemPassword() == null || m.getMemPassword().equals("") ||
+			!memPassword1.equals(memPassword2)  ) {
+			
+			rttr.addFlashAttribute("msgType", "회원가입 실패");
+			rttr.addFlashAttribute("msg", "비밀번호가 서로 일치하지 않습니다.");
+			
+			return "redirect:/member/memUpdateForm.do"; // ${smgType}, ${msg} 사용가능, Flash니까 한번만 가능
+		}
+		m.setMemProfile(""); //사진이미지는 없다는 의미 -> "" (안그러면 null이 들어가니까 공백으로 넣어주자.)
+		
+		// 수정성공 : 회원을 테이블에 저장
+		int result = memMapper.memUpdate(m);
+		
+		if(result == 1) { 
+			//수정 성공하면 바로 로그인 처리해주기
+			session.setAttribute("loginM", m); //${!empty loginM}
+			
+			rttr.addFlashAttribute("msgType", "회원정보 수정 성공");
+			rttr.addFlashAttribute("welcome", m.getMemName() + "님 회원정보가 변경되었습니다.");
+			return "redirect:/";
+		}else {
+			rttr.addFlashAttribute("msgType", "수정 실패");
+			rttr.addFlashAttribute("msg", "회원정보 수정에 실패하였습니다");
+			return "redirect:/member/memUpdateForm.do";
+		}
+	}
 }

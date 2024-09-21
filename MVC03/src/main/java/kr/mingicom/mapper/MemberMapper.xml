@@ -15,5 +15,9 @@
 		SELECT * FROM mem_tbl WHERE memID = #{memID} AND memPassword = #{memPassword}
 	</select>
 	
+	<update id="memUpdate" parameterType="kr.mingicom.entity.Member">
+		UPDATE mem_tbl SET memPassword = #{memPassword}, memName = #{memName}, memAge = #{memAge}, memGender = #{memGender}, memEmail = #{memEmail}
+			WHERE memID = #{memID}
+	</update>
   
 </mapper>
