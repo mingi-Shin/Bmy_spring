@@ -27,7 +27,7 @@
   		$.ajax({ // (비동기 전송)서버와 통신 : 게시판 리스트 가져오기 
   			url : "board/all", // == @GetMapping("/boardList.do")
   			type : "GET",
-  			dataType : "json",
+  			dataType : "json", // 건네받는 메서드 반환값이 json이라는 의미
   			success : makeView, // boardList.do가 실행되고 처리된 값, return을 받아서 처리하는 함수 -> 콜백함수  
   			error : function(xhr, status, error){ alert('에러 : ' + error ); }
   		});
@@ -119,13 +119,15 @@
   		insertButton.addEventListener('click', insertBoard);
   		
   		function insertBoard(){
-  			let fData = $("#frm").serialize(); //폼의 모든 파라미터 직렬화
+  			let fData = $("#frm").serialize(); 
+  	  		// serialize(): JSON 문자열이 아닌 URL 인코딩된 문자열로 변환
+  				// 결과: "title=Board+Title&content=Board+Content"
   	  		
  	  		$.ajax({
  	  			url : "board/new",
  	  			type : "post",
  	  			data : fData,
- 	  			success : function(response){
+ 	  			success : function(){
  	  				alert('게시물 작성에 성공');
  	  				
  	  				window.goBackMain(); //쓰고나면 리스트 갱신해, 목록으로 텍스트를 글쓰기로 다시 바꿔. 
@@ -200,8 +202,8 @@
   		$.ajax({
   			url : "board/update",
   			method : "PUT",
-  			contentType : 'application/json;charset=utf-8', // data가 JSON형식임을 서버에게 알림 
-  			data : JSON.stringify({ // JS data를 JSON으로 바꿔주기 
+  			contentType : 'application/json;charset=utf-8', // data가 JSON임을 서버단에 알림 
+  			data : JSON.stringify({ // 입력된 JS data를 JSON으로 직렬화  
   				"idx" : idx,
   				"title" : newTitle,
   				"content" : newContent,
@@ -212,6 +214,8 @@
   			}, 
   			error : function(){alert('error : ' + idx);}
   		});
+  		//contentType을 명시하지 않으면, 여기서 data가 JSON 문자열로 직렬화되지 않고, URL 인코딩 방식으로 전송됩니다 (idx=1&title=New%20Title&content=New%20Content).
+  		//서버 측에서 이 데이터를 @RequestBody로 받으려면 문제가 생길 수 있습니다. 왜냐하면 @RequestBody는 JSON 형식의 본문 데이터를 기대하기 때문입니다.
 	}
   	
   	/* 글 삭제 */

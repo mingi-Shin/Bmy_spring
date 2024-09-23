@@ -31,6 +31,7 @@ public class BoardController{	// new BoardController();
 	}
 //	
 //	// @ResponsBody -> jackson-databind 모듈(Java객체 -> JSON)
+//	
 //	@RequestMapping("/boardList.do")
 //	public @ResponseBody List<Board> boardList() {
 //		List<Board> list = mapper.getLists();
@@ -42,7 +43,6 @@ public class BoardController{	// new BoardController();
 //	public @ResponseBody void boardInsert(Board vo) {
 //		mapper.boardInsert(vo); // 등록성공
 //		
-//		//return 할 거 없고 @ResponseBody가 있으므로 제어권이 success로 넘어감
 //	}
 //	
 //	@GetMapping("/boardDelete.do")
@@ -63,6 +63,7 @@ public class BoardController{	// new BoardController();
 //		Board vo = mapper.boardContent(idx); //2. 게시물 가져오기 
 //		
 //		return vo;
+//			// success에서 vo로 작업하려고 보내줌
 //	}
 //	
 }
