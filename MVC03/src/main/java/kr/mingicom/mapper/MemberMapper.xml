@@ -19,5 +19,17 @@
 		UPDATE mem_tbl SET memPassword = #{memPassword}, memName = #{memName}, memAge = #{memAge}, memGender = #{memGender}, memEmail = #{memEmail}
 			WHERE memID = #{memID}
 	</update>
+	
+	<select id="showMemberList" resultType="kr.mingicom.entity.Member">
+		SELECT * FROM mem_tbl ORDER BY memIdx ASC
+	</select>
+	
+	<select id="showTheMember" resultType="kr.mingicom.entity.Member">
+		SELECT * FROM mem_tbl WHERE memID = #{memID}
+	</select>
+	
+	<update id="updateProfile" parameterType="kr.mingicom.entity.Member" >
+		UPDATE mem_tbl SET memProfile = #{memProfile} WHERE memID = #{memID}
+	</update>
   
 </mapper>

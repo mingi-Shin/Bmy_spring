@@ -1,6 +1,7 @@
 package kr.mingicom.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
@@ -21,5 +22,12 @@ public interface MemberMapper {
 	public Member login(Member vo);
 	
     public int memUpdate(Member vo);
+    
+    public List<Member> showMemberList();
+    
+    public Member showTheMember(String memID);
+
+	public int updateProfile(Member vo);
+    
      
 }

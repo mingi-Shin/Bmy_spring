@@ -2,11 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request" /> 
-<!-- scope: request > page(기본값) -->
-
-<div class="image-container">
-	<img alt="메인 페이지 이미지" src="${contextPath }/resources/images/mainImage02.png" class="img-fluid" style="max-height: 400px; width: 100%">
-</div>
+<!-- scope: request > page(기본값) 다른 페이지에서 var사용가능 -->
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
   <div class="container-fluid">
@@ -30,7 +26,7 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">고객센터</a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Link</a></li>
+            <li><a class="dropdown-item" href="${contextPath}/admin/showMemberList.do">멤버 조회(admin)</a></li>
             <li><a class="dropdown-item" href="#">Another link</a></li>
             <li><a class="dropdown-item" href="#">A third link</a></li>
           </ul>

@@ -14,8 +14,8 @@
   <script type="text/javascript">
   	$(document).ready(function(){
   	  if(${!empty welcome}){
-		$("#myMessage").modal("show"); //회원가입 축하 모달
-	  }
+			$("#myMessage").modal("show"); //회원가입 축하 모달
+		  }
   		
   	});
   </script>
@@ -24,18 +24,25 @@
 
 <div class="container">
 <jsp:include page="common/header.jsp" />
-	<h1>Main page</h1>
+
 	<c:if test="${!empty loginM}">
-		<label>[사진]${loginM.memName}님 방문을 환영합니다. </laber>
+		<c:if test="${loginM.memProfile eq ''}" >
+			<img alt="기본이미지" src="${contextPath }/resources/images/defaultProfile.jpg" style="width: 50px; height: 50px;" > 
+		</c:if>
+		<c:if test="${loginM.memProfile ne ''}" >
+			<img alt="회원 이미지" src="${contextPath }/resources/upload/${loginM.memProfile}" style="width: 50px; height: 50px;" > 
+		</c:if>
+		<label>${loginM.memName}님 방문을 환영합니다. </label>
 	</c:if>
+	
 	<c:if test="${empty loginM}">
-		<label>현재 비회원으로 로그인 중입니다. </label>
+		<label>로그인을 진행해주세요. </label>
 	</c:if>
   
   <div class="card card-default">
-    <div>
-    	<img src="${contextPath }/resources/images/winter.jpg" style="width: 25%; height: 25%;">
-    </div>
+    <div class="image-container">
+			<img alt="메인 페이지 이미지" src="${contextPath }/resources/images/mainImage02.png" class="img-fluid" style="max-height: 100%; width: 100%">
+		</div>
     <div class="card-body" >
 			<!-- Nav tabs -->
 			<ul class="nav nav-tabs">

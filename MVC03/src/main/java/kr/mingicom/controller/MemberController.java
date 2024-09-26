@@ -1,9 +1,18 @@
 package kr.mingicom.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import kr.mingicom.entity.Member;
 import kr.mingicom.mapper.MemberMapper;
@@ -173,6 +185,88 @@ public class MemberController {
 	@RequestMapping("/memImageForm.do")
 	public String memImageform() {
 		return "member/memImageForm";
+	}
+	
+	
+	//파일 업로드 API ( 강의에서는 cos.jar 사용. 하지만 요즘 추세는 스프링 내장 라이브러리 사용  )
+	@RequestMapping("/memImageUpdate.do")
+	public String memImageUpdate(HttpServletRequest request, RedirectAttributes rttr, HttpSession session) throws IOException {
+		
+		MultipartRequest multi = null; //MultipartRequest : 서버가 받아와서 개별 파트로 분리하여 처리
+		int fileMaxSize = 10*1024*1024; //10MB
+		// 우리가 생각하는 경로가 아니라 이클립스가 프로젝트를 따로 관리하는 폴더가 있다. 그 폴더의 경로를 RealPath로 정의한다.
+		String savePath = request.getRealPath("resources/upload"); 
+		System.out.println(savePath); //경로찾아줘봐 어휴 
+				
+		try {
+			//이미지 업로드
+			multi = new MultipartRequest(request, savePath, fileMaxSize, "UTF-8", new DefaultFileRenamePolicy());
+			System.out.println(multi);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			rttr.addFlashAttribute("msgType", "회원사진 업로드 실패");
+			rttr.addFlashAttribute("welcome", "파일의 크기는 10	MB를 넘을 수 없습니다"); //이거는 onKey()를 쓰는게 나을지도? 
+			return "redirect:/member/memImageForm.do";
+			// return이 안되는 이유: 톰캣서버가 용량을 처리하지 못하고 인터넷을 끊어버리고 있음 
+			//	-> server.xml에서 maxSwallowSize="-1" 리미트해제 코드 추가 필요  
+		}
+		
+		//DB저장
+		String memID = multi.getParameter("memID"); //request에서 id뽑고.. 안돼! multi쓰는 이상 request에서 파라미터 못가져와!!
+		
+		File file = multi.getFile("memProfile"); // multi에서 memProfile 뽑아서, file객체에 포인터 
+		/**
+		 *  보통 multi 객체(예: MultipartRequest 또는 다른 파일 업로드 관련 클래스)는 파일과 관련된 데이터만 처리하고, 
+		 *  그 외 일반적인 폼 파라미터는 request에서 가져오는 게 일반적입니다.
+		 * */
+		String newProfile = null; 
+		
+		if(file != null) { //업로드가 된 상태
+			//확장자 체크: .png .jpg .gif, 이미지파일이 아니면 삭제 
+			String ext = file.getName().substring(file.getName().indexOf(".")+1);
+			ext = ext.toUpperCase();
+			System.out.println(ext);
+			
+			if((ext.equals("PNG")) || (ext.equals("JPG")) || (ext.equals("GIF")) || (ext.equals("JPEG"))) {
+				//새로 업로드된 이미지와 DB의 기존이미지 교환
+				// 1. DB의 예전프로필 조회, 삭제 
+				String oldProfile = memMapper.showTheMember(memID).getMemProfile(); //DB에 저장된 이름 
+				File oldFile = new File(savePath + "/" + oldProfile); //해당 명의 파일 객체 생성 
+				System.out.println(oldFile);
+				
+				if(oldFile.exists()) {
+					oldFile.delete();
+				}
+				// URL 인코딩된 새 파일 이름 저장 (한글이름은 곧죽어도 안되네....???)
+		        newProfile = URLEncoder.encode(file.getName(), "UTF-8");
+		        System.out.println("newProfile: " + newProfile);
+				
+			} else {
+				if(file.exists()) { //이미지아니다! 도로 삭제: 혹시 개발자가 실수로 지워버렸을 수도 있어서 if문 돌림 
+					file.delete();
+				}
+				rttr.addFlashAttribute("msgType", "회원사진 업로드 실패");
+		        rttr.addFlashAttribute("welcome", "이미지 파일만 업로드가 가능합니다. ");
+		        return "redirect:/member/memImageForm.do";
+			}
+			
+			
+		}
+		//2. DB에 새프로필 저장 
+		Member vo = new Member();
+		vo.setMemID(memID);
+		vo.setMemProfile(newProfile);
+		memMapper.updateProfile(vo);
+		
+		//세션을 갱신
+		Member newVo = memMapper.showTheMember(memID);
+		session.setAttribute("loginM", newVo);
+		
+        rttr.addFlashAttribute("msgType", "회원사진 업로드 성공");
+        rttr.addFlashAttribute("welcome", "회원 프로필을 성공적으로 업로드 하였습니다");
+		return "redirect:/";
+		
 	}
 	
 }
