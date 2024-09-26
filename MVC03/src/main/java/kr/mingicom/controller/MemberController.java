@@ -169,4 +169,10 @@ public class MemberController {
 			return "redirect:/member/memUpdateForm.do";
 		}
 	}
+	
+	@RequestMapping("/memImageForm.do")
+	public String memImageform() {
+		return "member/memImageForm";
+	}
+	
 }

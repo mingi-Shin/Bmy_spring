@@ -39,20 +39,25 @@
 
     <div class="card-header"> 로그인 화면 </div>
     <div class="card-body" >
-    	<form  method="post" action="${contextPath }/member/memLogin.do" >     
+    	<form  method="post" action="${contextPath }/member/memLogin.do"  enctype="multipart/form-data">  
     		<table class="table table-bordered" style="width:100%; text-align: center; border: 1px solid #dddddd; ">
     			<tr>
     				<th style="width: 110px; vertical-align: middle;">아이디</th>
-    				<td><input id="memID" name="memID" class="form-control width" type="text" placeholder="아이디를 입력하세요 (20자 이하)" maxlength="20" /></td>
+    				<td><input name="memID" value="${loginM.memID }" style="color:#ccc" readonly></td>
     			</tr>
     			<tr>
-    				<th style="width: 110px; vertical-align: middle;">비밀번호</th>
-    				<td colspan="2"><input id="memPassword" name="memPassword" class="form-control width" type="password" placeholder="비밀번호를 입력하세요 (12자이상)" minlength="12" /></td>
+    				<th style="width: 110px; vertical-align: middle;">회원 이미지 업로드 </th>
+    				<td colspan="2">
+    					<span class="btn btn-default" >
+    						<label for="memProfile">파일 업로드:</label>
+    						<input type="file" id="memProfile" name="memProfile" "/>
+    					</span>
+    				</td>
     			</tr>
 	    		<tr>
 	    			<td colspan="2" >
 		    			<div class="d-flex">
-		    				<input type="submit" id="submitButton" class="btn btn-primary btn-sm ms-auto" value="로그인" />
+		    				<input type="submit" id="submitButton" class="btn btn-primary btn-sm ms-auto" value="등록" />
 		    			</div>
 	    			</td>
 	    		</tr>
