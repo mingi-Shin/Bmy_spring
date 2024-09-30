@@ -82,7 +82,7 @@
   		
   	}
   	
-  	/* 게시물 글쓰기 버튼 클릭시 이벤트 */
+  	/* 게시물 글쓰기 버튼 클릭시 이벤트z */
   	function showBoard(){
 	  	let writeButton = document.getElementById('writeBoardButton');
 	  	
