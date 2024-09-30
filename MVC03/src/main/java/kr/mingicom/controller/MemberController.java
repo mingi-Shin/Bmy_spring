@@ -213,7 +213,7 @@ public class MemberController {
 			//	-> server.xml에서 maxSwallowSize="-1" 리미트해제 코드 추가 필요  
 		}
 		
-		//DB저장
+		//폴더에 저장
 		String memID = multi.getParameter("memID"); //request에서 id뽑고.. 안돼! multi쓰는 이상 request에서 파라미터 못가져와!!
 		
 		File file = multi.getFile("memProfile"); // multi에서 memProfile 뽑아서, file객체에 포인터 
