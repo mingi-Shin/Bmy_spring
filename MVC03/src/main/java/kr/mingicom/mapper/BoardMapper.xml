@@ -3,16 +3,16 @@
 <mapper namespace="kr.mingicom.mapper.BoardMapper">
   
   <select id="getLists" resultType="kr.mingicom.entity.Board">
-    select idx, title, content, writer, indate, count from myboard order by idx desc
+    select idx, memID, title, content, writer, indate, count from myboard order by idx desc
   </select>
 
   <insert id="boardInsert" parameterType="kr.mingicom.entity.Board">
-  	INSERT INTO myboard(title,content,writer)
-	VALUES(#{title}, #{content}, #{writer})
+  	INSERT INTO myboard(memID, title, content, writer)
+		VALUES( #{memID}, #{title}, #{content}, #{writer})
   </insert>
   
   <select id="boardContent" parameterType="int" resultType="kr.mingicom.entity.Board">
-  	SELECT idx, title, content, writer, indate, count FROM myboard WHERE idx=#{idx}
+  	SELECT idx, memID, title, content, writer, indate, count FROM myboard WHERE idx=#{idx}
   </select>
   
   <update id="boardCount" parameterType="int">

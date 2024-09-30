@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Spring MVC03</title>
+  <title>회원 게시판</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Latest compiled and minified CSS -->
@@ -30,7 +30,7 @@
   			url : "board/all", // == @GetMapping("/boardList.do")
   			type : "GET",
   			dataType : "json",
-  			success : makeView, // boardList.do가 실행되고 처리된 값, return을 받아서 처리하는 함수 -> 콜백함수  
+  			success : makeView, // boardList.do가 실행되고 처리된 값 == return을 받아서 처리하는 함수 -> 콜백함수  
   			error : function(xhr, status, error){ alert('에러 : ' + error ); }
   		});
   	}
@@ -121,7 +121,7 @@
   		insertButton.addEventListener('click', insertBoard);
   		
   		function insertBoard(){
-  			let fData = $("#frm").serialize(); //폼의 모든 파라미터 직렬화
+  			let fData = $("#frm").serialize(); //폼의 모든 파라미터 직렬화, ==쿼리형으로 넘김, JSON아님 
   			console.log(fData);
   	  		
  	  		$.ajax({
@@ -140,7 +140,7 @@
   			//$("#title").val("");
   			//$("#content").val("");
   			//$("#writer").val("");
-  			$("#resetForm").trigger("click"); //trigger함수 : 이벤트 발생
+  			$("#resetForm").trigger("click"); //trigger함수 : 이벤트 발생 -
   			
   			$("#frm")[0].reset(); //jQueryr객체 -> DOM객체 -> reset()함
   			
@@ -217,6 +217,7 @@
   	
   	/* 글 삭제 */
   	function goDelete(idx){
+  		
   		if(confirm(idx + '번 글을 삭제하시겠습니까?')){
   			deleteBoard(idx);
   		} else {
@@ -244,7 +245,7 @@
 <body>
 <div class="container">
 <jsp:include page="../common/header.jsp" />
-  <h2>Spring MVC03</h2>
+  <h2>회원 게시판</h2>
   <div class="card card-default">
     <div class="card-body" id="view">card Content</div>
     
@@ -252,8 +253,10 @@
     
     <div class="card-body" id="writeForm" style="display: none;">
     	<p align="center">게시판 글쓰기</p>
+  
     	<form id="frm">
 	      <table class="table">
+	      <input type="hidden" name="memID" value="${loginM.memID }"/>
 	    		<tr>
 	          <td>제목</td>
 	        	<td><input type="text" id="title" name="title" class="form-control"/></td>
@@ -268,7 +271,7 @@
 		          <td><input type="text" id="writer" name="writer" class="form-control" value="guest" readonly/></td>
 	          </c:if>
 	          <c:if test="${!empty loginM }">
-		          <td><input type="text" id="writer" name="writer" class="form-control" value="${loginM.memID }" readonly/></td>
+		          <td><input type="text" id="writer" name="writer" class="form-control" value="${loginM.memName }" readonly/></td>
 	          </c:if>
 	        </tr>
 	        <tr>
@@ -279,6 +282,7 @@
 	        </tr>
 	     	</table>
     	</form>
+    	
     </div>
     <div class="card-footer">인프런_스프1탄_박매일</div>
   </div>

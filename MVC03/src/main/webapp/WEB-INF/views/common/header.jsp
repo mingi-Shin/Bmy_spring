@@ -32,11 +32,22 @@
           </ul>
         </li>
       </ul>
-      <form class="d-none d-sm-flex">
-        <input class="form-control me-2" type="text" placeholder="전체 게시물 검색">
-        <button class="btn btn-primary" type="button">search</button>
-      </form>
+      <div style="margin-right: 10px;">
+	      <form class="d-none d-sm-flex">
+	        <input class="form-control me-2" type="text" placeholder="전체 게시물 검색">
+	        <button class="btn btn-primary" type="button">search</button>
+	      </form>
+      </div>
       
+			<c:if test="${!empty loginM}">
+				<c:if test="${loginM.memProfile eq ''}" >
+					<img alt="기본이미지" src="${contextPath }/resources/images/defaultProfile.jpg" style="width: 50px; height: 50px;" class="rounded-circle"> 
+				</c:if>
+				<c:if test="${loginM.memProfile ne ''}" >
+					<img alt="회원 이미지" src="${contextPath }/resources/upload/${loginM.memProfile}" style="width: 50px; height: 50px;" class="rounded-circle"> 
+				</c:if>
+			</c:if>		
+			
       <c:if test="${empty loginM}"> 
 	      <ul class="navbar-nav navbar-right">
 	      	<li class="nav-item dropdown">
@@ -52,7 +63,7 @@
        <c:if test="${!empty loginM}">
 	      <ul class="navbar-nav navbar-right">
 	      	<li class="nav-item dropdown">
-	          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">${loginM.memID }님, 접속중입니다.</a>
+	          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">${loginM.memName }</a>
 	          <ul class="dropdown-menu dropdown-menu-end">
 	            <li><a class="dropdown-item" href="${contextPath}/member/memUpdateForm.do">회원정보수정</a></li>
 	            <li><a class="dropdown-item" href="${contextPath}/member/memImageForm.do">프로필사진등록</a></li>

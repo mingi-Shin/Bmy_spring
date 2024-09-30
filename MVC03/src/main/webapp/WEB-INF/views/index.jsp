@@ -24,20 +24,6 @@
 
 <div class="container">
 <jsp:include page="common/header.jsp" />
-
-	<c:if test="${!empty loginM}">
-		<c:if test="${loginM.memProfile eq ''}" >
-			<img alt="기본이미지" src="${contextPath }/resources/images/defaultProfile.jpg" style="width: 50px; height: 50px;" > 
-		</c:if>
-		<c:if test="${loginM.memProfile ne ''}" >
-			<img alt="회원 이미지" src="${contextPath }/resources/upload/${loginM.memProfile}" style="width: 50px; height: 50px;" > 
-		</c:if>
-		<label>${loginM.memName}님 방문을 환영합니다. </label>
-	</c:if>
-	
-	<c:if test="${empty loginM}">
-		<label>로그인을 진행해주세요. </label>
-	</c:if>
   
   <div class="card card-default">
     <div class="image-container">

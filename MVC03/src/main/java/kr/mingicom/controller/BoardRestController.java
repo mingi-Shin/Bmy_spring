@@ -28,14 +28,14 @@ public class BoardRestController {
 	public List<Board> boardList() {
 		List<Board> list = mapper.getLists();
 		
-		return list; // JSON 데이터 형식으로 변환(jackson API)할 것이다.
+		return list; // JSON 데이터 형식으로 변환(jackson API)하여 클라이언트로 넘김 
 	}
 	
 	@PostMapping("new")
 	public void boardInsert(Board vo) {
 		mapper.boardInsert(vo); // 등록성공
 		
-		//view생성없이 데이터가 success로 넘어감
+		//view생성없이 ajax로 넘어감. return값이 없으므로 success로 넘어갈 매개변수도 없음.
 	}
 	
 	@DeleteMapping("/{idx}")

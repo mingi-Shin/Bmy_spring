@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -190,7 +191,7 @@ public class MemberController {
 	
 	//파일 업로드 API ( 강의에서는 cos.jar 사용. 하지만 요즘 추세는 스프링 내장 라이브러리 사용  )
 	@RequestMapping("/memImageUpdate.do")
-	public String memImageUpdate(HttpServletRequest request, RedirectAttributes rttr, HttpSession session) throws IOException {
+	public String memImageUpdate(HttpServletRequest request, HttpServletResponse response, RedirectAttributes rttr, HttpSession session) throws IOException {
 		
 		MultipartRequest multi = null; //MultipartRequest : 서버가 받아와서 개별 파트로 분리하여 처리
 		int fileMaxSize = 10*1024*1024; //10MB
@@ -199,9 +200,9 @@ public class MemberController {
 		System.out.println(savePath); //경로찾아줘봐 어휴 
 				
 		try {
-			//이미지 업로드
+			//프로필을 폴더에 업로드
 			multi = new MultipartRequest(request, savePath, fileMaxSize, "UTF-8", new DefaultFileRenamePolicy());
-			System.out.println(multi);
+			// MultipartRequest 객체 생성
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -216,18 +217,15 @@ public class MemberController {
 		String memID = multi.getParameter("memID"); //request에서 id뽑고.. 안돼! multi쓰는 이상 request에서 파라미터 못가져와!!
 		
 		File file = multi.getFile("memProfile"); // multi에서 memProfile 뽑아서, file객체에 포인터 
-		/**
-		 *  보통 multi 객체(예: MultipartRequest 또는 다른 파일 업로드 관련 클래스)는 파일과 관련된 데이터만 처리하고, 
-		 *  그 외 일반적인 폼 파라미터는 request에서 가져오는 게 일반적입니다.
-		 * */
+		
 		String newProfile = null; 
 		
 		if(file != null) { //업로드가 된 상태
+			
 			//확장자 체크: .png .jpg .gif, 이미지파일이 아니면 삭제 
 			String ext = file.getName().substring(file.getName().indexOf(".")+1);
 			ext = ext.toUpperCase();
 			System.out.println(ext);
-			
 			if((ext.equals("PNG")) || (ext.equals("JPG")) || (ext.equals("GIF")) || (ext.equals("JPEG"))) {
 				//새로 업로드된 이미지와 DB의 기존이미지 교환
 				// 1. DB의 예전프로필 조회, 삭제 
@@ -238,7 +236,7 @@ public class MemberController {
 				if(oldFile.exists()) {
 					oldFile.delete();
 				}
-				// URL 인코딩된 새 파일 이름 저장 (한글이름은 곧죽어도 안되네....???)
+				// URL로 인코딩된 새 파일 이름 저장 ()
 		        newProfile = URLEncoder.encode(file.getName(), "UTF-8");
 		        System.out.println("newProfile: " + newProfile);
 				
@@ -268,5 +266,7 @@ public class MemberController {
 		return "redirect:/";
 		
 	}
+	
+	
 	
 }

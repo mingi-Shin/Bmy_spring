@@ -1,5 +1,6 @@
 create table myboard(
 	idx int not null auto_increment,
+	memID varchar(100) not null,
 	title varchar(100) not null,
 	content varchar(2000) not null,
 	writer varchar(30) not null,
@@ -7,6 +8,8 @@ create table myboard(
 	count int default 0,
 	primary key(idx)
 );
+
+drop table myboard;
 
 insert into myboard(title,content,writer)
 values('게시판 연습','게시판 연습','관리자');
@@ -32,14 +35,16 @@ CREATE TABLE mem_tbl(
 	memAge INT DEFAULT 0,
 	memGender VARCHAR(20),
 	memEmail VARCHAR(50),
-	memProfile VARCHAR(50)
+	memProfile VARCHAR(300)
 );
+
+ALTER TABLE mem_tbl MODIFY COLUMN memProfile VARCHAR(300);
 
 TRUNCATE TABLE mem_tbl;
 
 INSERT INTO mem_tbl (memID, memPassword, memName)VALUES('testID', 'testPassword1234', 'testUser');
 
-SELECT * FROM mem_tbl;
+SELECT * FROM mem_tbl WHERE memProfile = '%E1%84%8F%E1%85%A1%E1%84%85%E1%85%B5%E1%84%82%E1%85%A1.jpeg';
 
 SELECT * FROM mem_tbl WHERE memID = 'shinmingi01' AND memPassword = 'tlsalsrl4260!';
 
