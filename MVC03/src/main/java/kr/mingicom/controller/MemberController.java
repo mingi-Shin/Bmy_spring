@@ -17,6 +17,7 @@ import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -138,7 +139,14 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/memUpdateForm.do")
-	public String memUpdateForm() {
+	public String memUpdateForm(HttpSession session, RedirectAttributes rttr) {
+		System.out.println(session.getAttribute("loginM")); //로그인확인 
+		if(session.getAttribute("loginM") == null) {
+			rttr.addFlashAttribute("msgType", "회원 정보 수정 불가");
+	        rttr.addFlashAttribute("welcome", "로그인을 진행해주세요.");
+	        
+	        return "redirect:/member/memLoginForm.do";
+		}
 		return "member/memUpdateForm";
 	}
 	
@@ -184,7 +192,14 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/memImageForm.do")
-	public String memImageform() {
+	public String memImageform(HttpSession session, RedirectAttributes rttr) {
+		System.out.println(session.getAttribute("loginM")); //로그인확인 
+		if(session.getAttribute("loginM") == null) {
+			rttr.addFlashAttribute("msgType", "프로필 사진 수정 불가");
+	        rttr.addFlashAttribute("welcome", "로그인을 진행해주세요.");
+	        
+	        return "redirect:/member/memLoginForm.do";
+		}
 		return "member/memImageForm";
 	}
 	
@@ -236,7 +251,7 @@ public class MemberController {
 				if(oldFile.exists()) {
 					oldFile.delete();
 				}
-				// URL로 인코딩된 새 파일 이름 저장 ()
+				// URL로 인코딩된 파일 이름 저장 
 		        newProfile = URLEncoder.encode(file.getName(), "UTF-8");
 		        System.out.println("newProfile: " + newProfile);
 				
@@ -264,8 +279,9 @@ public class MemberController {
         rttr.addFlashAttribute("msgType", "회원사진 업로드 성공");
         rttr.addFlashAttribute("welcome", "회원 프로필을 성공적으로 업로드 하였습니다");
 		return "redirect:/";
-		
 	}
+	
+	
 	
 	
 	

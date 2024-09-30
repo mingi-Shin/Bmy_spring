@@ -50,3 +50,6 @@ SELECT * FROM mem_tbl WHERE memID = 'shinmingi01' AND memPassword = 'tlsalsrl426
 
 TRUNCATE TABLE mem_tbl;
 
+
+SELECT M.memID, M.memName, M.memEmail, B.title, B.writer, B.indate FROM mem_tbl M JOIN myboard B ON M.memID = B.memID WHERE M.memID = 'test02'; 
+

@@ -62,9 +62,12 @@
   	  		htmlList += "<th>내용</th>";
   	  		htmlList += "<td colspan='4'>";
   	  		htmlList += "<textarea id='con"+obj.idx+"' rows='7' class='form-control' readonly ></textarea>";
-  	  		htmlList += "<br>"
-  	  		htmlList += "<a href='javascript:goUpdateForm("+obj.idx+")' id='m"+obj.idx+"' class='btn btn-warning btn-sm'> 수정 </a> &nbsp;"
-  	  		htmlList += "<a href='javascript:goDelete("+obj.idx+")' id='d"+obj.idx+"' class='btn btn-danger btn-sm'> 삭제 </a> &nbsp;"
+  	  		
+  	  		if('${loginM.memID}' == obj.memID){
+	  	  		htmlList += "<br>"
+	  	  		htmlList += "<a href='javascript:goUpdateForm("+obj.idx+")' id='m"+obj.idx+"' class='btn btn-warning btn-sm'> 수정 </a> &nbsp;"
+	  	  		htmlList += "<a href='javascript:goDelete("+obj.idx+")' id='d"+obj.idx+"' class='btn btn-danger btn-sm'> 삭제 </a> &nbsp;"
+  	  		}  	  		
   	  		htmlList += "</td>";
   	  		htmlList += "</tr>";
   	  		

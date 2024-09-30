@@ -22,6 +22,7 @@
 	
 	<select id="showMemberList" resultType="kr.mingicom.entity.Member">
 		SELECT * FROM mem_tbl ORDER BY memIdx ASC
+		
 	</select>
 	
 	<select id="showTheMember" resultType="kr.mingicom.entity.Member">

@@ -22,6 +22,7 @@ public class MainController {
 		return "index";
 	}
 	
+	//내편의를 위해 
 	@RequestMapping("admin/showMemberList.do")
 	public String showMemberList(Member vo, Model model) {
 		
