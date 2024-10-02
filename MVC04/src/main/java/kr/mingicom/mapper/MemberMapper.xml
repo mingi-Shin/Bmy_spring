@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.mingicom.mapper.MemberMapper">
+	
+	<select id="memCheckDuple" resultType="kr.mingicom.entity.Member">
+		SELECT * FROM mem_tbl WHERE memID = #{memID}
+	</select>
+	
+	<insert id="register" parameterType="kr.mingicom.entity.Member" >
+		INSERT INTO mem_tbl(memID, memPassword, memName, memAge, memGender, memEmail, memProfile)
+		VALUES(#{memID}, #{memPassword}, #{memName}, #{memAge}, #{memGender}, #{memEmail}, #{memProfile})
+	</insert>
+	
+	<select id="login" parameterType="kr.mingicom.entity.Member" resultType="kr.mingicom.entity.Member"> 
+		SELECT * FROM mem_tbl WHERE memID = #{memID} AND memPassword = #{memPassword}
+	</select>
+	
+	<update id="memUpdate" parameterType="kr.mingicom.entity.Member">
+		UPDATE mem_tbl SET memPassword = #{memPassword}, memName = #{memName}, memAge = #{memAge}, memGender = #{memGender}, memEmail = #{memEmail}
+			WHERE memID = #{memID}
+	</update>
+	
+	<select id="showMemberList" resultType="kr.mingicom.entity.Member">
+		SELECT * FROM mem_tbl ORDER BY memIdx ASC
+		
+	</select>
+	
+	<select id="showTheMember" resultType="kr.mingicom.entity.Member">
+		SELECT * FROM mem_tbl WHERE memID = #{memID}
+	</select>
+	
+	<update id="updateProfile" parameterType="kr.mingicom.entity.Member" >
+		UPDATE mem_tbl SET memProfile = #{memProfile} WHERE memID = #{memID}
+	</update>
+  
+</mapper>
