@@ -1,5 +1,7 @@
 package kr.mingicom.entity;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -14,6 +16,7 @@ public class Member {
 	private String memEmail;
 	private String memProfile;
 	private Boolean is_active;
+	private List<AuthVO> authList;
 
 }
 

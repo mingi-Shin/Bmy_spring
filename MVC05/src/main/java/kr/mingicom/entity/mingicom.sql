@@ -1,6 +1,6 @@
 CREATE TABLE myboard(
 	idx int not null auto_increment,
-	memID varchar(50) UNIQUE not null,
+	memID varchar(50) not null,
 	title varchar(100) not null,
 	content varchar(2000) not null,
 	writer varchar(30) not null,
@@ -11,8 +11,8 @@ CREATE TABLE myboard(
 );
 
 CREATE TABLE mem_stbl(
-	memIdx INT auto_increment PRIMARY KEY,
-	memID VARCHAR(50) UNIQUE NOT NULL,
+	memIdx INT NOT NULL ,
+	memID VARCHAR(50) NOT NULL PRIMARY KEY,
 	memPassword VARCHAR(68) NOT NULL,
 	memName VARCHAR(30) NOT NULL,
 	memAge INT DEFAULT 0,
@@ -24,7 +24,7 @@ CREATE TABLE mem_stbl(
 
 CREATE TABLE mem_auth(
 	no INT PRIMARY KEY NOT NULL auto_increment,
-	memID VARCHAR(50) UNIQUE NOT NULL,
+	memID VARCHAR(50) NOT NULL,
 	auth VARCHAR(50) NOT NULL,
 	CONSTRAINT fk_member_auth FOREIGN KEY (memID) REFERENCES mem_stbl(memID)
 );
