@@ -60,6 +60,32 @@
     	</form>
     </div>
     
+    <div>
+    	<form id="winter" action="${contextPath }/member/memLogin.do" method="post">
+    		<input type="hidden" name="memID" value="shinmingi01">
+    		<input type="hidden" name="memPassword" value="tlsalsrl4260!" >
+    		<input type="submit" value="윈터로그인">
+    	</form>
+    </div>
+    
+		<div>
+    	<form id="karina" action="${contextPath }/member/memLogin.do" method="post">
+    		<input type="hidden" name="memID" value="shinmingi02">
+    		<input type="hidden" name="memPassword" value="tlsalsrl4260!" >
+    		<input type="submit" value="카리나로그인">
+    	</form>
+    </div>
+		
+		<div>
+    	<form id="ningning" action="${contextPath }/member/memLogin.do" method="post">
+    		<input type="hidden" name="memID" value="shinmingi03">
+    		<input type="hidden" name="memPassword" value="tlsalsrl4260!" >
+    		<input type="submit" value="닝닝로그인">
+    	</form>
+    </div>
+    
+
+    
     <!-- 로그인 오류 모달창 -->
 		<div class="modal fade" id="myMessage" role="dialog">
 		  <div class="modal-dialog">

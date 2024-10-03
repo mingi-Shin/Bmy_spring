@@ -46,7 +46,7 @@ INSERT INTO mem_tbl (memID, memPassword, memName)VALUES('testID', 'testPassword1
 
 SELECT * FROM mem_tbl WHERE memProfile = '%E1%84%8F%E1%85%A1%E1%84%85%E1%85%B5%E1%84%82%E1%85%A1.jpeg';
 
-SELECT * FROM mem_tbl WHERE memID = 'shinmingi01' AND memPassword = 'tlsalsrl4260!';
+SELECT * FROM mem_tbl;
 
 TRUNCATE TABLE mem_tbl;
 

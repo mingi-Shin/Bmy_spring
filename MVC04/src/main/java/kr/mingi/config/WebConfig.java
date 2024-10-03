@@ -21,9 +21,9 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 	
 	//3개의 메서드를 오버라이드 
 	@Override
-	protected Class<?>[] getRootConfigClasses() {
+	protected Class<?>[] getRootConfigClasses() { //가장 먼저 호출되어야 하는 설정 클래스 
 		// TODO Auto-generated method stub
-		return new Class[] {RootConfig.class};
+		return new Class[] {RootConfig.class, SecurityConfig.class};
 	}
 
 	@Override

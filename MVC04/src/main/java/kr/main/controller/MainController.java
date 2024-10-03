@@ -23,7 +23,7 @@ public class MainController {
 	}
 	
 	//내편의를 위해: 회원목록 조회 
-	@RequestMapping("admin/showMemberList.do")
+	@RequestMapping("/showMemberList.do")
 	public String showMemberList(Member vo, Model model) {
 		
 		List<Member> memList = mMapper.showMemberList();

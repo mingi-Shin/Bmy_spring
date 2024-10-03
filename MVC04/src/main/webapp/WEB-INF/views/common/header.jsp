@@ -26,8 +26,8 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">고객센터</a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="${contextPath}/admin/showMemberList.do">멤버 조회(admin)</a></li>
-            <li><a class="dropdown-item" href="${contextPath}/admin/showDescription.do">MVC04 설명보드</a></li>
+            <li><a class="dropdown-item" href="${contextPath}/showMemberList.do">멤버 조회(admin)</a></li>
+            <li><a class="dropdown-item" href="${contextPath}/showDescription.do">MVC04 설명보드</a></li>
             <li><a class="dropdown-item" href="#">A third link</a></li>
           </ul>
         </li>

@@ -56,7 +56,6 @@
 					} else {
 						//사용 가능
 						$('#checkMessage').html("사용 가능한 아이디입니다.");
-						console.log('확인');
 						$('#checkRegisterDuple').attr('disabled', true); //중복확인 버튼 비활성 
 						$('#submitButton').attr('disabled', false); //등록 버튼 활성 
 					}	

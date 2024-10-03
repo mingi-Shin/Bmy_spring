@@ -167,7 +167,7 @@ public class MemberController {
 		if(m.getMemPassword() == null || m.getMemPassword().equals("") ||
 			!memPassword1.equals(memPassword2)  ) {
 			
-			rttr.addFlashAttribute("msgType", "회원가입 실패");
+			rttr.addFlashAttribute("msgType", "정보수정 실패");
 			rttr.addFlashAttribute("msg", "비밀번호가 서로 일치하지 않습니다.");
 			
 			return "redirect:/member/memUpdateForm.do"; // ${smgType}, ${msg} 사용가능, Flash니까 한번만 가능
