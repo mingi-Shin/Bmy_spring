@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		filter.setEncoding("UTF-8");
 		filter.setForceEncoding(true);
 		
-		http.addFilterAfter(filter, CsrfFilter.class);
+		http.addFilterBefore(filter, CsrfFilter.class);
 		
 	}
 	

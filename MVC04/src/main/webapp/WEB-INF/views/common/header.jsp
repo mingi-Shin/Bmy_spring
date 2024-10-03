@@ -6,7 +6,7 @@
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">MVC03</a>
+    <a class="navbar-brand" href="#">MVC04</a>
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
       <span class="navbar-toggler-icon"></span>
@@ -40,10 +40,10 @@
       </div>
       
 			<c:if test="${!empty loginM}">
-				<c:if test="${loginM.memProfile eq ''}" >
+				<c:if test="${empty loginM.memProfile}" > <!-- null포함 -->
 					<img alt="기본이미지" src="${contextPath }/resources/images/defaultProfile.jpg" style="width: 50px; height: 50px;" class="rounded-circle"> 
 				</c:if>
-				<c:if test="${loginM.memProfile ne ''}" >
+				<c:if test="${!empty loginM.memProfile}" >
 					<img alt="회원 이미지" src="${contextPath }/resources/upload/${loginM.memProfile}" style="width: 50px; height: 50px;" class="rounded-circle"> 
 				</c:if>
 			</c:if>		

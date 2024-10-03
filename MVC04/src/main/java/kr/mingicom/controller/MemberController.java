@@ -172,14 +172,17 @@ public class MemberController {
 			
 			return "redirect:/member/memUpdateForm.do"; // ${smgType}, ${msg} 사용가능, Flash니까 한번만 가능
 		}
-		m.setMemProfile(""); //사진이미지는 없다는 의미 -> "" (안그러면 null이 들어가니까 공백으로 넣어주자.)
 		
 		// 수정성공 : 회원을 테이블에 저장
 		int result = memMapper.memUpdate(m);
 		
 		if(result == 1) { 
-			//수정 성공하면 바로 로그인 처리해주기
+			//수정 성공하면 바로 로그인 처리
+			//위에서 업데이트 했으니까 그냥 가져오기, BUT 프로필사진을 위해 따로 맵퍼를 또 부르면 리소스낭비. 차라리 input에 hidden으로 받아오자. 중요한 정보는 아니니까. 
+			//Member vo = memMapper.showTheMember(m.getMemID());
+			
 			session.setAttribute("loginM", m); //${!empty loginM}
+			System.out.println("m: " + m);
 			
 			rttr.addFlashAttribute("msgType", "회원정보 수정 성공");
 			rttr.addFlashAttribute("welcome", m.getMemName() + "님 회원정보가 변경되었습니다.");
@@ -223,6 +226,7 @@ public class MemberController {
 			e.printStackTrace();
 			rttr.addFlashAttribute("msgType", "회원사진 업로드 실패");
 			rttr.addFlashAttribute("welcome", "파일의 크기는 10	MB를 넘을 수 없습니다"); //이거는 onKey()를 쓰는게 나을지도? 
+			// upload폴더가 없어도 동일 메시지가 출력되네..?
 			return "redirect:/member/memImageForm.do";
 			// return이 안되는 이유: 톰캣서버가 용량을 처리하지 못하고 인터넷을 끊어버리고 있음 
 			//	-> server.xml에서 maxSwallowSize="-1" 리미트해제 코드 추가 필요  

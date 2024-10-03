@@ -153,6 +153,8 @@
 	    			</td>
 	    		</tr>
     		</table>
+ 				<input type="hidden" id="memProfile" name="memProfile" value="${loginM.memProfile }"/> <!-- 없으면 사진출력 안됨 -->
+ 				<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
     	</form>
     	
 			<!-- The Modal -->

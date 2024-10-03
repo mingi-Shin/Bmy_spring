@@ -57,6 +57,7 @@
 	    			</td>
 	    		</tr>
     		</table>
+    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }" />
     	</form>
     </div>
     
@@ -65,6 +66,7 @@
     		<input type="hidden" name="memID" value="shinmingi01">
     		<input type="hidden" name="memPassword" value="tlsalsrl4260!" >
     		<input type="submit" value="윈터로그인">
+    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }" />
     	</form>
     </div>
     
@@ -73,6 +75,7 @@
     		<input type="hidden" name="memID" value="shinmingi02">
     		<input type="hidden" name="memPassword" value="tlsalsrl4260!" >
     		<input type="submit" value="카리나로그인">
+    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }" />
     	</form>
     </div>
 		
@@ -81,6 +84,16 @@
     		<input type="hidden" name="memID" value="shinmingi03">
     		<input type="hidden" name="memPassword" value="tlsalsrl4260!" >
     		<input type="submit" value="닝닝로그인">
+    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }" />
+    	</form>
+    </div>
+    
+ 		<div>
+    	<form id="jijel" action="${contextPath }/member/memLogin.do" method="post">
+    		<input type="hidden" name="memID" value="shinmingi04">
+    		<input type="hidden" name="memPassword" value="tlsalsrl4260!" >
+    		<input type="submit" value="지젤로그인">
+    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }" />
     	</form>
     </div>
     

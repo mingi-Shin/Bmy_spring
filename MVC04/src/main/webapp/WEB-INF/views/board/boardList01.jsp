@@ -127,10 +127,16 @@
   			let fData = $("#frm").serialize(); //폼의 모든 파라미터 직렬화, ==쿼리형으로 넘김, JSON아님 
   			console.log(fData);
   	  		
+  			let csrfHeaderName = "${_csrf.headerName}";
+  			let csrfTokenValue = "${_csrf.token}";
+  			
  	  		$.ajax({
  	  			url : "board/new",
  	  			type : "post",
  	  			data : fData,
+ 	  			beforeSend: function(xhr){
+ 	  				xhr.setRequestHeader(csrfHeaderName, csrfTokenValue)
+ 	  			},
  	  			success : function(response){
  	  				alert('게시물 작성에 성공');
  	  				
@@ -201,15 +207,21 @@
   		let newContent = $("#c"+idx+" textarea").val(); //일반적으로 textarea의 값은 val()로 가져온다. 
   		let newTitle = $("#newTi"+idx).val();
   		
+			let csrfHeaderName = "${_csrf.headerName}";
+ 			let csrfTokenValue = "${_csrf.token}";
+  		
   		$.ajax({
   			url : "board/update",
   			method : "PUT",
   			contentType : 'application/json;charset=utf-8', // data가 JSON형식임을 서버에게 알림 
-  			data : JSON.stringify({ // JS data를 JSON으로 바꿔주기 
+  			data : JSON.stringify({ // Javascript를 JSON으로 바꿔주기 
   				"idx" : idx,
   				"title" : newTitle,
   				"content" : newContent,
   			}),
+  			beforeSend: function(xhr){
+	  				xhr.setRequestHeader(csrfHeaderName, csrfTokenValue)
+  			},
   			success : function(){
   				alert('수정 성공');
   				loadBoardList();
@@ -229,10 +241,16 @@
   		
   		function deleteBoard(idx){
   			
+  			let csrfHeaderName = "${_csrf.headerName}";
+ 				let csrfTokenValue = "${_csrf.token}";
+  			
 	  		$.ajax({
 	  			url : "board/" + idx, // PathVariable 값 
 	  			type : "DELETE",
 	  			//data : { "idx" : idx }, //주의 : data값은 객체형식이어야 한다. RESTful방식에선 생략 
+	  			beforeSend: function(xhr){
+ 	  				xhr.setRequestHeader(csrfHeaderName, csrfTokenValue)
+ 	  			},
 	  			success : function(response){
 	 	  				alert( idx+'번 게시물을 삭제하였습니다.');
 	 	  				loadBoardList(); //쓰고나면 리스트 갱신해

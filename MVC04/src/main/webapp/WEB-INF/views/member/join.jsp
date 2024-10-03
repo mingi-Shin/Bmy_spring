@@ -180,11 +180,11 @@
     				<td colspan="2">
     					<div>
     						<div class="form-check">
-							    <input id="memGender" name="memGender" class="form-check-input" type="radio" name="memGender" value="남자" style="float: none" checked>
+							    <input id="memGender" name="memGender" class="form-check-input" type="radio" name="memGender" value="male" style="float: none" checked>
 							    <label class="form-check-label" for="flexRadioDefault1">남자</label>
 								</div>
 								<div class="form-check">
-							    <input id="memGender" name="memGender" class="form-check-input" type="radio" name="memGender" value="여자" style="float: none" >
+							    <input id="memGender" name="memGender" class="form-check-input" type="radio" name="memGender" value="female" style="float: none" >
 							    <label class="form-check-label" for="flexRadioDefault2">여자</label>
 								</div>
 							</div>
@@ -202,6 +202,7 @@
 	    			</td>
 	    		</tr>
     		</table>
+    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }" />
     	</form>
     	
 			<!-- The Modal -->
