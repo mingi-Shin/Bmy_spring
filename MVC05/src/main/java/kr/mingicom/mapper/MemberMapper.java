@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.mingicom.entity.AllMixedVO;
+import kr.mingicom.entity.AuthVO;
 import kr.mingicom.entity.Board;
 import kr.mingicom.entity.Member;
 
@@ -23,11 +25,15 @@ public interface MemberMapper {
 	
     public int memUpdate(Member vo);
     
-    public List<Member> showMemberList();
+    public List<Member> getMemberList();
     
-    public Member showTheMember(String memID);
+    public Member getTheMember(String memID);
 
 	public int updateProfile(Member vo);
+
+	public void insertAuth(AuthVO saveVO);
+	
+	public List<AuthVO> getAuths(String memID);
     
      
 }

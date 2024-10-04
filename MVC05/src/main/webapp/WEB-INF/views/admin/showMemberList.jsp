@@ -30,20 +30,28 @@
    				<th>이름 </th>
    				<th>성별 </th>
    				<th>E-Mail</th>
+   				<th>회원등급</th>
+   				<th>활성화여부</th>
    			</tr>
-   			<c:if test="${empty memberList }">
-   				<td colspan="4">조회가능한 회원이 존재하지 않습니다.</td>
-   			</c:if>
-   			<c:if test="${!empty memberList }">
-   				<c:forEach var="vo" items="${memberList }">
-   					<tr>
-		   				<td>${vo.memID }</td>
-		   				<td>${vo.memName }</td>
-		   				<td>${vo.memGender }</td>
-		   				<td>${vo.memEmail }</td>
-	   				</tr>
-   				</c:forEach>
-   			</c:if>
+	   			<c:if test="${empty memberList }">
+	   				<td colspan="4">조회가능한 회원이 존재하지 않습니다.</td>
+	   			</c:if>
+	   			<c:if test="${!empty memberList }">
+						<c:forEach var="vo" items="${memberList }">
+							<tr>
+								<td>${vo.memID }</td>
+								<td>${vo.memName }</td>
+								<td>${vo.memGender }</td>
+								<td>${vo.memEmail }</td>
+								<td>
+									<c:forEach var="voAuth" items="${vo.authList }">
+										[${voAuth.auth }]
+									</c:forEach>
+								</td>
+								<td>${vo.is_active }</td>
+							<tr>
+						</c:forEach>
+	   			</c:if>
    		</table>
     </div>
     <div class="card-footer">card foot</div>

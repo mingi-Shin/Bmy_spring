@@ -3,34 +3,67 @@
 <mapper namespace="kr.mingicom.mapper.MemberMapper">
 	
 	<select id="memCheckDuple" resultType="kr.mingicom.entity.Member">
-		SELECT * FROM mem_tbl WHERE memID = #{memID}
+		SELECT * FROM mem_stbl WHERE memID = #{memID}
 	</select>
 	
 	<insert id="register" parameterType="kr.mingicom.entity.Member" >
-		INSERT INTO mem_tbl(memID, memPassword, memName, memAge, memGender, memEmail, memProfile)
-		VALUES(#{memID}, #{memPassword}, #{memName}, #{memAge}, #{memGender}, #{memEmail}, #{memProfile})
+		INSERT INTO mem_stbl(memIdx, memID, memPassword, memName, memAge, memGender, memEmail, memProfile)
+		VALUES((SELECT IFNULL(MAX(memIdx)+1, 1) FROM mem_stbl aliseMem), 
+			#{memID}, #{memPassword}, #{memName}, #{memAge}, #{memGender}, #{memEmail}, #{memProfile})
 	</insert>
 	
 	<select id="login" parameterType="kr.mingicom.entity.Member" resultType="kr.mingicom.entity.Member"> 
-		SELECT * FROM mem_tbl WHERE memID = #{memID} AND memPassword = #{memPassword}
+		SELECT * FROM mem_stbl WHERE memID = #{memID} AND memPassword = #{memPassword}
 	</select>
 	
 	<update id="memUpdate" parameterType="kr.mingicom.entity.Member">
-		UPDATE mem_tbl SET memPassword = #{memPassword}, memName = #{memName}, memAge = #{memAge}, memGender = #{memGender}, memEmail = #{memEmail}, memProfile = #{memProfile}
+		UPDATE mem_stbl SET memPassword = #{memPassword}, memName = #{memName}, memAge = #{memAge}, memGender = #{memGender}, memEmail = #{memEmail}, memProfile = #{memProfile}
 			WHERE memID = #{memID}
 	</update>
+			
+			
+			
+	<resultMap type="kr.mingicom.entity.Member" id="memberMap">
+		<id property="memIdx" column="memIdx" />
+		<result property="memID" column="memID" />
+		<result property="memPassword" column="memPassword" />
+		<result property="memName" column="memName" />
+		<result property="memAge" column="memAge" />
+		<result property="memGender" column="memGender" />
+		<result property="memEmail" column="memEmail" />
+		<result property="memProfile" column="memProfile" />
+		<result property="is_active" column="is_active" />
+		<collection property="authList" resultMap="authMap" />
+	</resultMap>
 	
-	<select id="showMemberList" resultType="kr.mingicom.entity.Member">
-		SELECT * FROM mem_tbl ORDER BY memIdx ASC
+	<resultMap type="kr.mingicom.entity.AuthVO" id="authMap">
+		<id property="no" column="no"/>
+		<result property="memID" column="memID"/>
+		<result property="auth" column="auth"/>
+	</resultMap>
 		
+	<select id="getTheMember" resultMap="memberMap">
+		SELECT * FROM mem_stbl mem LEFT OUTER JOIN mem_auth auth 
+		ON mem.memID = auth.memID WHERE mem.memID = #{memID}
 	</select>
 	
-	<select id="showTheMember" resultType="kr.mingicom.entity.Member">
-		SELECT * FROM mem_tbl WHERE memID = #{memID}
+	<select id="getMemberList" resultMap="memberMap">
+		SELECT * FROM mem_stbl mem LEFT OUTER JOIN mem_auth auth 
+		ON mem.memID = auth.memID
 	</select>
 	
 	<update id="updateProfile" parameterType="kr.mingicom.entity.Member" >
-		UPDATE mem_tbl SET memProfile = #{memProfile} WHERE memID = #{memID}
+		UPDATE mem_stbl SET memProfile = #{memProfile} WHERE memID = #{memID}
 	</update>
+	
+	<insert id="insertAuth" parameterType="kr.mingicom.entity.AuthVO">
+		INSERT INTO mem_auth (memID, auth) VALUES (#{memID}, #{auth})
+	</insert>
+	
+	<select id="getAuths" resultType="kr.mingicom.entity.AuthVO" parameterType="kr.mingicom.entity.Member">
+		SELECT * FROM mem_auth WHERE memID = #{memID}
+	</select>
+	
+	
   
 </mapper>

@@ -139,10 +139,9 @@
 
 <div class="container">
 <jsp:include page="../common/header.jsp"></jsp:include>
-  <h2>Join Page (memJoin.do)</h2>
   <div class="card card-default">
 
-    <div class="card-header">회원가입</div>
+    <div class="card-header">회원가입을 진심으로 환영합니다! </div>
     <div class="card-body">
     	<form name="frm" method="post" action="${contextPath }/member/memRegister.do" >     
     		<table class="table table-bordered" style="width:100%; text-align: center; border: 1px solid #dddddd; ">
@@ -194,6 +193,20 @@
     				<th style="width: 110px; vertical-align: middle;">E-mail</th>
     				<td colspan="2"><input id="memEmail" name="memEmail" class="form-control width" type="text" placeholder="이메일을 입력하세요" /></td>
     			</tr>
+    			
+    			<!-- 권한 체크박스 -->
+    			<tr>
+    				<th style="width: 110px; vertical-align: middle;">가입 레벨(:권한)</th>
+    				<td colspan="2">
+    					<p>삐약삐약</p>
+    					<input type="hidden" name="authList[0].auth" value="ROLE_READER">
+    					<!-- 
+    					<input type="checkbox" name="authList[1].auth" value="ROLE_WRITER" disabled>꼬꼬닭<br>
+    					<input type="checkbox" name="authList[2].auth" value="ROLE_MANAGER" disabled>사육사
+    					 -->
+    					<p style="color: red">레벨업을 신청하여 꼬꼬닭이 되어보세요! </p>
+    				</td>
+    			</tr>
 	    		<tr>
 	    			<td colspan="3" >
 		    			<div class="d-flex">
@@ -202,6 +215,7 @@
 	    			</td>
 	    		</tr>
     		</table>
+    		<input type="hidden" name="is_active" value="true">
     		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }" />
     	</form>
     	

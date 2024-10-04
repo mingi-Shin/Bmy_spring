@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -26,6 +28,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
+import kr.mingicom.entity.AllMixedVO;
+import kr.mingicom.entity.AuthVO;
 import kr.mingicom.entity.Member;
 import kr.mingicom.mapper.MemberMapper;
 
@@ -34,7 +38,11 @@ import kr.mingicom.mapper.MemberMapper;
 public class MemberController {
 
 	@Autowired
-	private MemberMapper memMapper;
+	MemberMapper memMapper;
+	
+	// mvc05 추가
+	@Autowired
+	PasswordEncoder pwEncoder;
 	
 	@RequestMapping("/memJoin.do")
 	public String memJoin() {
@@ -61,16 +69,16 @@ public class MemberController {
 		System.out.println("member: " + m);
 		System.out.println("memPassword1: " + memPassword1);
 		System.out.println("memPassword2: " + memPassword2);
-		
 		// 회원가입 실패 (서버 사이드 검증) 
 		if(m.getMemID() == null || m.getMemID().equals("") || 
 			
 			m.getMemName() == null || m.getMemName().equals("") ||
 			m.getMemAge() == 0 || 
 			m.getMemGender() == null || m.getMemGender().equals("") ||
-			m.getMemEmail() == null || m.getMemEmail().equals("") ) {
+			m.getMemEmail() == null || m.getMemEmail().equals("")  ||
+			m.getAuthList().size() == 0	) {
 			
-			//누락메세지를 가지고 가기 => 객체바인딩(Model, HttpServletRequest, HttpSession)은 jsp에 하는데.. 어떡하지?
+			//누락메세지를 RedirectAttributes 인스턴스에 add => 
 			rttr.addFlashAttribute("msgType", "회원가입 실패");
 			rttr.addFlashAttribute("msg", "모든 내용을 입력하세요.");
 			
@@ -82,15 +90,35 @@ public class MemberController {
 			rttr.addFlashAttribute("msgType", "회원가입 실패");
 			rttr.addFlashAttribute("msg", "비밀번호가 서로 일치하지 않습니다.");
 			
-			return "redirect:/member/memJoin.do"; // ${smgType}, ${msg} 사용가능, Flash니까 한번만 가능
+			return "redirect:/member/memJoin.do"; 
 		}
 		m.setMemProfile(""); //사진이미지는 없다는 의미 -> "" (안그러면 null이 들어가니까 공백으로 넣어주자.)
 		
-		// 가입성공 : 회원을 테이블에 저장
+		// 가입조건 완료 -> 테이블에 저장: 
+		// mvc05추가: 비밀번호를 암호화 해주기 (spring API: PasswordEncoder())
+		String encryptedPw = pwEncoder.encode(m.getMemPassword());
+		m.setMemPassword(encryptedPw);
+		
 		int result = memMapper.register(m);
 		
-		if(result == 1) { //회원가입 성공: ruturn값은 해당 쿼리에 의해 영향받은 행의 수가 반환됨, 따라서 1 
-			//회원가입 성공하면 바로 로그인 처리해주기
+		if(result == 1) { //회원가입 성공: ruturn값은 해당 쿼리에 의해 영향받은 행의 수가 반환됨, 따라서 1 .. 
+			
+			//mvc05추가: 권한테이블에 회원권한 n개 저장
+			List<AuthVO> list = m.getAuthList(); //authList[0].auth 로 넘겨받았음 
+			for(AuthVO authVO : list) {
+				if(authVO.getAuth() != null) {
+					AuthVO saveVO = new AuthVO();
+					saveVO.setMemID(m.getMemID());
+					saveVO.setAuth(authVO.getAuth());
+					memMapper.insertAuth(saveVO);
+				}
+			}
+			
+			
+			//회원가입 성공하면 => 가입정보 다시 가져와서 로그인처리 
+			//mvc05추가: 로그인에 회원정보 + 권한정보까지 설정 (getTheMember()의 mapper를 수정함)
+			m = memMapper.getTheMember(m.getMemID());
+			System.out.println("m: " + m);
 			session.setAttribute("loginM", m); //${!empty loginM}
 			
 			rttr.addFlashAttribute("msgType", "회원가입 성공");
@@ -124,7 +152,8 @@ public class MemberController {
 			rttr.addFlashAttribute("welcome", "모든 정보를 입력해주세요.");
 			return "redirect:/member/memLoginForm.do";
 		}
-		Member mvo = memMapper.login(m);
+		Member mvo = memMapper.login(m); //아이디 패스워드 로그인 
+		mvo = memMapper.getTheMember(mvo.getMemID()); //권한까지 설정 
 		
 		if(mvo != null ) {
 			session.setAttribute("loginM", mvo);
@@ -178,8 +207,8 @@ public class MemberController {
 		
 		if(result == 1) { 
 			//수정 성공하면 바로 로그인 처리
-			//위에서 업데이트 했으니까 그냥 가져오기, BUT 프로필사진을 위해 따로 맵퍼를 또 부르면 리소스낭비. 차라리 input에 hidden으로 받아오자. 중요한 정보는 아니니까. 
 			//Member vo = memMapper.showTheMember(m.getMemID());
+			//위에서 업데이트 했으니까 그냥 가져오자, BUT 프로필사진을 위해 따로 맵퍼를 또 부르면 리소스낭비. 차라리 input에 hidden으로 받아오자. 중요한 정보는 아니니까. 
 			
 			session.setAttribute("loginM", m); //${!empty loginM}
 			System.out.println("m: " + m);
@@ -248,7 +277,7 @@ public class MemberController {
 			if((ext.equals("PNG")) || (ext.equals("JPG")) || (ext.equals("GIF")) || (ext.equals("JPEG"))) {
 				//새로 업로드된 이미지와 DB의 기존이미지 교환
 				// 1. DB의 예전프로필 조회, 삭제 
-				String oldProfile = memMapper.showTheMember(memID).getMemProfile(); //DB에 저장된 이름 
+				String oldProfile = memMapper.getTheMember(memID).getMemProfile(); //DB에 저장된 이름 
 				File oldFile = new File(savePath + "/" + oldProfile); //해당 명의 파일 객체 생성 
 				System.out.println(oldFile);
 				
@@ -277,7 +306,7 @@ public class MemberController {
 		memMapper.updateProfile(vo);
 		
 		//세션을 갱신
-		Member newVo = memMapper.showTheMember(memID);
+		Member newVo = memMapper.getTheMember(memID);
 		session.setAttribute("loginM", newVo);
 		
         rttr.addFlashAttribute("msgType", "회원사진 업로드 성공");

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import kr.mingicom.entity.AllMixedVO;
 import kr.mingicom.entity.Member;
 import kr.mingicom.mapper.MemberMapper;
 
@@ -14,7 +15,7 @@ import kr.mingicom.mapper.MemberMapper;
 public class MainController {
 
 	@Autowired
-	private MemberMapper mMapper;
+	private MemberMapper memMapper;
 	
 	@RequestMapping("/")
 	public String  index() {
@@ -23,10 +24,11 @@ public class MainController {
 	}
 	
 	//내편의를 위해: 회원목록 조회 
-	@RequestMapping("/showMemberList.do")
-	public String showMemberList(Member vo, Model model) {
+	@RequestMapping("/getMemberList.do")
+	public String showMemberList(AllMixedVO vo, Model model) {
 		
-		List<Member> memList = mMapper.showMemberList();
+		List<Member> memList = memMapper.getMemberList();
+		System.out.println("멤버리스트: " + memList);
 		
 		model.addAttribute("memberList", memList);
 		return "admin/showMemberList";
