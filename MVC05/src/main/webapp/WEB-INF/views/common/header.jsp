@@ -6,7 +6,7 @@
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">MVC04</a>
+    <a class="navbar-brand" href="#">MVC05</a>
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
       <span class="navbar-toggler-icon"></span>
@@ -65,14 +65,11 @@
 	      	<li class="nav-item dropdown">
 	          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">${loginM.memName }(
 	          		<c:forEach var="vo" items="${loginM.authList }">
-	          			${vo.auth }
+									<c:if test="${vo.auth eq 'ROLE_READER'}">삐약삐약</c:if>
+									<c:if test="${vo.auth eq 'ROLE_WRITER'}">꼬꼬닭</c:if>
+									<c:if test="${vo.auth eq 'ROLE_MANAGER'}">사육사</c:if>
+									<c:if test="${vo.auth eq 'ROLE_ADMIN'}">농장주</c:if>
 	          		</c:forEach>
-	          		<!--  
-	          		<c:if test="${loginM.authList eq 'ROLE_READER'}">삐약삐약 </c:if>
-	          		<c:if test="${loginM.authList eq 'ROLE_WRITER'}">꼬꼬닭 </c:if>
-	          		<c:if test="${loginM.authList eq 'ROLE_MANAGER'}">사육사 </c:if>
-	          		<c:if test="${loginM.authList eq 'ROLE_ADMIN'}">농장주 </c:if>
-	          		-->
 	          )</a>
 	          <ul class="dropdown-menu dropdown-menu-end">
 	            <li><a class="dropdown-item" href="${contextPath}/member/memUpdateForm.do">회원정보수정</a></li>

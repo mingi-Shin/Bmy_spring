@@ -34,7 +34,7 @@
    				<th>활성화여부</th>
    			</tr>
 	   			<c:if test="${empty memberList }">
-	   				<td colspan="4">조회가능한 회원이 존재하지 않습니다.</td>
+	   				<td colspan="6">조회가능한 회원이 존재하지 않습니다.</td>
 	   			</c:if>
 	   			<c:if test="${!empty memberList }">
 						<c:forEach var="vo" items="${memberList }">

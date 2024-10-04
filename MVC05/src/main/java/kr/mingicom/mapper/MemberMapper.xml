@@ -12,8 +12,9 @@
 			#{memID}, #{memPassword}, #{memName}, #{memAge}, #{memGender}, #{memEmail}, #{memProfile})
 	</insert>
 	
-	<select id="login" parameterType="kr.mingicom.entity.Member" resultType="kr.mingicom.entity.Member"> 
-		SELECT * FROM mem_stbl WHERE memID = #{memID} AND memPassword = #{memPassword}
+	<select id="login" parameterType="kr.mingicom.entity.Member" resultMap="memberMap"> 
+		SELECT * FROM mem_stbl mem LEFT OUTER JOIN mem_auth auth 
+		ON mem.memID = auth.memID WHERE mem.memID = #{memID}
 	</select>
 	
 	<update id="memUpdate" parameterType="kr.mingicom.entity.Member">

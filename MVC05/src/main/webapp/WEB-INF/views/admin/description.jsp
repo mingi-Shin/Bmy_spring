@@ -24,7 +24,7 @@
 <div class="container">
 	<jsp:include page="../common/header.jsp"></jsp:include>
 
-  <h2>Spring MVC03</h2>
+  <h2>Spring MVC05</h2>
   <div class="card card-default">
 
     <div class="card-header" >card title</div>

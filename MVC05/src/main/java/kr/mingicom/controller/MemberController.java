@@ -151,11 +151,12 @@ public class MemberController {
 			rttr.addFlashAttribute("msgType", "로그인 실패");
 			rttr.addFlashAttribute("welcome", "모든 정보를 입력해주세요.");
 			return "redirect:/member/memLoginForm.do";
-		}
-		Member mvo = memMapper.login(m); //아이디 패스워드 로그인 
-		mvo = memMapper.getTheMember(mvo.getMemID()); //권한까지 설정 
+		} 
+		Member mvo = memMapper.login(m); //mvc05수정: memID로 회원정보+권한정보를 mvo에 대입
+		System.out.println("mvo: " + mvo);
 		
-		if(mvo != null ) {
+		//mvc05 추가: 암호화된 비밀번호 일치여부 체크 -> .matches(입력값, DB저장값)
+		if(mvo != null && pwEncoder.matches(m.getMemPassword(), mvo.getMemPassword())) {
 			session.setAttribute("loginM", mvo);
 			rttr.addFlashAttribute("msgType", "로그인 성공");
 			rttr.addFlashAttribute("welcome", mvo.getMemName() + "님 로그인을 환영합니다.");
@@ -235,85 +236,82 @@ public class MemberController {
 		return "member/memImageForm";
 	}
 	
-	
-	//파일 업로드 API ( 강의에서는 cos.jar 사용. 하지만 요즘 추세는 스프링 내장 라이브러리 사용  )
 	@RequestMapping("/memImageUpdate.do")
 	public String memImageUpdate(HttpServletRequest request, HttpServletResponse response, RedirectAttributes rttr, HttpSession session) throws IOException {
-		
-		MultipartRequest multi = null; //MultipartRequest : 서버가 받아와서 개별 파트로 분리하여 처리
-		int fileMaxSize = 10*1024*1024; //10MB
-		// 우리가 생각하는 경로가 아니라 이클립스가 프로젝트를 따로 관리하는 폴더가 있다. 그 폴더의 경로를 RealPath로 정의한다.
-		String savePath = request.getRealPath("resources/upload"); 
-		System.out.println(savePath); //경로찾아줘봐 어휴 
-				
-		try {
-			//프로필을 폴더에 업로드
-			multi = new MultipartRequest(request, savePath, fileMaxSize, "UTF-8", new DefaultFileRenamePolicy());
-			// MultipartRequest 객체 생성
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			rttr.addFlashAttribute("msgType", "회원사진 업로드 실패");
-			rttr.addFlashAttribute("welcome", "파일의 크기는 10	MB를 넘을 수 없습니다"); //이거는 onKey()를 쓰는게 나을지도? 
-			// upload폴더가 없어도 동일 메시지가 출력되네..?
-			return "redirect:/member/memImageForm.do";
-			// return이 안되는 이유: 톰캣서버가 용량을 처리하지 못하고 인터넷을 끊어버리고 있음 
-			//	-> server.xml에서 maxSwallowSize="-1" 리미트해제 코드 추가 필요  
-		}
-		
-		//폴더에 저장
-		String memID = multi.getParameter("memID"); //request에서 id뽑고.. 안돼! multi쓰는 이상 request에서 파라미터 못가져와!!
-		
-		File file = multi.getFile("memProfile"); // multi에서 memProfile 뽑아서, file객체에 포인터 
-		
-		String newProfile = null; 
-		
-		if(file != null) { //업로드가 된 상태
-			
-			//확장자 체크: .png .jpg .gif, 이미지파일이 아니면 삭제 
-			String ext = file.getName().substring(file.getName().indexOf(".")+1);
-			ext = ext.toUpperCase();
-			System.out.println(ext);
-			if((ext.equals("PNG")) || (ext.equals("JPG")) || (ext.equals("GIF")) || (ext.equals("JPEG"))) {
-				//새로 업로드된 이미지와 DB의 기존이미지 교환
+	    MultipartRequest multi = null; 
+	    int fileMaxSize = 10 * 1024 * 1024; // 10MB
+	    String savePath = request.getRealPath("resources/upload"); 
+	    System.out.println(savePath); 
+	    
+	    try {
+	        multi = new MultipartRequest(request, savePath, fileMaxSize, "UTF-8", new DefaultFileRenamePolicy());
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        rttr.addFlashAttribute("msgType", "회원사진 업로드 실패");
+	        rttr.addFlashAttribute("welcome", "파일의 크기는 10 MB를 넘을 수 없습니다");
+	        // return이 안되는 이유: 톰캣서버가 용량을 처리하지 못하고 인터넷을 끊어버리고 있음 
+ 			//	-> server.xml에서 maxSwallowSize="-1" 리미트해제 코드 추가 필요
+	        return "redirect:/member/memImageForm.do";
+	    }
+	    
+	    //폴더에 저장
+	    String memID = multi.getParameter("memID"); 
+	    File file = multi.getFile("memProfile"); 
+	    String newProfile = null; 
+	    
+	    if (file != null) { 
+	        String ext = file.getName().substring(file.getName().indexOf(".") + 1).toUpperCase();
+	        if (ext.equals("PNG") || ext.equals("JPG") || ext.equals("GIF") || ext.equals("JPEG")) {
+	        	//새로 업로드된 이미지와 DB의 기존이미지 교환
 				// 1. DB의 예전프로필 조회, 삭제 
-				String oldProfile = memMapper.getTheMember(memID).getMemProfile(); //DB에 저장된 이름 
-				File oldFile = new File(savePath + "/" + oldProfile); //해당 명의 파일 객체 생성 
-				System.out.println(oldFile);
-				
-				if(oldFile.exists()) {
-					oldFile.delete();
-				}
-				// URL로 인코딩된 파일 이름 저장 
-		        newProfile = URLEncoder.encode(file.getName(), "UTF-8");
-		        System.out.println("newProfile: " + newProfile);
-				
-			} else {
-				if(file.exists()) { //이미지아니다! 도로 삭제: 혹시 개발자가 실수로 지워버렸을 수도 있어서 if문 돌림 
-					file.delete();
-				}
-				rttr.addFlashAttribute("msgType", "회원사진 업로드 실패");
-		        rttr.addFlashAttribute("welcome", "이미지 파일만 업로드가 가능합니다. ");
-		        return "redirect:/member/memImageForm.do";
-			}
-			
-			
-		}
-		//2. DB에 새프로필 저장 
-		Member vo = new Member();
-		vo.setMemID(memID);
-		vo.setMemProfile(newProfile);
-		memMapper.updateProfile(vo);
-		
+	        	String oldProfile = memMapper.getTheMember(memID).getMemProfile(); 
+	            File oldFile = new File(savePath + "/" + oldProfile); 
+	            
+	            if (oldFile.exists()) {
+	                oldFile.delete();
+	            }
+	            
+	            // 새로운 파일 이름 생성: 동일한 이름의 사진을 업로드할 경우에도 파일 이름이 중복되지 않게 처리(1)
+	            String newFileName = System.currentTimeMillis() + "_" + file.getName(); 
+	            File newFile = new File(savePath + "/" + newFileName);
+	            
+	            // 파일 이름 변경: 동일한 이름의 사진을 업로드할 경우에도 파일 이름이 중복되지 않게 처리(2)
+	            if (!file.renameTo(newFile)) {
+	                rttr.addFlashAttribute("msgType", "회원사진 업로드 실패");
+	                rttr.addFlashAttribute("welcome", "파일 이름 변경에 실패했습니다.");
+	                return "redirect:/member/memImageForm.do";
+	            }
+	            // 파일 이름 변경: 동일한 이름의 사진을 업로드할 경우에도 파일 이름이 중복되지 않게 처리(2)
+	            
+	            // URL로 인코딩된 파일 이름 저장 	
+	            newProfile = URLEncoder.encode(newFileName, "UTF-8");
+	        } else {
+	            if (file.exists()) { //이미지아니다! 도로 삭제
+	                file.delete();
+	            }
+	            rttr.addFlashAttribute("msgType", "회원사진 업로드 실패");
+	            rttr.addFlashAttribute("welcome", "이미지 파일만 업로드가 가능합니다. ");
+	            return "redirect:/member/memImageForm.do";
+	        }
+	    }
+	    
+	    //2. DB에 새프로필 저장 
+	    Member vo = new Member();
+	    vo.setMemID(memID);
+	    vo.setMemProfile(newProfile);
+	    memMapper.updateProfile(vo);
+	    
 		//세션을 갱신
-		Member newVo = memMapper.getTheMember(memID);
-		session.setAttribute("loginM", newVo);
-		
-        rttr.addFlashAttribute("msgType", "회원사진 업로드 성공");
-        rttr.addFlashAttribute("welcome", "회원 프로필을 성공적으로 업로드 하였습니다");
-		return "redirect:/";
+	    Member newVo = memMapper.getTheMember(memID);
+	    session.setAttribute("loginM", newVo);
+	    
+	    rttr.addFlashAttribute("msgType", "회원사진 업로드 성공");
+	    rttr.addFlashAttribute("welcome", "회원 프로필을 성공적으로 업로드 하였습니다");
+	    return "redirect:/";
 	}
-	
+
+
+
 	
 	
 	
