@@ -17,6 +17,11 @@
    	img {
    		width: 100%;
    	}
+   	
+   	hr {
+   		color: red;
+   	}
+   	
    </style>
 </head>
 <body>
@@ -68,6 +73,13 @@
 			</div>
 			<hr>
 			<div>
+				<h2>비밀번호 암호화 </h2>
+				<img alt="spring web security" src="${contextPath }/resources/images/스프1탄_53.png">
+				패스워드 암호화 시켜주기 (스프링 내부 API 활용)
+			</div>
+			
+			<hr>
+			<div>
 				<h2>resultMap 사용법</h2>
 				<img alt="spring web security" src="${contextPath }/resources/images/스프1탄_54.png" >
 			</div>
@@ -75,6 +87,38 @@
 				<p>1. DB에서 넘어오는 Column을 entity의 property에 맵핑하는 모습  </p>
 				<p>2. 결과가 arrayList이기 때문에 collection 활용   </p>
 			</div>
+			
+			<hr>
+			<div>
+				<h2>UserDetails 인터페이스의 구현: extends User </h2>
+				<img alt="spring web security" src="${contextPath }/resources/images/스프1탄_60.png">
+			</div>
+			<div>
+				<p>1. UserDetails인터페이스의 구현체인 User클래스를 상속한 MemberUsers클래스 객체 생성</p>
+			</div>
+			
+			<hr>
+			<div>
+				<h2></h2>
+				<img alt="spring web security" src="${contextPath }/resources/images/스프1탄_61.png">
+			</div>
+			<div>
+				<p></p>
+			</div>
+			
+			<hr>
+			<div>
+				<h2>인증처리과정</h2>
+				<img alt="spring web security" src="${contextPath }/resources/images/스프1탄_62.png">
+			</div>
+			<div>
+				<h3>Security context란?</h3>
+				<p>1. Spring Security에서 현재 인증된 사용자에 대한 정보를 담고있는 컨테이너 </p>
+				<p>2. SecurityContextHolder 를 통해 접근가능하며, 사용자가 어플리케이션에 로그인 후 생성됨  </p>
+				<p>3. 이 컨텍스트는 현재 사용자의 인증정보를 포함하는 Authentication 객체를 가지고 있음 </p>
+			</div>
+			
+			
 			
     </div>
     <div class="card-footer">card foot</div>

@@ -26,6 +26,6 @@ public class BoardMainController {
 	
 	@GetMapping("/access-denied")
 	public String showAccessDenied() {
-		return "access-defnied";
+		return "access-denied";
 	}
 }

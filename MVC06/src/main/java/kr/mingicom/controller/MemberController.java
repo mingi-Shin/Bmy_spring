@@ -152,7 +152,7 @@ public class MemberController {
 			rttr.addFlashAttribute("welcome", "모든 정보를 입력해주세요.");
 			return "redirect:/member/memLoginForm.do";
 		} 
-		Member mvo = memMapper.login(m); //mvc05수정: memID로 회원정보+권한정보를 mvo에 대입
+		Member mvo = memMapper.login(m.getMemID()); //mvc05수정: memID로 회원정보+권한정보를 mvo에 대입
 		System.out.println("mvo: " + mvo);
 		
 		//mvc05 추가: 암호화된 비밀번호 일치여부 체크 -> .matches(입력값, DB저장값)

@@ -21,7 +21,7 @@ public interface MemberMapper {
      
 	public int register(Member vo); //회원등록(1->성공, 0->실패)
 	
-	public Member login(Member vo);
+	public Member login(String username);
 	
     public int memUpdate(Member vo);
     
