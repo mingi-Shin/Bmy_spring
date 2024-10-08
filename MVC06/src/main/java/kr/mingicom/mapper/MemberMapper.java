@@ -9,7 +9,6 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import kr.mingicom.entity.AllMixedVO;
 import kr.mingicom.entity.AuthVO;
 import kr.mingicom.entity.Board;
 import kr.mingicom.entity.Member;

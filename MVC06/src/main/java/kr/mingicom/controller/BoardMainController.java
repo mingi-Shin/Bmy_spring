@@ -13,15 +13,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class BoardMainController {
 
 	@RequestMapping("/boardMain.do")
-	public String boardMain(HttpSession session, RedirectAttributes rttr) {
-		System.out.println(session.getAttribute("loginM")); //로그인확인 
-		if(session.getAttribute("loginM") == null) {
-			rttr.addFlashAttribute("msgType", "게시판 조회 불가");
-	        rttr.addFlashAttribute("welcome", "로그인을 진행해주세요.");
-	        
-	        return "redirect:/member/memLoginForm.do";
-		}
-		return "/board/boardList01";
+	public String boardMain(RedirectAttributes rttr) {
+		return "/board/mainBoard";
 	}
 	
 	@GetMapping("/access-denied")

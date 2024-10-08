@@ -31,9 +31,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	}
 	
 	@Override
-	protected void configure(AuthenticationManagerBuilder authBuilder) throws Exception{
-		authBuilder.userDetailsService(memberUserDetailsService()).passwordEncoder(passwordEncoder());
-		System.out.println("인증매니저 시작");
+	protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception{
+		authenticationManagerBuilder.userDetailsService(memberUserDetailsService())
+		.passwordEncoder(passwordEncoder());
 	}
 	
 
@@ -49,12 +49,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http
 			.authorizeRequests() //어플리케이션의 각 요청에 대해 접근 권한을 설정 
 				.antMatchers("/").permitAll() //root는 특별한 권한없이 모두 허용 
-				.antMatchers("/getMemberList.do").hasRole("ADMIN")
+				//.antMatchers("/getMemberList.do").hasRole("ADMIN")
+				.antMatchers("/boardMain.do").authenticated()
 				.and()
 			.formLogin()
-				.loginPage("/memLoginForm.do")
-				//.loginProcessingUrl("/memLogin.do")
-				.loginProcessingUrl("/authenticateTheUser") //mvc06 추가: 인증처리필터 호출 
+				.loginPage("/member/memLoginForm.do") //맵핑 주의! 
+				.loginProcessingUrl("/memLogin.do") //mvc06 추가: 인증처리필터 호출 
 				.permitAll() //쓰지 않으면 기본값으로 접근제한..  
 				.and()
 			.logout()

@@ -16,6 +16,10 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,9 +32,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
-import kr.mingicom.entity.AllMixedVO;
+import kr.mingi.security.MemberUserDetailsService;
 import kr.mingicom.entity.AuthVO;
 import kr.mingicom.entity.Member;
+import kr.mingicom.entity.MemberUsers;
 import kr.mingicom.mapper.MemberMapper;
 
 @RequestMapping("/member")
@@ -43,6 +48,10 @@ public class MemberController {
 	// mvc05 추가
 	@Autowired
 	PasswordEncoder pwEncoder;
+	
+	//mvc06 추가
+	@Autowired
+	MemberUserDetailsService memberUserDetailsService;
 	
 	@RequestMapping("/memJoin.do")
 	public String memJoin() {
@@ -113,17 +122,9 @@ public class MemberController {
 					memMapper.insertAuth(saveVO);
 				}
 			}
-			
-			
-			//회원가입 성공하면 => 가입정보 다시 가져와서 로그인처리 
-			//mvc05추가: 로그인에 회원정보 + 권한정보까지 설정 (getTheMember()의 mapper를 수정함)
-			m = memMapper.getTheMember(m.getMemID());
-			System.out.println("m: " + m);
-			session.setAttribute("loginM", m); //${!empty loginM}
-			
-			rttr.addFlashAttribute("msgType", "회원가입 성공");
-			rttr.addFlashAttribute("welcome", m.getMemName() + "님 회원가입을 환영합니다.");
-			return "redirect:/";
+			//회원가입 성공하면 => spring security 타게끔 로그인페이지로 이동 
+			rttr.addFlashAttribute("welcome", "회원가입이 완료되었습니다.");
+			return "redirect:/member/memLoginForm.do";
 		}else {
 			rttr.addFlashAttribute("msgType", "가입 실패");
 			rttr.addFlashAttribute("msg", "회원가입에 실패하였습니다");
@@ -131,18 +132,13 @@ public class MemberController {
 		}
 	}
 	
-	@RequestMapping("/memLogout.do")
-	public String memLogout(HttpSession session, RedirectAttributes rttr) {
-		session.invalidate(); //세션무효화
-		rttr.addFlashAttribute("msgType", "로그아웃 성공");
-		rttr.addFlashAttribute("welcome", "로그아웃 되었습니다.");
-		return "redirect:/";
-	}
-	
+	// 로그인 화면 이동(스프링시큐러티)
 	@RequestMapping("/memLoginForm.do")
 	public String memLoginForm() {
 		return "member/loginForm";
 	}
+	
+	/** 로그인, 로그아웃은 security에서 처리하겠다구 
 	
 	@RequestMapping("/memLogin.do")
 	public String memLogin(HttpSession session, RedirectAttributes rttr, Member m) {
@@ -167,6 +163,19 @@ public class MemberController {
 			return "redirect:/member/memLoginForm.do";
 		}
 	}
+	
+	
+	
+	
+	@RequestMapping("/memLogout.do")
+	public String memLogout(HttpSession session, RedirectAttributes rttr) {
+		session.invalidate(); //세션무효화
+		rttr.addFlashAttribute("msgType", "로그아웃 성공");
+		rttr.addFlashAttribute("welcome", "로그아웃 되었습니다.");
+		return "redirect:/";
+	}
+	
+	*/
 	
 	@RequestMapping("/memUpdateForm.do")
 	public String memUpdateForm(HttpSession session, RedirectAttributes rttr) {
@@ -203,19 +212,36 @@ public class MemberController {
 			return "redirect:/member/memUpdateForm.do"; // ${smgType}, ${msg} 사용가능, Flash니까 한번만 가능
 		}
 		
-		// 수정성공 : 회원을 테이블에 저장
-		int result = memMapper.memUpdate(m);
+		// 회원을 수정저장하기
+		// 추가 : 비밀번호 암호화
+		String encyptPw=pwEncoder.encode(m.getMemPassword());
+		m.setMemPassword(encyptPw);
 		
-		if(result == 1) { 
-			//수정 성공하면 바로 로그인 처리
-			//Member vo = memMapper.showTheMember(m.getMemID());
-			//위에서 업데이트 했으니까 그냥 가져오자, BUT 프로필사진을 위해 따로 맵퍼를 또 부르면 리소스낭비. 차라리 input에 hidden으로 받아오자. 중요한 정보는 아니니까. 
-			
-			session.setAttribute("loginM", m); //${!empty loginM}
-			System.out.println("m: " + m);
+		int result = memMapper.memUpdate(m);
+		if(result == 1) { // 수정성공 메세지
+		   
+		    /** 나는 회원가입 form에 권한설정 안넣었음..  
+		    // 기존권한을 삭제하고
+		    memberMapper.authDelete(m.getMemID());
+		    // 새로운 권한을 추가하기	
+		    List<AuthVO> list=m.getAuthList();			
+		    for(AuthVO authVO : list) { 
+	    	  if(authVO.getAuth()!=null) { 
+		   	  AuthVO saveVO=new AuthVO();
+	   	  	  saveVO.setMemID(m.getMemID()); 
+    		  saveVO.setAuth(authVO.getAuth());
+    		  memMapper.insertAuth(saveVO); 
+		    	} 
+		    }
+			*/
 			
 			rttr.addFlashAttribute("msgType", "회원정보 수정 성공");
 			rttr.addFlashAttribute("welcome", m.getMemName() + "님 회원정보가 변경되었습니다.");
+			// 회원수정이 성공하면=>로그인처리하기
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			MemberUsers userAccount = (MemberUsers) authentication.getPrincipal();
+			SecurityContextHolder.getContext().setAuthentication(memberUserDetailsService.createNewAuthentication(authentication,userAccount.getMember().getMemID()));
+						
 			return "redirect:/";
 		}else {
 			rttr.addFlashAttribute("msgType", "수정 실패");
@@ -224,15 +250,9 @@ public class MemberController {
 		}
 	}
 	
+	// 회원 사진 등록 화면 이동 
 	@RequestMapping("/memImageForm.do")
-	public String memImageform(HttpSession session, RedirectAttributes rttr) {
-		System.out.println(session.getAttribute("loginM")); //로그인확인 
-		if(session.getAttribute("loginM") == null) {
-			rttr.addFlashAttribute("msgType", "프로필 사진 수정 불가");
-	        rttr.addFlashAttribute("welcome", "로그인을 진행해주세요.");
-	        
-	        return "redirect:/member/memLoginForm.do";
-		}
+	public String memImageform() {
 		return "member/memImageForm";
 	}
 	
@@ -301,16 +321,18 @@ public class MemberController {
 	    vo.setMemProfile(newProfile);
 	    memMapper.updateProfile(vo);
 	    
-		//세션을 갱신
-	    Member newVo = memMapper.getTheMember(memID);
-	    session.setAttribute("loginM", newVo);
+		//스프링보안(새로인 인증 세션을 생성 -> 객체바인딩)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		MemberUsers userAccount = (MemberUsers) authentication.getPrincipal();
+		SecurityContextHolder.getContext().setAuthentication(memberUserDetailsService.createNewAuthentication(authentication,userAccount.getMember().getMemID()));
 	    
 	    rttr.addFlashAttribute("msgType", "회원사진 업로드 성공");
 	    rttr.addFlashAttribute("welcome", "회원 프로필을 성공적으로 업로드 하였습니다");
 	    return "redirect:/";
 	}
-
-
+	
+	
+		
 
 	
 	

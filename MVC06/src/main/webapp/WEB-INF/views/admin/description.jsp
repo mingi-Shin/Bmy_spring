@@ -91,7 +91,7 @@
 			<hr>
 			<div>
 				<h2>UserDetails 인터페이스의 구현: extends User </h2>
-				<img alt="spring web security" src="${contextPath }/resources/images/스프1탄_60.png">
+				<img alt="spring web security" src="${contextPath }/resources/images/스프1탄_60.png">
 			</div>
 			<div>
 				<p>1. UserDetails인터페이스의 구현체인 User클래스를 상속한 MemberUsers클래스 객체 생성</p>
@@ -100,7 +100,7 @@
 			<hr>
 			<div>
 				<h2></h2>
-				<img alt="spring web security" src="${contextPath }/resources/images/스프1탄_61.png">
+				<img alt="spring web security" src="${contextPath }/resources/images/스프1탄_61.png">
 			</div>
 			<div>
 				<p></p>
@@ -109,7 +109,7 @@
 			<hr>
 			<div>
 				<h2>인증처리과정</h2>
-				<img alt="spring web security" src="${contextPath }/resources/images/스프1탄_62.png">
+				<img alt="spring web security" src="${contextPath }/resources/images/스프1탄_62.png">
 			</div>
 			<div>
 				<h3>Security context란?</h3>
@@ -117,7 +117,26 @@
 				<p>2. SecurityContextHolder 를 통해 접근가능하며, 사용자가 어플리케이션에 로그인 후 생성됨  </p>
 				<p>3. 이 컨텍스트는 현재 사용자의 인증정보를 포함하는 Authentication 객체를 가지고 있음 </p>
 			</div>
+			<div>
+				<h2> UserDetailsService가 사용자 정보를 가져오고, UserDetails가 그 사용자 정보를 담는 객체</h2>
+				<p><strong>UserDetailsService인터페이스의 주요 메서드는 단 하나: loadUserByUsername(String username): 이 메서드는 주어진 username을 기반으로 데이터베이스나 다른 저장소에서 사용자의 세부 정보를 검색하여 반환: 객체는 UserDetails 타입</strong></p>
+				<p><storng>AuthenticationManagerBuilder는 Spring Security의 AuthenticationManager(인증 매니저)를 설정하는 빌더 클래스 </storng></p>
+				
+				<p>1. Spring Security에서 인증 요청이 들어오면, UsernamePasswordAuthenticationFilter (스프링 내부동작)가 사용자의 username과 password를 추출</p>
+				<h3> AuthenticationManager가 UserDetailsService 호출</h3>
+				<p>2. Spring Security는 내부적으로 AuthenticationManager를 통해 인증을 수행하는데, 이때 AuthenticationManagerBuilder에 설정된 UserDetailsService가 호출됨</p>
+				<p>3. UserDetailsService의 loadUserByUsername() 메서드가 호출됩니다. 이 메서드는 주어진 username을 사용하여 데이터베이스 또는 다른 저장소에서 사용자의 정보를 가져옴.  그리고 이 사용자 정보를 담은 UserDetails 객체를 반환합니다.</p>
+				<p>4. UserDetails 객체는 Spring Security가 사용자 인증을 처리하는 데 필요한 정보(사용자 이름, 비밀번호, 권한 등)를 제공</p>
+				<p>5. 사용자가 입력한 비밀번호는 설정된 **PasswordEncoder**를 사용하여 암호화된 후, UserDetails 객체에서 반환된 암호화된 비밀번호와 비교됩</p>
+				<p>6. 인증이 성공하면 UserDetails 객체는 인증된 사용자 정보를 포함한 세션에 저장되며, 이후 Spring Security의 보안 컨텍스트에서 사용자 정보를 사용할 수 있게 됩니다.</p>
+			</div>
 			
+			<hr>
+			<div>
+			<h3>왜 여전히 session이 필요한가?</h3>
+				<p>세션이 없다면 각 요청마다 인증을 다시 받아야 하므로, 상태 유지를 위해 세션이 필수적입니다.</p>
+				<p>JSP에서 인증 정보를 가져오는 방식은 세션에 저장된 SecurityContext에 의존하므로 세션이 여전히 필요합니다.</p>
+			</div>
 			
 			
     </div>

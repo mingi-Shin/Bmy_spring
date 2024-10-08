@@ -4,6 +4,10 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>   
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal }" />
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities }" />
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,7 +67,7 @@
   	  		htmlList += "<td colspan='4'>";
   	  		htmlList += "<textarea id='con"+obj.idx+"' rows='7' class='form-control' readonly ></textarea>";
   	  		
-  	  		if('${loginM.memID}' == obj.memID){
+  	  		if('${mvo.member.memID}' == obj.memID){
 	  	  		htmlList += "<br>"
 	  	  		htmlList += "<a href='javascript:goUpdateForm("+obj.idx+")' id='m"+obj.idx+"' class='btn btn-warning btn-sm'> 수정 </a> &nbsp;"
 	  	  		htmlList += "<a href='javascript:goDelete("+obj.idx+")' id='d"+obj.idx+"' class='btn btn-danger btn-sm'> 삭제 </a> &nbsp;"
@@ -277,7 +281,7 @@
   
     	<form id="frm">
 	      <table class="table">
-	      <input type="hidden" name="memID" value="${loginM.memID }"/>
+	      <input type="hidden" name="memID" value="${mvo.member.memID }"/>
 	    		<tr>
 	          <td>제목</td>
 	        	<td><input type="text" id="title" name="title" class="form-control"/></td>
@@ -288,12 +292,13 @@
 	        </tr>
 	        <tr>
 	          <td>작성자</td>
-	          <c:if test="${empty loginM }">
+	          <security:authorize access="isAnonymous()">
 		          <td><input type="text" id="writer" name="writer" class="form-control" value="guest" readonly/></td>
-	          </c:if>
-	          <c:if test="${!empty loginM }">
-		          <td><input type="text" id="writer" name="writer" class="form-control" value="${loginM.memName }" readonly/></td>
-	          </c:if>
+	          </security:authorize>
+	          
+	          <security:authorize access="isAuthenticated()">
+		          <td><input type="text" id="writer" name="writer" class="form-control" value="${mvo.member.memName }" readonly/></td>
+	          </security:authorize>
 	        </tr>
 	        <tr>
 	         	<td colspan="2" align="center">

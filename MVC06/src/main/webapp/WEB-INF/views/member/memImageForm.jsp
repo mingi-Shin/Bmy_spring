@@ -3,6 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
     
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal }" />
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities }" />
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,7 +44,7 @@
     		<table class="table table-bordered" style="width:100%; text-align: center; border: 1px solid #dddddd; ">
     			<tr>
     				<th style="width: 110px; vertical-align: middle;">아이디</th>
-    				<td><input name="memID" value="${loginM.memID }" style="color:#ccc" readonly></td>
+    				<td><input name="memID" value="${mvo.member.memID }" style="color:#ccc" readonly></td>
     			</tr>
     			<tr>
     				<th style="width: 110px; vertical-align: middle;">회원 이미지 업로드 </th>
