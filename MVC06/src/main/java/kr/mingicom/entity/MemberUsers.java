@@ -14,7 +14,7 @@ import lombok.Data;
 @Data
 public class MemberUsers extends User{ //User는 UserDetails인터페이스의 구현체 
 
-	private Member member; // MemberUsers 객체가 Member 객체를 참조가능 
+	private Member member; // MemberUsers 객체가 Member 객체를 참조가능: MemberUsers는 Member와 User 클래스의 합성을 위한 클래스이다. 
 	
 	public MemberUsers(String username, String password, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, authorities);

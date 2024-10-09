@@ -47,7 +47,7 @@
 			</p>
 			<hr>
 			
-			<h2>Spring Security와 같은 보안 프레임워크는 여러 가지 유형의 공격으로부터 애플리케이션을 보호</h1>
+			<h2>Spring Security와 같은 보안 프레임워크는 여러 가지 유형의 공격으로부터 애플리케이션을 보호</h2>
 			<p>
 			1.	CSRF는 공격자가 사용자의 인증 정보를 도용하여, 사용자가 원하지 않는 요청을 애플리케이션에 보내는 공격 기법입니다. 이를 방지하기 위해 Spring Security는 CSRF 토큰을 활용해 요청의 유효성을 검증합니다. CSRF 보호를 통해 애플리케이션은 같은 사이트에서 생성된 요청만을 허용하고, 다른 사이트에서 생성된 악의적인 요청을 차단할 수 있습니다.<br>
 			2.	XSS(Cross-Site Scripting): 공격자가 악성 스크립트를 웹 페이지에 삽입하여 사용자의 브라우저에서 실행되도록 유도하는 공격입니다. Spring Security는 콘텐츠 보안 정책(CSP) 및 입력값 필터링으로 이를 방어할 수 있습니다.<br>
@@ -133,11 +133,46 @@
 			
 			<hr>
 			<div>
-			<h3>왜 여전히 session이 필요한가?</h3>
+				<h3>왜 여전히 session이 필요한가?</h3>
 				<p>세션이 없다면 각 요청마다 인증을 다시 받아야 하므로, 상태 유지를 위해 세션이 필수적입니다.</p>
 				<p>JSP에서 인증 정보를 가져오는 방식은 세션에 저장된 SecurityContext에 의존하므로 세션이 여전히 필요합니다.</p>
 			</div>
 			
+			<hr>
+			<div>
+				<img alt="spring01_63" src="${contextPath }/resources/images/스프1탄_63.png">			
+			</div>
+			<div>
+				<h2>새로운 세션 생성 과정</h2>
+				<p>	•	currentAuth.getCredentials(): 기존 사용자(현재 인증된 사용자)의 자격 증명 (비밀번호 등) 정보를 반환합니다.</p>
+				<p>	•	newPrincipal.getAuthorities(): 새로운 사용자(인증을 갱신할 사용자)의 권한(Role) 정보를 반환합니다.</p>
+				<h3>UsernamePasswordAuthenticationToken 생성자에 전달되는 세 가지 매개변수는 아래와 같습니다</h3>
+				<p>Principal (수정된 후의 현재 로그인된 사용자 정보)</p>
+				<p>Credentials (자격 증명, 비밀번호 등):<br>
+						<strong>만약</strong> 비밀번호를 수정하게 되는 경우, currentAuth가 아니라 newPrincipal에서 불러오는게 맞다.<br>
+						하지만 보안상 문제(세션하이재킹), 시스템 문제등을 고려했을 때 재로그인을 권하는게 더 옳다고 생각한다. 
+				</p>
+				<p>Authorities (권한)</p>
+				<h3>Spring Security의 동작 방식에서 세션과의 관계??</h3>
+				<p>SecurityContext: <br>
+					• SecurityContext는 현재 인증된 사용자의 정보를 담고있는 컨텍스트이다. 이 컨텍스트에 Authentication 객체가 저장되구요.<br>
+					• UsernamePasswordAuthenticationToken은 이 Authentication 객체로 사용됩니다. 
+				</p>
+				<p>HttpSession: <br>
+					•	Spring Security는 기본적으로 SecurityContext를 HttpSession에 저장합니다.<br>
+					• 인증에 성공하면 SecurityContext는 세션에 저장되고, 요청마다 인증을 다시 수행할 필요없이 계속 인증상태를 유지하게 되는 거에요. <br>
+					• 이게 Session을 쓰는 이유구요. 요청마다 인증을 수행할 필요없이 계속 유지하기 위해!!
+				</p>
+				<p>따라서 context에서 Authentication 객체를 불러오거나, HttpSession을 통해 Attribute로 가져올 수 있지요.</p>
+				<p><strong>Details에는 Member entity가 담기는게 아니라,</strong><br>
+						1.	IP 주소: 사용자가 인증 요청을 보낸 클라이언트의 IP 주소.<br>
+						2.	세션 정보: 인증 세션에 대한 정보, 예를 들어 세션 ID.<br>
+						3.	요청 정보: 인증 요청에 관련된 HTTP 요청 정보, 예를 들어 요청 헤더나 파라미터.<br>
+						4.	사용자 에이전트: 클라이언트의 사용자 에이전트 문자열, 즉 브라우저 정보.<br>
+						5.	기타 메타데이터: 인증 과정에서 필요할 수 있는 다른 관련 정보.<br> 
+					가 담깁니다.
+				</p>
+			</div>			
 			
     </div>
     <div class="card-footer">card foot</div>

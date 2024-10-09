@@ -40,6 +40,7 @@ public class MemberUserDetailsService implements UserDetailsService {
 		UsernamePasswordAuthenticationToken newAuth = 
 				new UsernamePasswordAuthenticationToken(newPrincipal, currentAuth.getCredentials(), newPrincipal.getAuthorities());
 		newAuth.setDetails(currentAuth.getDetails());
+		System.out.println("새로운 세션 생성, 매개변수: " + currentAuth);
 		return newAuth;
 	}
 

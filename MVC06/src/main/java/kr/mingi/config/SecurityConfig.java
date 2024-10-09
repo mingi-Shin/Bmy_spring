@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http
 			.authorizeRequests() //어플리케이션의 각 요청에 대해 접근 권한을 설정 
 				.antMatchers("/").permitAll() //root는 특별한 권한없이 모두 허용 
-				//.antMatchers("/getMemberList.do").hasRole("ADMIN")
+				.antMatchers("/getMemberList.do").hasRole("ADMIN")
 				.antMatchers("/boardMain.do").authenticated()
 				.and()
 			.formLogin()

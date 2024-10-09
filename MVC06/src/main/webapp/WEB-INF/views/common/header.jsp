@@ -10,7 +10,7 @@
 
 <script>
 
-	//로그아웃: post 
+	//로그아웃: post -> SecurityConfig.java와 매핑 
 	let csrfHeaderName = "${_csrf.headerName}";
 	let csrfTokenValue = "${_csrf.token}";
 	let name = "${mvo.member.memName}";

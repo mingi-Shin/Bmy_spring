@@ -7,7 +7,6 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 public class SecurityInitializer extends AbstractSecurityWebApplicationInitializer {
 
 	//기타 코드 필요없음 
-	
 }
 
 

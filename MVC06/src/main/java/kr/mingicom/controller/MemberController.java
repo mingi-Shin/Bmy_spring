@@ -179,9 +179,9 @@ public class MemberController {
 	
 	@RequestMapping("/memUpdateForm.do")
 	public String memUpdateForm(HttpSession session, RedirectAttributes rttr) {
-		System.out.println(session.getAttribute("loginM")); //로그인확인 
-		if(session.getAttribute("loginM") == null) {
-			rttr.addFlashAttribute("msgType", "회원 정보 수정 불가");
+		Object loginUserPrincipal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if(loginUserPrincipal == "") {
+			rttr.addFlashAttribute("msgType", "회원정보 수정 에러");
 	        rttr.addFlashAttribute("welcome", "로그인을 진행해주세요.");
 	        
 	        return "redirect:/member/memLoginForm.do";
@@ -237,7 +237,8 @@ public class MemberController {
 			
 			rttr.addFlashAttribute("msgType", "회원정보 수정 성공");
 			rttr.addFlashAttribute("welcome", m.getMemName() + "님 회원정보가 변경되었습니다.");
-			// 회원수정이 성공하면=>로그인처리하기
+			
+			// 회원수정이 성공하면=> 수정된 정보 Authentication 재설정 => Sessiond에 재설정 자동 저장 
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			MemberUsers userAccount = (MemberUsers) authentication.getPrincipal();
 			SecurityContextHolder.getContext().setAuthentication(memberUserDetailsService.createNewAuthentication(authentication,userAccount.getMember().getMemID()));
