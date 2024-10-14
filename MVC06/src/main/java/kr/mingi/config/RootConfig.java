@@ -26,7 +26,7 @@ public class RootConfig {
 	@Bean
 	public DataSource myDataSource() {
 		HikariConfig hikariConfig = new HikariConfig();
-				
+
 		hikariConfig.setDriverClassName(env.getProperty("jdbc.driver"));
 		hikariConfig.setJdbcUrl(env.getProperty("jdbc.url"));
 		hikariConfig.setUsername(env.getProperty("jdbc.user"));

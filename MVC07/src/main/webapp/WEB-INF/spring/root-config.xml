@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+			xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+													http://mybatis.org/schema/mybatis-spring https://mybatis.org/schema/mybatis-spring.xsd"
+>			
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig"> <!-- HikariConfig.class 의 qualified name 복붙 -->
+		<!-- property 설정은 setter 주입방법 -->
+		<property name="driverClassName" value="org.postgresql.Driver" />
+		<property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/my_PostgreDB"></property>				
+		<property name="username" value="shinmingi" />
+		<property name="password" value="4260" />
+	</bean>
+	
+	<!-- HikariDataSource ( HikariCP의 실제 **데이터베이스 연결 풀(DataSource)) -->
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<constructor-arg ref="hikariConfig" /> <!-- 생성자 참조변수:hikariConfig -->
+	</bean>
+			
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- ref: 위의 dataSource 참조 -->
+		<property name="dataSource" ref="dataSource" /> 
+	</bean>		
+	
+	<!-- 
+	HikariConfig 객체는 HikariDataSource 객체를 생성하는 데 사용되고, 
+	생성된 HikariDataSource 객체는 SqlSessionFactoryBean의 데이터소스로 설정되어 사용된다.
+	 -->
+	 
+	<!-- Mapper패키지의 interface들을 메모리에 올림(:scan) --> 
+	<mybatis-spring:scan base-package="kr.mingi.mapepr" />
+	 
+	 
+
+</beans>
