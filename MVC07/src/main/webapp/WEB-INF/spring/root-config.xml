@@ -31,7 +31,7 @@
 	 -->
 	 
 	<!-- Mapper패키지의 interface들을 메모리에 올림(:scan) --> 
-	<mybatis-spring:scan base-package="kr.mingi.mapepr" />
+	<mybatis-spring:scan base-package="kr.mingi.mapper" />
 	 
 	 
 

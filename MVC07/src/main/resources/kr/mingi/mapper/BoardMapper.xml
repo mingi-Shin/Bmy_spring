@@ -2,5 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.mingi.mapper.BoardMapper">
 
+	<select id="getBoardList" resultType="kr.mingi.entity.Board">
+		SELECT * FROM tblBoard ORDER BY boardGroup DESC
+	</select>
 
 </mapper>

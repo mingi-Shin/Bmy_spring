@@ -29,3 +29,4 @@ CREATE TABLE mem_auth(
 	CONSTRAINT fk_member_auth FOREIGN KEY (memID) REFERENCES mem_stbl(memID)
 );
 
+SELECT IFNULL(MAX(memIdx)+1, 1) FROM mem_stbl;
