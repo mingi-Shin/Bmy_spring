@@ -13,6 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import kr.mingi.entity.Board;
 import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 
 @Log4j
 @ExtendWith(SpringExtension.class) //JUnit5에서 스프링 기능 사용하기 

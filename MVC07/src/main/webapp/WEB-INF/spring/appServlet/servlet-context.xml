@@ -21,8 +21,8 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="kr.mingicom.controller" />
-	<context:component-scan base-package="kr.mingicom.service" />
+	<context:component-scan base-package="kr.mingi.controller" />
+	<context:component-scan base-package="kr.mingi.service" />
 	
 	
 	
