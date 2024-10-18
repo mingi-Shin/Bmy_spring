@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
-    <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
-        </Console>
-    </Appenders>
-    <Loggers>
-        <Logger name="kr.board.controller" level="info"/>
-        <Root level="info">
-            <AppenderRef ref="Console"/>
-        </Root>
-    </Loggers>
+	<Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+    	<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+    </Console>
+  </Appenders>
+	<Loggers>
+    <Logger name="kr.mingi.service" level="info">
+      <AppenderRef ref="Console"/>
+    </Logger>
+    <Logger name="kr.mingi.controller" level="info">
+    	<AppenderRef ref="Console"/>
+    </Logger>
+    <!-- 하나의 Root 로거만 필요 -->
+    <Root level="debug"> <!-- 나머지 패키지들의 기본 로그 레벨 -->
+        <AppenderRef ref="Console"/>
+    </Root>
+	</Loggers>
 </Configuration>
+
+<!-- Appender = 어디로 출력할지  
+			log.info()는 기록되는 로그, 위의 level은 출력되는 레벨의 로그. 둘이 다르다. 
+-->
