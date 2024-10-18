@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 	<groupId>kr.mingi</groupId>
-	<artifactId>MVC07_re</artifactId>
+	<artifactId>m07</artifactId>
 	<packaging>war</packaging>
 	<version>1.0.0</version>
-	<name>MVC07_re</name>
+	<name>MVC07</name>
 	<url>http://www.egovframe.go.kr</url>
 
 	<licenses>
@@ -245,10 +245,18 @@
 							<type>embedded</type>
 						</container>
 						<configuration>
-							<property name="cargo.servlet.port" value="8080"/>
+							<property name="cargo.servlet.port" value="8081"/>
 						</configuration>
 					</configuration>
 				</plugin>
+				
+									<!-- 웹 배포 파일 war 플러그인이 없어서 오류 발생했었다. -->
+					      <plugin>
+					        <groupId>org.apache.maven.plugins</groupId>
+					        <artifactId>maven-war-plugin</artifactId>
+					        <version>3.2.2</version>
+					      </plugin>
+					      
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>

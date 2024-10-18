@@ -19,7 +19,7 @@ public class BoardController {
 	
 	@Autowired
 	private BoardService boardService; //부모타입으로 자식타입 메서드 호출 가능하니까.. 상식이지? 
-
+	
 	@GetMapping("/list")
 	public String getList(Model model) {
 		List<Board> list = boardService.getBoardList();
@@ -27,4 +27,8 @@ public class BoardController {
 		
 		return "/board/boardList";
 	}
+	
+	
+	
+	
 }
