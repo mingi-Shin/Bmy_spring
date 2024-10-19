@@ -1,2 +1,2 @@
-# pmy_spring_1
-박매일 스프링 1
+# pmy_spring
+집중해라 마
