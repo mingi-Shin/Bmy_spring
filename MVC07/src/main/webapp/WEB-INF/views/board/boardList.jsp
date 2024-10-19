@@ -33,7 +33,23 @@
 <body>
 <div class="card">
 	<h2>Spring MVC_3Tier</h2>
-  <div class="card-header">Board</div>
+  <div class="card-header">
+		<form action="${contextPath }/login/loginProcess" method="post">
+			<div class="row float-end">
+			  <div class="col-auto d-flex align-items-center">
+			    <label for="memID" class="form-label mb-0 me-2">ID:</label>
+			    <input type="text" class="form-control" id="memID" placeholder="Enter ID" name="memID">
+			  </div>
+			  <div class="col-auto d-flex align-items-center">
+			    <label for="memPwd" class="form-label mb-0 me-2">Password:</label>
+			    <input type="password" class="form-control" id="memPwd" placeholder="Enter password" name="memPwd">
+			  </div>
+				<div class="col-auto d-flex align-items-center">
+				  <button type="submit" class="btn btn-sm btn-primary">로그인</button>
+				</div>
+			</div>
+		</form>
+  </div>
   <div class="card-body">
   	<table class="table table-bordered table-hover">
   		<tr>
@@ -54,7 +70,7 @@
   		</c:forEach>
   		<tr>
   			<td colspan="5">
-  				<button id="regBtn" class="btn btn-sm float-end">글쓰기</button>
+  				<button id="regBtn" class="btn btn-sm btn-primary float-end">글쓰기</button>
   			</td>
   		</tr>
   	</table>

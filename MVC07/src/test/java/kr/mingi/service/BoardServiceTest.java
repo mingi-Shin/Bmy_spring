@@ -12,7 +12,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @ExtendWith(SpringExtension.class) //JUnit5에서 스프링 기능 사용하기 
 @ContextConfiguration({
-		"file:src/main/webapp/WEB-INF/spring/root-config.xml",
+		"file:src/main/webapp/WEB-INF/spring/root-context.xml",
 		"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml" //scan 패키지 이름 틀리면 bean 찾을 수 없다고 한당 
 }) //테스트 전에 환경설정 실행  
 class BoardServiceTest {
@@ -25,6 +25,7 @@ class BoardServiceTest {
 		boardService.getBoardList().forEach(vo -> log.info(vo));
 	}
 	
+
 
 }
 

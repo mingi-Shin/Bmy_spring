@@ -17,12 +17,10 @@ CREATE TABLE tblBoard(
 );
 
 SELECT * FROM tblBoard;
---SELECT IFNULL(MAX(boardIdx)+1, 1) FROM mem_stbl; --> MySql 방식 
+--SELECT IFNULL(MAX(boardIdx)+1, 1) FROM tblBoard; --> MySql 방식 
 SELECT COALESCE(MAX(boardIdx)+1, 1) FROM tblBoard; --postgresql 방식 
  
 TRUNCATE TABLE tblBoard; --TURNCATE : 자르기
-
-SELECT * FROM tblBoard;
 -----------------------------------------------------------------------------------------------------------
 CREATE TABLE tblMember(
 	memID VARCHAR(50) NOT NULL,

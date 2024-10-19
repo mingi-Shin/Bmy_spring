@@ -10,6 +10,10 @@ import kr.mingi.entity.Board;
 public interface BoardMapper {
 	
 	public List<Board> getBoardList();
+	
+	public void insertBoard(Board vo);
+	
+	public void insertSelectKey(Board vo);
 
 	
 }

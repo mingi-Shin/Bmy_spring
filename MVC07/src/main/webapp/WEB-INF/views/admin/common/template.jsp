@@ -22,7 +22,19 @@
 <body>
 <div class="card">
 	<h2>Spring MVC_3Tier</h2>
-  <div class="card-header">Board</div>
+  <div class="card-header">
+		<form action="${contextPath }/login/loginProcess" method="post">
+		  <div class="mb-3 mt-3">
+		    <label for="memID" class="form-label">ID:</label>
+		    <input type="text" class="form-control" id="memID" placeholder="Enter ID" name="memID">
+		  </div>
+		  <div class="mb-3">
+		    <label for="memPwd" class="form-label">Password:</label>
+		    <input type="password" class="form-control" id="memPwd" placeholder="Enter password" name="memPwd">
+		  </div>
+		  <button type="submit" class="btn btn-sm btn-primary">로그인</button>
+		</form>
+  </div>
   <div class="card-body">
   	
   </div>

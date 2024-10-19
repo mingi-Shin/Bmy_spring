@@ -28,7 +28,10 @@ public class BoardController {
 		return "/board/boardList";
 	}
 	
-	
+	@GetMapping("/register")
+	public String register() {
+		return "/board/boardRegister";
+	}
 	
 	
 }

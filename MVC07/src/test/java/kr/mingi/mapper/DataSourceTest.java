@@ -14,7 +14,7 @@ import lombok.extern.log4j.Log4j;
 
 @Log4j
 @ExtendWith(SpringExtension.class) //JUnit5에서 스프링 기능 사용하기 
-@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-config.xml") //사전 환경설정 실행  
+@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml") //사전 환경설정 실행  
 class DataSourceTest {
 	
 	@Autowired

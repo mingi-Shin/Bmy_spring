@@ -5,5 +5,25 @@
 	<select id="getBoardList" resultType="kr.mingi.entity.Board">
 		SELECT * FROM tblBoard ORDER BY boardGroup DESC
 	</select>
+	
+	<!-- 두개의 insert방식: 1: 동시성문제가 발생  / 2: 쿼리를 두번 실행  -->
+	
+	<!-- VALUES(직접 값 삽입), SELECT(쿼리 결과를 통해 삽입): 몰랐네.. 바보같이 -->
+	<insert id="insertBoard" parameterType="kr.mingi.entity.Board">
+		INSERT INTO tblBoard (boardIdx, memID, title, content, writer, boardGroup, boardSequence, boardLevel, boardAvailable)
+			SELECT COALESCE(MAX(boardIdx)+1, 1), #{memID}, #{title}, #{content}, #{writer},
+				COALESCE(MAX(boardGroup)+1, 0), 0, 0, 1
+			FROM tblBoard
+	</insert>
+	
+	<insert id="insertSelectKey" parameterType="kr.mingi.entity.Board">
+		<selectKey keyProperty="boardIdx,boardGroup" resultType="kr.mingi.entity.Board" order="BEFORE">
+			SELECT COALESCE(MAX(boardIdx)+1, 1) AS boardIdx,
+							COALESCE(MAX(boardGroup)+1, 0) AS boardGroup
+				FROM tblBoard 
+		</selectKey>
+		INSERT INTO tblBoard (boardIdx, memID, title, content, writer, boardGroup, boardSequence, boardLevel, boardAvailable)
+			VALUES (#{boardIdx}, #{memID}, #{title}, #{content}, #{writer}, #{boardGroup}, 0, 0, 1)
+	</insert>
 
 </mapper>

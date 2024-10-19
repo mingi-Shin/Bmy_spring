@@ -29,6 +29,12 @@ public class BoardServiceImpl implements BoardService { // 구현(implementation
 		List<Board> boardList = boardMapper.getBoardList();
 		
 		return boardList; //return 값은 이제 컨트롤러에서 쓰일거에요. 
+	}
+
+
+	@Override
+	public void insertBoard(Board vo) {
+		boardMapper.insertBoard(vo);
 	} 
 
 	

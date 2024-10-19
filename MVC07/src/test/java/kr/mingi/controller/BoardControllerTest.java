@@ -18,7 +18,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration({
-		"file:src/main/webapp/WEB-INF/spring/root-config.xml",
+		"file:src/main/webapp/WEB-INF/spring/root-context.xml",
 		"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"
 })
 @WebAppConfiguration // 뷰리졸버, 핸들러매핑 등 Spring MVC 구성요소들이 포함된 WebApplicationContext를 가상으로 설정해주는 역할 
