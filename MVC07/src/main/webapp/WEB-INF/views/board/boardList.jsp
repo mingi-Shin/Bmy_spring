@@ -90,7 +90,7 @@
   		<c:forEach var="vo" items="${boardList}">
   			<tr>
   				<td>${vo.boardIdx }</td>
-  				<td>${vo.title }</td>
+  				<td><a href="${contextPath}/board/get?boardIdx=${vo.vaordIdx}">${vo.title }</a></td>
   				<td>${vo.writer }</td>
   				<td><fmt:formatDate pattern="yyyy-MM-dd" value="${vo.indate }" /></td>
   				<td>${vo.count }</td>
@@ -137,3 +137,10 @@
 </div>
 </body>
 </html>
+
+<!--  
+	"board/get?idx=${...}" 는 서비스로직에서 @RequestParm("idx") int idx, ... 형식의 매개변수로 받는다.
+		=> URL쿼리 스트링으로 값을 전달할 때 주로 사용
+		
+	POST는 보통 HTTPS로 정보를 암호화하여 FORM 이나 JSON으로 데이터를 전달합니다 .
+-->

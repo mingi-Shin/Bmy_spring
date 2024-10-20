@@ -21,6 +21,8 @@ SELECT * FROM tblBoard;
 SELECT COALESCE(MAX(boardIdx)+1, 1) FROM tblBoard; --postgresql 방식 
  
 TRUNCATE TABLE tblBoard; --TURNCATE : 자르기
+DELETE FROM tblBoard WHERE memID NOT IN (SELECT memID FROM tblMember);
+
 -----------------------------------------------------------------------------------------------------------
 CREATE TABLE tblMember(
 	memID VARCHAR(50) NOT NULL,
