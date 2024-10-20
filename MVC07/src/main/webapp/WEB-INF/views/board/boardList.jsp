@@ -90,7 +90,7 @@
   		<c:forEach var="vo" items="${boardList}">
   			<tr>
   				<td>${vo.boardIdx }</td>
-  				<td><a href="${contextPath}/board/get?boardIdx=${vo.vaordIdx}">${vo.title }</a></td>
+  				<td><a href="${contextPath}/board/get?boardIdx=${vo.boardIdx}">${vo.title }</a></td>
   				<td>${vo.writer }</td>
   				<td><fmt:formatDate pattern="yyyy-MM-dd" value="${vo.indate }" /></td>
   				<td>${vo.count }</td>
