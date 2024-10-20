@@ -24,8 +24,22 @@
 			$("#regBtn").click(function(){
 				location.href="${contextPath}/board/register";
 			})
+			
+			let result = '${result}';
+			checkModal(result);
+		
 		});		
 		
+		function checkModal(result){
+			if(result == ''){
+				return;
+			}
+			if(parseInt(result) > 0){
+				//새로운 다이얼로그 창 띄우기 
+				$(".modal-body").html("게시글 "+ parseInt(result) + "번이 등록되었스브니다." );
+				$("#myModal").modal("show");
+			}
+		}
 		
 	
 	</script>
@@ -34,6 +48,7 @@
 <div class="card">
 	<h2>Spring MVC_3Tier</h2>
   <div class="card-header">
+	<c:if test="${empty loginM}">
 		<form action="${contextPath }/login/loginProcess" method="post">
 			<div class="row float-end">
 			  <div class="col-auto d-flex align-items-center">
@@ -49,6 +64,19 @@
 				</div>
 			</div>
 		</form>
+  </c:if>
+  <c:if test="${!empty loginM}">
+		<form action="${contextPath }/login/logoutProcess" method="post">
+			<div class="row float-end">
+			  <div class="col-auto d-flex align-items-center">
+			    <label>${loginM.memName }님 방문을 환영합니다.</label>
+			  </div>
+				<div class="col-auto d-flex align-items-center">
+				  <button type="submit" class="btn btn-sm btn-primary">로그아웃</button>
+				</div>
+			</div>
+		</form>
+  </c:if>
   </div>
   <div class="card-body">
   	<table class="table table-bordered table-hover">
@@ -68,12 +96,42 @@
   				<td>${vo.count }</td>
   			</tr>
   		</c:forEach>
-  		<tr>
-  			<td colspan="5">
-  				<button id="regBtn" class="btn btn-sm btn-primary float-end">글쓰기</button>
-  			</td>
-  		</tr>
+			<c:if test="${!empty loginM }">
+	  		<tr>
+	  			<td colspan="5">
+	  				<button id="regBtn" class="btn btn-sm btn-primary float-end">글쓰기</button>
+	  			</td>
+	  		</tr>
+			</c:if>
   	</table>
+  	
+  	<!-- The Modal -->
+		<div class="modal" id="myModal">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		
+		      <!-- Modal Header -->
+		      <div class="modal-header">
+		        <h4 class="modal-title">Modal Heading</h4>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+		      </div>
+		
+		      <!-- Modal body -->
+		      <div class="modal-body">
+		      	<!-- 내용 넣으쇼 -->
+		      	
+		      </div>
+		
+		      <!-- Modal footer -->
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+		      </div>
+		
+		    </div>
+		  </div>
+		</div>
+  	<!-- Modal 끝  -->
+  	
   </div>
   <div class="card-footer">스프2_(답변게시판)</div>
 </div>

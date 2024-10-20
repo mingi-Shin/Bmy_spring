@@ -25,5 +25,11 @@
 		INSERT INTO tblBoard (boardIdx, memID, title, content, writer, boardGroup, boardSequence, boardLevel, boardAvailable)
 			VALUES (#{boardIdx}, #{memID}, #{title}, #{content}, #{writer}, #{boardGroup}, 0, 0, 1)
 	</insert>
+	
+	<select id="login" resultType="kr.mingi.entity.Member" parameterType="kr.mingi.entity.Member">
+		SELECT * FROM tblMember WHERE memID = #{memID} AND memPwd = #{memPwd}
+	</select>
+	
+	
 
 </mapper>

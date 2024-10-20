@@ -23,17 +23,35 @@
 <div class="card">
 	<h2>Spring MVC_3Tier</h2>
   <div class="card-header">
+  <c:if test="${empty loginM}">
 		<form action="${contextPath }/login/loginProcess" method="post">
-		  <div class="mb-3 mt-3">
-		    <label for="memID" class="form-label">ID:</label>
-		    <input type="text" class="form-control" id="memID" placeholder="Enter ID" name="memID">
-		  </div>
-		  <div class="mb-3">
-		    <label for="memPwd" class="form-label">Password:</label>
-		    <input type="password" class="form-control" id="memPwd" placeholder="Enter password" name="memPwd">
-		  </div>
-		  <button type="submit" class="btn btn-sm btn-primary">로그인</button>
+			<div class="row float-end">
+			  <div class="col-auto d-flex align-items-center">
+			    <label for="memID" class="form-label mb-0 me-2">ID:</label>
+			    <input type="text" class="form-control" id="memID" placeholder="Enter ID" name="memID">
+			  </div>
+			  <div class="col-auto d-flex align-items-center">
+			    <label for="memPwd" class="form-label mb-0 me-2">Password:</label>
+			    <input type="password" class="form-control" id="memPwd" placeholder="Enter password" name="memPwd">
+			  </div>
+				<div class="col-auto d-flex align-items-center">
+				  <button type="submit" class="btn btn-sm btn-primary">로그인</button>
+				</div>
+			</div>
 		</form>
+  </c:if>
+  <c:if test="${!empty loginM}">
+		<form action="${contextPath }/login/logoutProcess" method="post">
+			<div class="row float-end">
+			  <div class="col-auto d-flex align-items-center">
+			    <label>${loginM.memName }님 방문을 환영합니다</label>
+			  </div>
+				<div class="col-auto d-flex align-items-center">
+				  <button type="submit" class="btn btn-sm btn-primary">로그아웃</button>
+				</div>
+			</div>
+		</form>
+  </c:if>
   </div>
   <div class="card-body">
   	

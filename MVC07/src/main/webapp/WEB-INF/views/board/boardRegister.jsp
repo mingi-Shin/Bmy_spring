@@ -25,7 +25,7 @@
   <div class="card-header">Board</div>
   <div class="card-body">
   	<form action="${contextPath }/board/register" method="post" class="was-validated">
-  	
+  		<input type="hidden" name="memID" value="${loginM.memID }" >
   		<div class="mb-3 mt-3" >
   			<label class="form-label" for="title">제목: </label>
   			<input class="form-control" id="title" name="title" placeholder="Title" type="text" required>
@@ -40,7 +40,7 @@
   		</div>
   		<div class="mb-3 mt-3">
   			<label class="form-label" for="writer">작성자: </label>
-  			<input class="form-control" id="wrtier" name="writer" placeholder="Writer" type="text">
+  			<input class="form-control" id="wrtier" name="writer" type="text" value="${loginM.memName }" readonly>
   		</div>
   		<div class="float-end">
 	  		<!--  <button type="submit" class="btn btn-primary" disabled>Submit</button> -->

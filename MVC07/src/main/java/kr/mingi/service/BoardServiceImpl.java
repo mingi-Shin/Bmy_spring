@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.mingi.entity.Board;
+import kr.mingi.entity.Member;
 import kr.mingi.mapper.BoardMapper;
 
 /**
@@ -35,6 +36,19 @@ public class BoardServiceImpl implements BoardService { // 구현(implementation
 	@Override
 	public void insertBoard(Board vo) {
 		boardMapper.insertBoard(vo);
+	}
+
+
+	@Override
+	public Member login(Member vo) {
+		Member member = boardMapper.login(vo);
+		return member;
+	}
+
+
+	@Override
+	public void register(Board vo) {
+		boardMapper.insertSelectKey(vo);
 	} 
 
 	
