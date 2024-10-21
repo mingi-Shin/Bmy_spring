@@ -71,6 +71,21 @@
 	  		<th>작성자</th>
 	  		<td>${vo.writer }</td>
   		</tr>
+  		<tr>
+  			<td>
+  				<c:if test="${!empty loginM && loginM.memID eq vo.memID }">
+  					<button type="submit" class="btn btn-sm btn-primary">수 정</button> <!-- 이거 버튼 수정페이지나.. ajax로  -->
+  					<button type="submit" class="btn btn-sm btn-primary">답 글</button> 
+  					<button type="button" class="btn btn-sm btn-warning" onclick="location.href='${contextPath}/board/remove?boardIdx=${vo.boardIdx }'">삭 제</button>
+  				</c:if>
+  				<c:if test="${empty loginM || loginM.memID ne vo.memID }">
+  					<button type="submit" class="btn btn-sm btn-primary" disabled>수 정</button>
+  					<button type="submit" class="btn btn-sm btn-primary">답 글</button> 
+  					<button type="button" class="btn btn-sm btn-warning" onclick="location.href='${contextPath}/board/remove?boardIdx=${vo.boardIdx }'" disabled>삭 제</button>
+  				</c:if>
+  				<button type="button" class="btn btn-sm btn-info" onclick="location.href='${contextPath}/board/list'">목록으로</button>
+  			</td>
+  		</tr>
   	</table>
   </div>
   <div class="card-footer">스프2_(답변게시판)</div>
