@@ -10,7 +10,7 @@
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig"> <!-- HikariConfig.class 의 qualified name 복붙 -->
 		<!-- property 설정은 setter 주입방법 -->
 		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/my_PostgreDB"></property>				
+		<property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/smgSpringDB"></property>				
 		<property name="username" value="shinmingi" />
 		<property name="password" value="4260" />
 	</bean>

@@ -75,9 +75,6 @@ public class MemberController {
 	
 	@RequestMapping("/memRegister.do")
 	public String memRegister(Member m, String memPassword1, String memPassword2, RedirectAttributes rttr, HttpSession session) {
-		System.out.println("member: " + m);
-		System.out.println("memPassword1: " + memPassword1);
-		System.out.println("memPassword2: " + memPassword2);
 		// 회원가입 실패 (서버 사이드 검증) 
 		if(m.getMemID() == null || m.getMemID().equals("") || 
 			

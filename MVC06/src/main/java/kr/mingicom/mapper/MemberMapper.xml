@@ -43,6 +43,8 @@
 		<result property="auth" column="auth"/>
 	</resultMap>
 		
+		
+		
 	<select id="getTheMember" resultMap="memberMap">
 		SELECT * FROM mem_stbl mem LEFT OUTER JOIN mem_auth auth 
 		ON mem.memID = auth.memID WHERE mem.memID = #{memID}

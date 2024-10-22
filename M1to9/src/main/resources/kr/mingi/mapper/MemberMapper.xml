@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.mingi.mapper.MemberMapper">
+	
+	<!-- 회원가입: selectKey => 동시성문제 해결 -->
+	<insert id="insertMember" parameterType="kr.mingi.entity.Member">
+		<selectKey keyProperty="memIdx" resultType="kr.mingi.entity.Member" order="BEFORE">
+			SELECT COALESCE(MAX(memIdx)+1, 1) AS memIdx FROM smgMember		
+		</selectKey>
+		INSERT INTO smgMember (memIdx, memID, memPwd, memName, memPhone, memEmail, is_active, memAddr, latitude, longitude)
+			VALUES (#{memIdx}, #{memID}, #{memPwd}, #{memName}, #{memPhone}, #{memEmail}, true, #{memAddr}, #{latitude},#{longitude}  )
+	</insert>
+	
+	<!-- Auth등록 -->
+	<insert id="insertAuth" parameterType="kr.mingi.entity.AuthVO">
+		INSERT INTO smgAuth (memID, auth) VALUES(#{memID}, #{auth})
+	</insert>
+	
+	<!-- 로그인: Member와 Auth 둘다 가져오기 => resultMap, collection -->
+	<select id="login" resultMap="memberMap">
+		SELECT * FROM smgMember member LEFT OUTER JOIN smgAuth auth
+			ON member.memID = auth.memID WHERE member.memID = #{username} <!-- security에서 username던짐 -->
+	</select>
+	<resultMap type="kr.mingi.entity.AuthVO" id="authMap">
+		<id property="num" column="num"/>
+		<result property="memID" column="memID"/>
+		<result property="auth" column="auth"/>
+	</resultMap>
+	<resultMap type="kr.mingi.entity.Member" id="memberMap">
+		<id property="memIdx" column="memIdx"/>
+		<result property="memID" column="memID"/>
+		<result property="memPwd" column="memPwd"/>
+		<result property="memName" column="memName"/>
+		<result property="memPhone" column="memPhone"/>
+		<result property="memEmail" column="memEmail"/>
+		<result property="memProfile" column="memProfile"/>
+		<result property="is_active" column="is_active"/>
+		<result property="memAddr" column="memAddr"/>
+		<result property="latitude" column="latitude"/>
+		<result property="longitude" column="longitude"/>
+		<collection property="authList" resultMap="authMap"/>
+	</resultMap>
+
+	<!-- 아이디 중복검사 -->
+	<select id="checkDuplicate"  resultType="kr.mingi.entity.Member">
+		SELECT * FROM smgMember WHERE memID = #{memID}
+	</select>
+	
+</mapper>

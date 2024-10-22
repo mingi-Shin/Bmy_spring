@@ -1,16 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
-<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request" /> 
-<!-- scope: request > page(기본값), 다른 페이지에서 var사용가능 -->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>   
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>    
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="application" /> 
+<!-- scope: application > page(기본값), 다른 페이지에서 var사용가능 -->
 
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal }" />
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities }" />
 
 <script>
-
-	//로그아웃: post -> SecurityConfig.java와 매핑 
+	//로그아웃 = 시큐리티: post -> SecurityConfig.java와 매핑 
 	let csrfHeaderName = "${_csrf.headerName}";
 	let csrfTokenValue = "${_csrf.token}";
 	let name = "${mvo.member.memName}";
@@ -28,12 +29,12 @@
 			error: function(){ alert("error");}
 		});
 	}
-	
+
 </script>
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">MVC06</a>
+    <a class="navbar-brand" href="${contextPath}/">M01TOM09</a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
       <span class="navbar-toggler-icon"></span>
@@ -45,17 +46,17 @@
           <a class="nav-link" href="${contextPath}/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="${contextPath}/boardMain.do">게시판</a>
+          <a class="nav-link" href="${contextPath}/boardMain.do">동기식 게시판1</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+          <a class="nav-link" href="#">비동기식 게시판2</a>
         </li>  
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">고객센터</a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="${contextPath}/getMemberList.do">멤버 조회(admin)</a></li>
-            <li><a class="dropdown-item" href="${contextPath}/showDescription.do">MVC04 설명보드</a></li>
-            <li><a class="dropdown-item" href="#">A third link</a></li>
+            <li><a class="dropdown-item" href="${contextPath}/getMemberList.do">멤버 조회(only ADMIN)</a></li>
+            <li><a class="dropdown-item" href="${contextPath}/showDescription.do">주인장의 설명보드</a></li>
+            <li><a class="dropdown-item" href="#">미 정</a></li>
           </ul>
         </li>
       </ul>
@@ -75,27 +76,27 @@
 					<img alt="회원 이미지" src="${contextPath }/resources/upload/${mvo.member.memProfile}" style="width: 50px; height: 50px;" class="rounded-circle"> 
 				</c:if>
 			</security:authorize>
-			
+		
       <security:authorize access="isAnonymous()" >
 	      <ul class="navbar-nav navbar-right">
 	      	<li class="nav-item dropdown">
 	          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">접속</a>
 	          <ul class="dropdown-menu dropdown-menu-end">
 	            <li><a class="dropdown-item" href="${contextPath}/member/memLoginForm.do">로그인</a></li>
-	            <li><a class="dropdown-item" href="${contextPath}/member/memJoin.do">회원가입</a></li>
+	            <li><a class="dropdown-item" href="${contextPath}/member/register">회원가입</a></li>
 	          </ul>
 	        </li>
 	      </ul>
 			</security:authorize>
-
+			
 			<security:authorize access="isAuthenticated()">
 	      <ul class="navbar-nav navbar-right">
 	      	<li class="nav-item dropdown">
-	          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">${mvo.member.memName }(
-							<security:authorize access="hasRole('ROLE_READER')">삐약삐약</security:authorize>
-							<security:authorize access="hasRole('ROLE_WRITER')">꼬꼬닭</security:authorize>
-							<security:authorize access="hasRole('ROLE_MANAGER')">사육사</security:authorize>
-							<security:authorize access="hasRole('ROLE_ADMIN')">농장주</security:authorize>
+	          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">${princ.member.memName }(
+							<security:authorize access="hasRole('ROLE_READ_ESPA')">삐약</security:authorize>
+							<security:authorize access="hasRole('ROLE_WRITE_ESPA')">꾸와악</security:authorize>
+							<security:authorize access="hasRole('ROLE_MANAGER')">매니저</security:authorize>
+							<security:authorize access="hasRole('ROLE_ADMIN')">관리자</security:authorize>
 	          )</a>
 	          <ul class="dropdown-menu dropdown-menu-end">
 	            <li><a class="dropdown-item" href="${contextPath}/member/memUpdateForm.do">회원정보수정</a></li>
