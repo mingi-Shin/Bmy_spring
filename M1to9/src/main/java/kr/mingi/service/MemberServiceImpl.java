@@ -11,6 +11,7 @@ import kr.mingi.entity.AuthVO;
 import kr.mingi.entity.Member;
 import kr.mingi.mapper.MemberMapper;
 import kr.mingi.security.MemberUserDetailsService;
+import lombok.extern.log4j.Log4j;
 
 /**
  * 기존의 방법 (= controller에서 mapper를 Autowired하여 로직을 구성했단 방법)
@@ -19,7 +20,7 @@ import kr.mingi.security.MemberUserDetailsService;
  *	
  *	보통 구현 순서: DB-> Mapper, XML -> Service, SErviceImpl -> Controller -> jsp 
  * */
-
+@Log4j
 @Service
 public class MemberServiceImpl implements MemberService {
 
@@ -36,7 +37,8 @@ public class MemberServiceImpl implements MemberService {
         try {
             validateUserInput(vo); // 입력값 검증
         } catch (IllegalArgumentException e) {
-            rttr.addFlashAttribute("errorMessage", e.getMessage());
+        	e.printStackTrace();
+            rttr.addFlashAttribute("msgBody", e.getMessage());
             return false;  // 예외 발생 시 다음 단계 진행하지 않도록 false 리턴
         }
 
@@ -44,7 +46,8 @@ public class MemberServiceImpl implements MemberService {
         try {
             checkDuplicate(vo);
         } catch (IllegalArgumentException e) {
-            rttr.addFlashAttribute("errorMessage", e.getMessage());
+        	e.printStackTrace();
+            rttr.addFlashAttribute("msgBody", e.getMessage());
             return false;
         }
 
@@ -53,7 +56,7 @@ public class MemberServiceImpl implements MemberService {
             String encryptedPw = pwEncoder.encode(vo.getMemPwd());
             vo.setMemPwd(encryptedPw);
         } else {
-            rttr.addFlashAttribute("errorMessage", "비밀번호가 유효하지 않습니다.");
+            rttr.addFlashAttribute("msgBody", "비밀번호가 유효하지 않습니다.");
             return false;
         }
 
@@ -61,7 +64,8 @@ public class MemberServiceImpl implements MemberService {
         try {
             memMapper.insertMember(vo);
         } catch (Exception e) {
-            rttr.addFlashAttribute("errorMessage", "회원 저장 중 문제가 발생했습니다.");
+        	e.printStackTrace();
+            rttr.addFlashAttribute("msgBody", "회원 저장 중 문제가 발생했습니다.");
             return false;  // 예외 발생 시 false 리턴
         }
 
@@ -77,11 +81,13 @@ public class MemberServiceImpl implements MemberService {
                 }
             }
         } catch (Exception e) {
-            rttr.addFlashAttribute("errorMessage", "권한 저장 중 문제가 발생했습니다.");
+        	e.printStackTrace();
+            rttr.addFlashAttribute("msgBody", "권한 저장 중 문제가 발생했습니다.");
             return false;  // 예외 발생 시 false 리턴
         }
-
-        return true;  // 성공 시 true 리턴
+        rttr.addFlashAttribute("msgBody", "회원가입이 완료되었습니다.");
+        log.info(vo);
+        return true;  // 성공 시 true 리턴 == 1 
     }
 
     // 회원가입 - 입력 값 검증 로직
@@ -90,7 +96,6 @@ public class MemberServiceImpl implements MemberService {
             vo.getMemPwd() == null || vo.getMemPwd().trim().isEmpty() ||
             (vo.getMemPwd().length() < 6 || vo.getMemPwd().length() > 12) ||
             vo.getMemName() == null || vo.getMemName().trim().isEmpty() ||
-            vo.getMemPhone() == null || vo.getMemPhone().trim().isEmpty() ||
             vo.getAuthList().isEmpty()) {
             throw new IllegalArgumentException("입력값을 확인해 주세요.");
         }
@@ -98,9 +103,17 @@ public class MemberServiceImpl implements MemberService {
 
     // 아이디 중복검사
     private void checkDuplicate(Member vo) {
-        Member result = memMapper.checkDuplicate(vo.getMemID());
-        if (result.getMemID() != null) {
+        int result = memMapper.checkDuplicate(vo.getMemID());
+        if (result > 0) {
             throw new IllegalArgumentException("이미 사용 중인 아이디입니다.");
         }
     }
+
+	@Override
+	public int checkDuplicate(String memID) {
+		int isDuplicate = memMapper.checkDuplicate(memID);
+		return isDuplicate > 0 ? 1 : 0;   //중복:1, 아님:0 
+	}
+    
+    
 }

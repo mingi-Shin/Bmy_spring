@@ -7,8 +7,8 @@
 		<selectKey keyProperty="memIdx" resultType="kr.mingi.entity.Member" order="BEFORE">
 			SELECT COALESCE(MAX(memIdx)+1, 1) AS memIdx FROM smgMember		
 		</selectKey>
-		INSERT INTO smgMember (memIdx, memID, memPwd, memName, memPhone, memEmail, is_active, memAddr, latitude, longitude)
-			VALUES (#{memIdx}, #{memID}, #{memPwd}, #{memName}, #{memPhone}, #{memEmail}, true, #{memAddr}, #{latitude},#{longitude}  )
+		INSERT INTO smgMember (memIdx, memID, memPwd, memName, memEmail, is_active, memAddr, latitude, longitude)
+			VALUES (#{memIdx}, #{memID}, #{memPwd}, #{memName}, #{memEmail}, true, #{memAddr}, #{latitude},#{longitude}  )
 	</insert>
 	
 	<!-- Auth등록 -->
@@ -31,7 +31,6 @@
 		<result property="memID" column="memID"/>
 		<result property="memPwd" column="memPwd"/>
 		<result property="memName" column="memName"/>
-		<result property="memPhone" column="memPhone"/>
 		<result property="memEmail" column="memEmail"/>
 		<result property="memProfile" column="memProfile"/>
 		<result property="is_active" column="is_active"/>
@@ -42,8 +41,8 @@
 	</resultMap>
 
 	<!-- 아이디 중복검사 -->
-	<select id="checkDuplicate"  resultType="kr.mingi.entity.Member">
-		SELECT * FROM smgMember WHERE memID = #{memID}
+	<select id="checkDuplicate"  resultType="int">
+		SELECT COUNT(*) FROM smgMember WHERE memID = #{memID}
 	</select>
 	
 </mapper>

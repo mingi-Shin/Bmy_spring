@@ -188,13 +188,13 @@
 			    <div class="modal-content">
 			      <!-- Modal Header -->
 			      <div class="modal-header">
-			        <h4 class="modal-title">${msgType }</h4>
+			        <h4 class="modal-title">${msgTitle }</h4>
 			        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 			      </div>
 			
 			      <!-- Modal body -->
 			      <div class="modal-body">
-			       	<p>${msg }</p>
+			       	<p>${msgBody }</p>
 			      </div>
 			
 			      <!-- Modal footer -->

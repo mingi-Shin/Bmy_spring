@@ -17,6 +17,8 @@ CREATE TABLE smgBoard(
 	CONSTRAINT fk_member_board FOREIGN KEY (memID) REFERENCES smgMember(memID)
 );
 
+
+
 SELECT * FROM smgBoard;
 --SELECT IFNULL(MAX(boardIdx)+1, 1) FROM tblBoard; --> MySql 방식 
 SELECT COALESCE(MAX(boardIdx)+1, 1) FROM tblBoard; --postgresql 방식 
@@ -32,7 +34,6 @@ CREATE TABLE smgMember(
 	memID VARCHAR(50) NOT NULL UNIQUE,
 	memPwd VARCHAR(50) NOT NULL,
 	memName VARCHAR(50) NOT NULL,
-	memPhone VARCHAR(50) NOT NULL,
 	memEmail VARCHAR(50) DEFAULT NULL,
 	memProfile VARCHAR(300) DEFAULT NULL,
 	is_active BOOLEAN DEFAULT TRUE,
@@ -44,6 +45,7 @@ CREATE TABLE smgMember(
 
 SELECT * FROM smgMember;
 
+ALTER TABLE smgMember ALTER COLUMN memPwd TYPE VARCHAR(200), ALTER COLUMN memPwd SET NOT NULL;
 ------ authVO -----------
 
 CREATE TABLE smgAuth(

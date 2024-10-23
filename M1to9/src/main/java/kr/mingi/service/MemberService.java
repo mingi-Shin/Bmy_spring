@@ -8,4 +8,6 @@ public interface MemberService {
 
 	public boolean register(Member vo, RedirectAttributes rttr); 
 	
+	public int checkDuplicate(String memID); 
+	
 }

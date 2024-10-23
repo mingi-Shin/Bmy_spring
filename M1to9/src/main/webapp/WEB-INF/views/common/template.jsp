@@ -20,7 +20,7 @@
 <body>
 
 <div class="container">
-	<jsp:include page="../common/header.jsp"></jsp:include>
+	<jsp:include page="../common/header.jsp" />
 
   <h1>Spring MVC01 to MVC09</h1>
   <div class="card">
@@ -32,7 +32,32 @@
     </div>
     <div class="card-footer">card foot</div>
   </div>
+  
+	<div class="modal fade" id="myMessage" role="dialog">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <!-- Modal Header -->
+	      <div class="modal-header">
+	        <h4 class="modal-title">${msgTitle }</h4>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+	      </div>
+	
+	      <!-- Modal body -->
+	      <div class="modal-body">
+	       	<p>${msgBody }</p>
+	      </div>
+	
+	      <!-- Modal footer -->
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+	      </div>
+	
+	    </div>
+	  </div>
+	</div>
+  
 </div>
+
 
 </body>
 </html>

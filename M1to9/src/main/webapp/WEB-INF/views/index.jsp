@@ -13,11 +13,12 @@
   
   <script type="text/javascript">
   	$(document).ready(function(){
-  	  if(${!empty welcome}){
+  	  if(${!empty msgBody}){
 			$("#myMessage").modal("show"); //회원가입 축하 모달
-		  }
-  		
+
+  	  }
   	});
+  	
   </script>
 </head>
 <body>
@@ -75,13 +76,13 @@
     <div class="modal-content">
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">${msgType }</h4>
+        <h4 class="modal-title">${msgTitle }</h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
       <!-- Modal body -->
       <div class="modal-body">
-       	<p>${welcome }</p>
+       	<p>${msgBody }</p>
       </div>
 
       <!-- Modal footer -->

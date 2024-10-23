@@ -1,4 +1,4 @@
-package com.mingi.mapper;
+package kr.mingi.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,6 @@ public class MemberTest {
 		vo.setMemID("ningning");
 		vo.setMemPwd("ssy917");
 		vo.setMemName("닝닝");
-		vo.setMemPhone("010-4444-4444");
 		vo.setMemEmail("ningning@gmail.com");
 		vo.setMemAddr("서울시");
 		vo.setLatitude(0);
@@ -59,13 +58,13 @@ public class MemberTest {
 	}
 	
 	
-	//@Test
+	@Test
 	public void checkDuplicateMemID() {
-		Member vo = memMapper.checkDuplicate("winter");
+		int vo = memMapper.checkDuplicate("karina");
 		log.info(vo);
 	}
 	
-	@Test
+	//@Test
 	public void login() {
 		Member vo = memMapper.login("winter");
 		log.info(vo);

@@ -83,7 +83,7 @@
 	          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">접속</a>
 	          <ul class="dropdown-menu dropdown-menu-end">
 	            <li><a class="dropdown-item" href="${contextPath}/member/memLoginForm.do">로그인</a></li>
-	            <li><a class="dropdown-item" href="${contextPath}/member/register">회원가입</a></li>
+	            <li><a class="dropdown-item" href="${contextPath}/member/memRegister.do">회원가입</a></li>
 	          </ul>
 	        </li>
 	      </ul>
@@ -92,9 +92,9 @@
 			<security:authorize access="isAuthenticated()">
 	      <ul class="navbar-nav navbar-right">
 	      	<li class="nav-item dropdown">
-	          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">${princ.member.memName }(
-							<security:authorize access="hasRole('ROLE_READ_ESPA')">삐약</security:authorize>
-							<security:authorize access="hasRole('ROLE_WRITE_ESPA')">꾸와악</security:authorize>
+	          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">${mvo.member.memName }(
+							<security:authorize access="hasRole('ROLE_READ')">읽기</security:authorize>
+							<security:authorize access="hasRole('ROLE_WRITE')">쓰기</security:authorize>
 							<security:authorize access="hasRole('ROLE_MANAGER')">매니저</security:authorize>
 							<security:authorize access="hasRole('ROLE_ADMIN')">관리자</security:authorize>
 	          )</a>
