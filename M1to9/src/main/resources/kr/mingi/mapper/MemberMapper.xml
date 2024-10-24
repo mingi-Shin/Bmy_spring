@@ -16,16 +16,12 @@
 		INSERT INTO smgAuth (memID, auth) VALUES(#{memID}, #{auth})
 	</insert>
 	
+	
 	<!-- 로그인: Member와 Auth 둘다 가져오기 => resultMap, collection -->
 	<select id="login" resultMap="memberMap">
 		SELECT * FROM smgMember member LEFT OUTER JOIN smgAuth auth
 			ON member.memID = auth.memID WHERE member.memID = #{username} <!-- security에서 username던짐 -->
 	</select>
-	<resultMap type="kr.mingi.entity.AuthVO" id="authMap">
-		<id property="num" column="num"/>
-		<result property="memID" column="memID"/>
-		<result property="auth" column="auth"/>
-	</resultMap>
 	<resultMap type="kr.mingi.entity.Member" id="memberMap">
 		<id property="memIdx" column="memIdx"/>
 		<result property="memID" column="memID"/>
@@ -40,9 +36,21 @@
 		<collection property="authList" resultMap="authMap"/>
 	</resultMap>
 
+	<resultMap type="kr.mingi.entity.AuthVO" id="authMap">
+		<id property="num" column="num"/>
+		<result property="memID" column="memID"/>
+		<result property="auth" column="auth"/>
+	</resultMap>
+	
+	
 	<!-- 아이디 중복검사 -->
 	<select id="checkDuplicate"  resultType="int">
 		SELECT COUNT(*) FROM smgMember WHERE memID = #{memID}
 	</select>
+
+	<!-- 프로필 사진 업데이트 -->
+	<update id="updateMemImage" parameterType="kr.mingi.entity.Member">
+		UPDATE smgMember SET memProfile = #{memProfile} WHERE memID = #{memID}
+	</update>
 	
 </mapper>

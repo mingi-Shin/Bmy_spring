@@ -15,5 +15,6 @@ public interface MemberMapper {
 	
 	public Member login(String username);
     
+	public int updateMemImage(Member vo);
      
 }

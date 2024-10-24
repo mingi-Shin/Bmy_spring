@@ -58,7 +58,7 @@ public class MemberTest {
 	}
 	
 	
-	@Test
+	//@Test
 	public void checkDuplicateMemID() {
 		int vo = memMapper.checkDuplicate("karina");
 		log.info(vo);
@@ -67,6 +67,14 @@ public class MemberTest {
 	//@Test
 	public void login() {
 		Member vo = memMapper.login("winter");
+		log.info(vo);
+	}
+	
+	@Test
+	public void updateProfile() {
+		Member vo = memMapper.login("winter");
+		vo.setMemProfile("newTestProfile");
+		memMapper.updateMemImage(vo);
 		log.info(vo);
 	}
 	

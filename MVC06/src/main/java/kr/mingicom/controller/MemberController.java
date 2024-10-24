@@ -255,10 +255,10 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/memImageUpdate.do")
-	public String memImageUpdate(HttpServletRequest request, HttpServletResponse response, RedirectAttributes rttr, HttpSession session) throws IOException {
+	public String memImageUpdate(HttpServletRequest request, RedirectAttributes rttr) throws IOException {
 	    MultipartRequest multi = null; 
 	    int fileMaxSize = 10 * 1024 * 1024; // 10MB
-	    String savePath = request.getRealPath("resources/upload"); 
+	    String savePath = request.getServletContext().getRealPath("resources/upload"); 
 	    System.out.println(savePath); 
 	    
 	    try {

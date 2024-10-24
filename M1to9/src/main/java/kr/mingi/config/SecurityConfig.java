@@ -55,21 +55,24 @@ public class SecurityConfig {
 		
 		//요청에 따른 권한을 확인하여 서비스 호출||제한 
 		http
-			.authorizeRequests() //어플리케이션의 각 요청에 대해 접근 권한을 설정 
-				.antMatchers("/").permitAll() //root는 특별한 권한없이 모두 허용 
-				.antMatchers("/getMemberList.do").hasRole("ADMIN")
-				.antMatchers("/boardMain.do").authenticated()
-				.and()
-			.formLogin()
-				.loginPage("/member/memLoginForm.do") //맵핑 주의! 
-				.loginProcessingUrl("/memLogin.do") //mvc06 추가: 인증처리필터 호출 
-				.permitAll() //쓰지 않으면 기본값으로 접근제한..  
-				.and()
-			.logout()
-				.invalidateHttpSession(true)
-				.logoutSuccessUrl("/")
-				.and()
-			.exceptionHandling().accessDeniedPage("/access-denied");
+	        .authorizeRequests()
+		        .anyRequest().permitAll() // 모든 요청을 허용
+		        .and()
+		    .formLogin()
+		        .loginPage("/member/memLoginForm.do")
+		        .loginProcessingUrl("/memLogin.do")
+		        .failureUrl("/member/memLoginForm.do?error=true")
+		        .permitAll()
+		        .and()
+		    .logout()
+		        .invalidateHttpSession(true)
+		        .logoutSuccessUrl("/")
+		        .and()
+		    .exceptionHandling()
+		        .accessDeniedPage("/m019/access-denied")
+		        .and()
+		    .csrf().disable(); // CSRF 보호를 비활성화할 경우, 필요에 따라 설정
+				
 		
 		return http.build(); // 새로운 방식으로 SecurityFilterChain을 빌드하여 반환
 	}
@@ -87,3 +90,9 @@ public class SecurityConfig {
 	- @EnableWebSecurity는 스프링MVC와 스프링 시큐리티를 결합하는 클래스이다.
 	- configure() 메서드를 Override하고 관련 설정을 한다.
  * */
+/**
+  	시큐리티로 로그인/로그아웃을 처리하면
+  	mapper까지 기입 안해도 된다. 
+  	mapper에 기입할땐 커스텀인증을 내가 직접 만들때이다. 
+ */
+

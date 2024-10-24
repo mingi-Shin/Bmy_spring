@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Image Upload Form</title>
+	<title>Login Form</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -22,7 +22,7 @@
 		$(document).ready(function(){
 			
 			//로그인 오류시 실패 모달창show
-		  if(${!empty msgBody}){
+		  if(${!empty msgType}){
 			  $("#myMessage").modal("show"); 
 		  }
 			  
@@ -35,12 +35,12 @@
 
 <div class="container">
   <jsp:include page="../common/header.jsp"></jsp:include>
-  <h2>이미지 업로드</h2>
+  <h2>Login Form</h2>
   <div class="card card-default">
 
-    <div class="card-header"> 이미지 업로드 </div>
+    <div class="card-header"> 로그인 화면 </div>
     <div class="card-body" >
-    	<form  method="post" action="${contextPath }/member/updateMemImage.do"  enctype="multipart/form-data">  <!-- enctype에 주의!! -->
+    	<form  method="post" action="${contextPath }/member/memImageUpdate.do?${_csrf.parameterName}=${_csrf.token}"  enctype="multipart/form-data">  <!-- enctype에 주의!! -->
     		<table class="table table-bordered" style="width:100%; text-align: center; border: 1px solid #dddddd; ">
     			<tr>
     				<th style="width: 110px; vertical-align: middle;">아이디</th>
@@ -63,7 +63,6 @@
 	    			</td>
 	    		</tr>
     		</table>
- 		    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }"> 
     	</form>
     </div>
     
@@ -79,7 +78,7 @@
 		
 		      <!-- Modal body -->
 		      <div class="modal-body">
-		       	<p>${msgBody }</p>
+		       	<p>${welcome }</p>
 		      </div>
 		
 		      <!-- Modal footer -->

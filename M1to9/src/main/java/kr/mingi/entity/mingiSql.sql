@@ -35,7 +35,7 @@ CREATE TABLE smgMember(
 	memPwd VARCHAR(50) NOT NULL,
 	memName VARCHAR(50) NOT NULL,
 	memEmail VARCHAR(50) DEFAULT NULL,
-	memProfile VARCHAR(300) DEFAULT NULL,
+	memProfile VARCHAR(300) DEFAULT 'default_profile.png' NOT NULL,
 	is_active BOOLEAN DEFAULT TRUE,
 	memAddr VARCHAR(100) DEFAULT NULL,
 	latitude DECIMAL (13,10), --위도 
@@ -44,17 +44,23 @@ CREATE TABLE smgMember(
 );
 
 SELECT * FROM smgMember;
+DELETE FROM smgMember WHERE memID = 'ningning';
 
 ALTER TABLE smgMember ALTER COLUMN memPwd TYPE VARCHAR(200), ALTER COLUMN memPwd SET NOT NULL;
+ALTER TABLE smgMember ALTER COLUMN memProfile TYPE VARCHAR(300), ALTER COLUMN memProfile SET DEFAULT 'default_profile.png';
+
 ------ authVO -----------
 
 CREATE TABLE smgAuth(
 	num SERIAL PRIMARY KEY NOT NULL,
 	memID VARCHAR(50) NOT NULL,
-	auth VARCHAR(50) NOT NULL,
+	auth VARCHAR(50) DEFAULT 'ROLE_READ' NOT NULL,
 	CONSTRAINT fk_smgAuth FOREIGN KEY (memID) REFERENCES smgMember(memID)
 );
 
+UPDATE smgAuth SET auth = 'ROLE_MANAGER' WHERE memID = 'ningning';
+DELETE FROM smgAuth WHERE memID = 'ningning';
+INSERT INTO smgAuth VALUES (DEFAULT, 'ningning', 'ROLE_MANAGER');
 
 -- 임시 데이터 주입 ------------------------------------------------------------------------------------------
 INSERT INTO smgMember
