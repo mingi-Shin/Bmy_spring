@@ -47,9 +47,8 @@
 	   			<c:if test="${!empty memberList }">
 						<c:forEach var="vo" items="${memberList }">
 							<tr>
-								<td>${vo.memIdx }, ${vo.memID }</td>
+								<td>${vo.memID }</td>
 								<td>${vo.memName }</td>
-								<td>${vo.memGender }</td>
 								<td>${vo.memEmail }</td>
 								<td>
 									<input type="checkbox" id="'${vo.memIdx }'-roleReader" name="" 

@@ -23,7 +23,7 @@ SELECT * FROM smgBoard;
 --SELECT IFNULL(MAX(boardIdx)+1, 1) FROM tblBoard; --> MySql 방식 
 SELECT COALESCE(MAX(boardIdx)+1, 1) FROM tblBoard; --postgresql 방식 
  
-TRUNCATE TABLE tblBoard; --TURNCATE : 자르기
+TRUNCATE TABLE smgMember; --TURNCATE : 자르기
 DELETE FROM tblBoard WHERE memID NOT IN (SELECT memID FROM smgMember);
 
 -----------------------------------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ DELETE FROM tblBoard WHERE memID NOT IN (SELECT memID FROM smgMember);
 CREATE TABLE smgMember(
 	memIdx INT NOT NULL ,
 	memID VARCHAR(50) NOT NULL UNIQUE,
-	memPwd VARCHAR(50) NOT NULL,
+	memPwd VARCHAR(200) NOT NULL,
 	memName VARCHAR(50) NOT NULL,
 	memEmail VARCHAR(50) DEFAULT NULL,
 	memProfile VARCHAR(300) DEFAULT 'default_profile.png' NOT NULL,
@@ -59,8 +59,7 @@ CREATE TABLE smgAuth(
 );
 
 UPDATE smgAuth SET auth = 'ROLE_MANAGER' WHERE memID = 'ningning';
-DELETE FROM smgAuth WHERE memID = 'ningning';
-INSERT INTO smgAuth VALUES (DEFAULT, 'ningning', 'ROLE_MANAGER');
+INSERT INTO smgAuth VALUES (DEFAULT, 'winter', 'ROLE_WRITE');
 
 -- 임시 데이터 주입 ------------------------------------------------------------------------------------------
 INSERT INTO smgMember

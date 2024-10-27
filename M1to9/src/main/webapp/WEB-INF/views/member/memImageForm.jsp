@@ -40,7 +40,7 @@
 
     <div class="card-header"> 이미지 업로드 </div>
     <div class="card-body" >
-    	<form  method="post" action="${contextPath }/member/updateMemImage.do"  enctype="multipart/form-data">  <!-- enctype에 주의!! -->
+    	<form  method="post" action="${contextPath }/member/updateMemImage.do?${_csrf.parameterName}=${_csrf.token}"  enctype="multipart/form-data">  <!-- enctype에 주의!! -->
     		<table class="table table-bordered" style="width:100%; text-align: center; border: 1px solid #dddddd; ">
     			<tr>
     				<th style="width: 110px; vertical-align: middle;">아이디</th>
@@ -63,7 +63,7 @@
 	    			</td>
 	    		</tr>
     		</table>
- 		    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }"> 
+    		<!--  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">  왜 enctype="multipart/form-data" 에서는 적용이 안되느걸까 -->
     	</form>
     </div>
     

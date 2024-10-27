@@ -11,11 +11,14 @@
 			VALUES (#{memIdx}, #{memID}, #{memPwd}, #{memName}, #{memEmail}, true, #{memAddr}, #{latitude},#{longitude}  )
 	</insert>
 	
-	<!-- Auth등록 -->
+	<!-- Auth 등록 -->
 	<insert id="insertAuth" parameterType="kr.mingi.entity.AuthVO">
 		INSERT INTO smgAuth (memID, auth) VALUES(#{memID}, #{auth})
 	</insert>
-	
+	<!-- Auth 삭제 -->
+	<delete id="deleteAuth" parameterType="string">
+		DELETE FROM smgAuth WHERE memID = #{memID}
+	</delete>
 	
 	<!-- 로그인: Member와 Auth 둘다 가져오기 => resultMap, collection -->
 	<select id="login" resultMap="memberMap">
@@ -52,5 +55,11 @@
 	<update id="updateMemImage" parameterType="kr.mingi.entity.Member">
 		UPDATE smgMember SET memProfile = #{memProfile} WHERE memID = #{memID}
 	</update>
+	
+	<!-- 회원정보 수정 -->
+	<update id="updateMemInfo" parameterType="kr.mingi.entity.Member">
+		UPDATE smgMember SET memPwd = #{memPwd}, memEmail = #{memEmail}, memAddr = #{memAddr} WHERE memID = #{memID}
+	</update>
+	
 	
 </mapper>

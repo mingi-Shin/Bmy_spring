@@ -70,10 +70,10 @@
       
 			<security:authorize access="isAuthenticated()">
 				<c:if test="${empty mvo.member.memProfile}" > <!-- null포함 -->
-					<img alt="기본이미지" src="${contextPath }/resources/images/defaultProfile.jpg" style="width: 50px; height: 50px;" class="rounded-circle"> 
+					<img alt="기본이미지" src="${contextPath }/resources/upload/default_profile.png" style="width: 50px; height: 50px;" class="rounded-circle"> 
 				</c:if>
 				<c:if test="${!empty mvo.member.memProfile}" >
-					<img alt="회원 이미지" src="${contextPath }/resources/uploadProfile/${mvo.member.memProfile}" style="width: 50px; height: 50px;" class="rounded-circle"> 
+					<img alt="회원 이미지" src="${contextPath }/resources/upload/${mvo.member.memProfile}" style="width: 50px; height: 50px;" class="rounded-circle"> 
 				</c:if>
 			</security:authorize>
 		

@@ -55,9 +55,13 @@ public class SecurityConfig {
 		
 		//요청에 따른 권한을 확인하여 서비스 호출||제한 
 		http
+			.csrf()
+				//.ignoringAntMatchers("/member/memUpdate.do") //업로드 요청에 대해서만 CSRF 예외 처리 -> 권장되지 않음 
+			.and()
 	        .authorizeRequests()
+	        	.antMatchers("/member/memImageForm.do").authenticated() //이미지업로드 페이지 접근제한
 		        .anyRequest().permitAll() // 모든 요청을 허용
-		        .and()
+	        .and()
 		    .formLogin()
 		        .loginPage("/member/memLoginForm.do")
 		        .loginProcessingUrl("/memLogin.do")
@@ -69,9 +73,9 @@ public class SecurityConfig {
 		        .logoutSuccessUrl("/")
 		        .and()
 		    .exceptionHandling()
-		        .accessDeniedPage("/m019/access-denied")
-		        .and()
-		    .csrf().disable(); // CSRF 보호를 비활성화할 경우, 필요에 따라 설정
+		        .accessDeniedPage("/m019/access-denied");
+	        //.and()
+		    //.csrf().disable(); // CSRF 보호를 비활성화할 경우, 필요에 따라 설정
 				
 		
 		return http.build(); // 새로운 방식으로 SecurityFilterChain을 빌드하여 반환

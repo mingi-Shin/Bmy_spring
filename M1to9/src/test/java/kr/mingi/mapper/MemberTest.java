@@ -1,5 +1,7 @@
 package kr.mingi.mapper;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,12 +72,24 @@ public class MemberTest {
 		log.info(vo);
 	}
 	
-	@Test
+	//@Test
 	public void updateProfile() {
 		Member vo = memMapper.login("winter");
 		vo.setMemProfile("newTestProfile");
 		memMapper.updateMemImage(vo);
 		log.info(vo);
 	}
+	
+	//@Test
+	public void updateMemInfo() {
+		Member vo = memMapper.login("winter");
+		vo.setMemPwd("ssy4260");
+		vo.setMemEmail("winter@espa.kr");
+		vo.setMemAddr("지구");
+		memMapper.updateMemInfo(vo);
+		log.info(vo);
+	}
+	
+	
 	
 }

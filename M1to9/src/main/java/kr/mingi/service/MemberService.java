@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -17,7 +18,9 @@ public interface MemberService {
 	
 	public int checkDuplicate(String memID); 
 	
-	void updateMemImage(HttpServletRequest request, RedirectAttributes rttr) throws IOException;
+	public void updateMemImage(HttpServletRequest request, RedirectAttributes rttr) throws IOException;
+	
+	public boolean updateMemInfo(Member vo, RedirectAttributes rttr);
 	
 	
 }

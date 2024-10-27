@@ -3,10 +3,12 @@ package kr.mingi.service;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -138,7 +140,7 @@ public class MemberServiceImpl implements MemberService {
 		// 매개변수 MultipartHttpServletRequest 받고 싶다면 MultipartResolver 설정 (Spring Bean)을 따로 해줘야 한다구요. 시부엉아 이것때문에 2시간을 날렸다고 
 	    MultipartRequest multi = null;  
 	    int fileMaxSize = 10 * 1024 * 1024; // 10MB
-	    String savePath = request.getServletContext().getRealPath("resources/uploadProfile"); 
+	    String savePath = request.getServletContext().getRealPath("resources/upload"); 
 	    
 	    try {
 	        multi = new MultipartRequest(request, savePath, fileMaxSize, "UTF-8", new DefaultFileRenamePolicy());
@@ -202,6 +204,54 @@ public class MemberServiceImpl implements MemberService {
             throw new IllegalArgumentException("File is empty");
         }
     }
+
+	@Override
+	public boolean updateMemInfo(Member vo, RedirectAttributes rttr) {
+		//입력값 검증 
+        try {
+            validateUserInput(vo); // 입력값 검증
+        } catch (IllegalArgumentException e) {
+        	e.printStackTrace();
+            rttr.addFlashAttribute("msgBody", e.getMessage());
+            return false;  // 예외 발생 시 다음 단계 진행하지 않도록 false 리턴
+        }
+        // 비밀번호 암호화
+        if (vo.getMemPwd() != null && !vo.getMemPwd().isEmpty()) {
+            String encryptedPw = pwEncoder.encode(vo.getMemPwd());
+            vo.setMemPwd(encryptedPw);
+        } else {
+            rttr.addFlashAttribute("msgBody", "비밀번호가 유효하지 않습니다.");
+            return false;
+        }
+        // 회원정보DB 수정 
+        try {
+            memMapper.updateMemInfo(vo);
+        } catch (Exception e) {
+        	e.printStackTrace();
+            rttr.addFlashAttribute("msgBody", "회원 수정 중 문제가 발생했습니다.");
+            return false;  // 예외 발생 시 false 리턴
+        }
+        // 권한DB 수정 (전부삭제후 다시 생성)
+        try {
+        	memMapper.deleteAuth(vo.getMemID());
+        	List<AuthVO> authList = vo.getAuthList();
+        	for(AuthVO auth : authList) {
+        		AuthVO authVO = new AuthVO();
+        		authVO.setMemID(vo.getMemID());
+        		authVO.setAuth(auth.getAuth());
+        		memMapper.insertAuth(authVO);
+        	}
+        } catch (Exception e) {
+        	e.printStackTrace();
+            rttr.addFlashAttribute("msgBody", "권한 저장 중 문제가 발생했습니다.");
+            return false;  // 예외 발생 시 false 리턴
+        }
+        rttr.addFlashAttribute("msgBody", "회원정보 수정이 완료되었습니다. 다시 로그인해주시기 바랍니다.");
+        
+        return true;
+	}
+	
+		
 
 
 	

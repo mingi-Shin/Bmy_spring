@@ -5,6 +5,10 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>   
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal }" />
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities }" />
     
 <!DOCTYPE html>
 <html>

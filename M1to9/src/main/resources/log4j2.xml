@@ -19,6 +19,12 @@
     <Root level="info"> <!-- 나머지 패키지들의 기본 로그 레벨 -->
         <AppenderRef ref="Console"/>
     </Root>
+    
+     <!-- Spring Security 로그 설정 -->
+    <logger name="org.springframework.security" level="DEBUG" />
+    <logger name="org.springframework.security.web.access.ExceptionTranslationFilter" level="DEBUG" />
+    <logger name="org.springframework.security.web.access.AccessDeniedHandlerImpl" level="DEBUG" />
+    <logger name="org.springframework.security.web.csrf.CsrfFilter" level="DEBUG" />
 	</Loggers>
 </Configuration>
 
