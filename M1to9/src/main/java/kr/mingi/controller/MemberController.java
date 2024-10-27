@@ -66,7 +66,6 @@ public class MemberController {
 		System.out.println("controller 실행 ");
        try {
             memberService.updateMemImage(request, rttr);
-    		System.out.println("controller 종료 ");
             return "redirect:/";
         } catch (Exception e) {
             e.printStackTrace();

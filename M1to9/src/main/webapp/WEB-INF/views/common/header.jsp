@@ -11,10 +11,12 @@
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities }" />
 
 <script>
+
 	//로그아웃 = 시큐리티: post -> SecurityConfig.java와 매핑 
 	let csrfHeaderName = "${_csrf.headerName}";
 	let csrfTokenValue = "${_csrf.token}";
 	let name = "${mvo.member.memName}";
+	
 	function logout(){
 		$.ajax({
 			url:"${contextPath}/logout",

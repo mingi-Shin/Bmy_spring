@@ -14,9 +14,8 @@ CREATE TABLE smgBoard(
 	boardLevel INT, --들여쓰기 속성 
 	boardAvailable INT, --원글이 삭제되었는지 여부 
 	PRIMARY KEY(boardIdx),
-	CONSTRAINT fk_member_board FOREIGN KEY (memID) REFERENCES smgMember(memID)
+	CONSTRAINT fk_member_board FOREIGN KEY (memID) REFERENCES smgMember(memID) ON DELETE CASCADE
 );
-
 
 
 SELECT * FROM smgBoard;
@@ -35,7 +34,7 @@ CREATE TABLE smgMember(
 	memPwd VARCHAR(200) NOT NULL,
 	memName VARCHAR(50) NOT NULL,
 	memEmail VARCHAR(50) DEFAULT NULL,
-	memProfile VARCHAR(300) DEFAULT 'default_profile.png' NOT NULL,
+	memProfile VARCHAR(300) DEFAULT 'defaultProfile.jpg' NOT NULL,
 	is_active BOOLEAN DEFAULT TRUE,
 	memAddr VARCHAR(100) DEFAULT NULL,
 	latitude DECIMAL (13,10), --위도 
@@ -55,7 +54,7 @@ CREATE TABLE smgAuth(
 	num SERIAL PRIMARY KEY NOT NULL,
 	memID VARCHAR(50) NOT NULL,
 	auth VARCHAR(50) DEFAULT 'ROLE_READ' NOT NULL,
-	CONSTRAINT fk_smgAuth FOREIGN KEY (memID) REFERENCES smgMember(memID)
+	CONSTRAINT fk_smgAuth FOREIGN KEY (memID) REFERENCES smgMember(memID) ON DELETE CASCADE
 );
 
 UPDATE smgAuth SET auth = 'ROLE_MANAGER' WHERE memID = 'ningning';
@@ -65,23 +64,9 @@ INSERT INTO smgAuth VALUES (DEFAULT, 'winter', 'ROLE_WRITE');
 INSERT INTO smgMember
 SELECT COALESCE(MAX(memIdx)+1, 1),'admin','ssy917','신민기','010-1111-1111'
 FROM smgMember;
-INSERT INTO smgMember
-SELECT COALESCE(MAX(memIdx)+1, 1),'winter','ssy917','윈터','010-2222-2222'
-FROM smgMember;
-INSERT INTO smgMember
-SELECT COALESCE(MAX(memIdx)+1, 1),'karina','ssy917','카리나','010-3333-3333'
-FROM smgMember;
 
 
 INSERT INTO smgBoard 
 SELECT COALESCE(MAX(BoardIdx)+1, 1), 'admin', 'testTitle01', 'testContent123', '신민기', NOW(), 0,
-COALESCE(MAX(boardGroup) +1, 0), 0, 0, 1
-FROM smgBoard;
-INSERT INTO smgBoard 
-SELECT COALESCE(MAX(BoardIdx)+1, 1), 'winter', 'testTitle02', 'testContent456', '윈터', NOW(), 0,
-COALESCE(MAX(boardGroup) +1, 0), 0, 0, 1
-FROM smgBoard;
-INSERT INTO smgBoard 
-SELECT COALESCE(MAX(BoardIdx)+1, 1), 'karina', 'testTitle03', 'testContent789', '카리나', NOW(), 0,
 COALESCE(MAX(boardGroup) +1, 0), 0, 0, 1
 FROM smgBoard;

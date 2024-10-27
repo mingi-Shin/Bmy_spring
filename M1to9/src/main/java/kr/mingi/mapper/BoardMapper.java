@@ -10,17 +10,14 @@ import kr.mingi.entity.Member;
 @Mapper //- Mybatis API
 public interface BoardMapper {	 
 	
-     public List<Board> getLists();
+     public List<Board> getBoardList();
      
-     public void boardInsert(Board vo);
+     public Board getTheBoard(int boardIdx);
      
-     public Board boardContent(int idx);
+     public Board insertBoard(Board vo);
      
-     public void boardCount(int idx);
+     public void deleteBoard(int boardIdx);
      
-     public void boardDelete(int idx);
-     
-     public void boardUpdate(Board vo);
-
+     public void updateBoard(Board vo);
      
 }

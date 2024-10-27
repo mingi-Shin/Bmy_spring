@@ -11,8 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -105,7 +108,15 @@ public class MemberServiceImpl implements MemberService {
             return false;  // 예외 발생 시 false 리턴
         }
         rttr.addFlashAttribute("msgBody", "회원가입이 완료되었습니다.");
-        log.info(vo);
+        
+        //바로 로그인처리
+        Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication(); //null이 아니엇네??
+        System.out.println("currentAuth 정보: {}");
+        System.out.println(currentAuth);
+        Authentication newAuth = memberUserDetailsService.createNewAuthentication(currentAuth, vo.getMemID());
+        System.out.println(newAuth);
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+        
         return true;  // 성공 시 true 리턴 == 1 
     }
 

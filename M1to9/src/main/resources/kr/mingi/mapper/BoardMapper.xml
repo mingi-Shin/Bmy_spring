@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.mingi.mapper.BoardMapper">
+
+	<select id="getBoardList" resultType="kr.mingi.entity.Board">
+		SELECT * FROM smgBoard ORDER BY boardIdx DESC
+	</select>
+	
+	<select id="getTheBoard" resultType="kr.mingi.entity.Board">
+		SELECT * FROM smgBoard WHERE boardIdx = #{boardIdx}	
+	</select>
+	
+	<insert id="insertBoard" parameterType="kr.mingi.entity.Board">
+		<selectKey keyProperty="boardIdx,boardGroup" resultType="kr.mingi.entity.Board" order="BEFORE">
+			SELECT COALSCE(MAX(boardIdx) +1, 0) AS boardIdx
+							COALESCE(MAX(boardGroup) +1, 0) AS boardGroup
+			FROM smgBoard
+		</selectKey>
+		INSERT INTO smgBoard (boardIdx, memID, title, content, writer, boardGroup, boardSequence, boardLevel, boardAvailable)
+		VALUES (#{boardIdx}, #{memID}, #{title}, #{content}, #{writer}, #{boardGroup}, 0, 0, 0)
+	</insert>
+	
+	<delete id="deleteBoard" parameterType="int">
+		DELETE * FROM smgBoard WHERE boardIdx = #{boardIdx}
+	</delete>
+	
+	<update id="updateBoard" parameterType="kr.mingi.entity.Board">
+	 	UPDATE TABLE smgBoard SET title = #{title}, content = #{content}, indate = #{indate}
+	</update>
+	
+
 	
 
 </mapper>
