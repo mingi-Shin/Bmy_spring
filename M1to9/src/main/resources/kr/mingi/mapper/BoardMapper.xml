@@ -10,9 +10,9 @@
 		SELECT * FROM smgBoard WHERE boardIdx = #{boardIdx}	
 	</select>
 	
-	<insert id="insertBoard" parameterType="kr.mingi.entity.Board">
+	<insert id="insertBoard" parameterType="kr.mingi.entity.Board"  >
 		<selectKey keyProperty="boardIdx,boardGroup" resultType="kr.mingi.entity.Board" order="BEFORE">
-			SELECT COALSCE(MAX(boardIdx) +1, 0) AS boardIdx
+			SELECT COALESCE(MAX(boardIdx) +1, 0) AS boardIdx,
 							COALESCE(MAX(boardGroup) +1, 0) AS boardGroup
 			FROM smgBoard
 		</selectKey>

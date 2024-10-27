@@ -13,61 +13,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>동기적 게시판 리스트</title>
+	<title>게시판 등록</title>
 	<meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  
- 	<script type="text/javascript">
-		$(document).ready(function(){
-			
-			//로그인 오류시 실패 모달창show
-		  if(${!empty msgBody}){
+    
+  <script type="text/javascript">
+  	$(document).ready(function(){
+  		 if(${!empty msgBody}){
 			  $("#myMessage").modal("show"); 
 		  }
-			
-			$("#registerButton").click(function(){
-				location.href="${contextPath}/synchBoard/registerForm";
-			});
-			  
-		});
-
- 	</script>  
- 	
-	<style>
-	  table {
-	    border-collapse: collapse;
-	    width: 100%;
-	    margin: 20px 0;
-	  }
-	
-	  th, td {
-	    border: solid 1px #ddd;
-	    padding: 10px;
-	    text-align: left;
-	  }
-	
-	  th {
-	    background-color: #f2f2f2;
-	  }
-	
-	  a {
-	    color: #007BFF;
-	    text-decoration: none;
-	  }
-	
-	  a:hover {
-	    text-decoration: underline;
-	  }
-	
-	  .no-data {
-	    text-align: center;
-	    color: #888;
-	    padding: 10px;
-	  }
-	</style>
+  		 
+  	});
+  
+  </script>  
+    
 </head>
 <body>
 
@@ -76,48 +38,37 @@
 
   <h1>Spring MVC01 to MVC09</h1>
   <div class="card">
-    <div class="card-header" >게시판 목록</div>
+    <div class="card-header" >글쓰기</div>
     <div class="card-body" >
-			<table>
-			  <thead>
-			    <tr>
-			      <th>인덱스</th>
-			      <th>제목</th>
-			      <th>글쓴이</th>
-			      <th>작성일</th>
-			      <th>조회수</th>
-			    </tr>
-			  </thead>
-			  <tbody>
-			    <c:if test="${!empty boardList}">
-			      <c:forEach var="vo" items="${boardList}">
-			        <tr>
-			          <td>${vo.boardIdx}</td>
-			          <td>
-			            <a href="${contextPath}/synchBoard/get/${vo.boardIdx}">${vo.title}</a>
-			          </td>
-			          <td>${vo.writer}</td>
-			          <td>
-			            <fmt:formatDate value="${vo.indate}" pattern="yyyy-MM-dd"/>
-			          </td>
-			          <td>${vo.count}</td>
-			        </tr>
-			      </c:forEach>
-			    </c:if>
-			
-			    <c:if test="${empty boardList}">
-			      <tr>
-			        <td colspan="5" class="no-data">
-			          현재 조회가능한 게시물이 없습니다.
-			        </td>
-			      </tr>
-			    </c:if>
-			  </tbody>
-			</table>
-	    <button id="registerButton" class="btn btn-primary float-end">글쓰기 </button>
+    
+    <form action="${contextPath }/synchBoard/register" method="post" class="was-validated">
+  		<input type="hidden" name="memID" value="${mvo.member.memID }" >
+  		<div class="mb-3 mt-3" >
+  			<label class="form-label" for="title">제목: </label>
+  			<input class="form-control" id="title" name="title" placeholder="Title" type="text" required>
+  			<div class="valid-feedback">Valid</div>
+  			<div class="invalid-feedback">Please fill out this field.</div>
+  		</div>
+  		<div class="mb-3 mt-3">
+  			<label class="form-label" for="content">내용: </label>
+  			<textarea class="form-control" id="content" name="content" placeholder="Content" rows="10" required></textarea>
+  			<div class="valid-feedback">Valid</div>
+  			<div class="invalid-feedback">Please fill out this field.</div>
+  		</div>
+  		<div class="mb-3 mt-3">
+  			<label class="form-label" for="writer">작성자: </label>
+  			<input class="form-control" id="wrtier" name="writer" type="text" value="${mvo.member.memName }" readonly>
+  		</div>
+  		<div class="float-end">
+	  		<!--  <button type="submit" class="btn btn-primary" disabled>Submit</button> -->
+	  		<button type="reset" class="btn btn-primary me-2">Cancel</button>
+	  		<button type="submit" class="btn btn-primary">Submit</button>
+  		</div>
+  		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }">
+  	</form>
+    
     </div>
     <div class="card-footer">card foot</div>
-    ${mvo }
   </div>
   
 	<div class="modal fade" id="myMessage" role="dialog">

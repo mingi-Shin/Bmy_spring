@@ -1,5 +1,7 @@
 package kr.mingi.entity;
 
+import java.util.Date;
+
 import lombok.Data;
 
 @Data //lombok API
@@ -9,7 +11,7 @@ public class Board {
   private String title; // 제목
   private String content; // 내용
   private String writer; // 작성자
-  private String indate; // 작성일
+  private Date indate; // 작성일 (java.util.Date)
   private int count; // 조회수
   
   //댓글기능관련

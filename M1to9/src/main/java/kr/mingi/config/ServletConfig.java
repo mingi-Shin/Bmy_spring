@@ -14,7 +14,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc //어노테이션 사용 가능케 하는 
-@ComponentScan({"kr.mingi.controller, kr.mingi.service"})
+@ComponentScan({"kr.mingi.controller, kr.mingi.service, kr.mingi.common"})
 public class ServletConfig implements WebMvcConfigurer {
 
 	@Override

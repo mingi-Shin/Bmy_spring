@@ -48,7 +48,7 @@
           <a class="nav-link" href="${contextPath}/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="${contextPath}/boardMain.do">동기식 게시판1</a>
+          <a class="nav-link" href="${contextPath}/synchBoard/list">동기식 게시판1</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">비동기식 게시판2</a>
