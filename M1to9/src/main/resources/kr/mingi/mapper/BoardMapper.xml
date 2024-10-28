@@ -21,11 +21,11 @@
 	</insert>
 	
 	<delete id="deleteBoard" parameterType="int">
-		DELETE * FROM smgBoard WHERE boardIdx = #{boardIdx}
+		DELETE FROM smgBoard WHERE boardIdx = #{boardIdx}
 	</delete>
 	
 	<update id="updateBoard" parameterType="kr.mingi.entity.Board">
-	 	UPDATE TABLE smgBoard SET title = #{title}, content = #{content}, indate = NOW() WEHRE boardIdx = #{boardIdx}
+	 	UPDATE smgBoard SET title = #{title}, content = #{content}, indate = NOW() WHERE boardIdx = #{boardIdx}
 	</update>
 	
 

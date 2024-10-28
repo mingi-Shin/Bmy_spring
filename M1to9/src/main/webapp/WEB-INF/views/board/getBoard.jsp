@@ -23,6 +23,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script type="text/javascript">
+
+	$(document).ready(function(){
+		let msgBody = "${msgBody}";
+		if(msgBody !== ""){
+			alert(msgBody);
+		}
+	
+	});
+
+
 	function deleteBoard(boardIdx){
 		$.ajax({
 			url: '/synchBoard/delete/' + boardIdx,
@@ -80,23 +90,46 @@
           <c:if test="${!empty mvo && mvo.member.memID eq vo.memID}">
             <button type="button" class="btn btn-outline-primary me-2" onclick="location.href='${contextPath}/synchBoard/modify/${vo.boardIdx }'">수정</button>
             <button type="button" class="btn btn-outline-secondary me-2">답글</button>
-            <!-- <button type="button" onclick="location.href='${contextPath}/synchBoard/delete/${vo.boardIdx}'">삭제</button> -->
-	          <!-- location.href 는 GET방식으로만 작동된다. -->
-	          <button type="button" class="btn btn-outline-danger me-2" onclick="deleteBoard(${vo.boardIdx})">삭제</button>
+            
           </c:if>
           <c:if test="${empty mvo || mvo.member.memID ne vo.memID}">
             <button type="button" class="btn btn-outline-primary me-2" disabled>수정</button>
             <button type="button" class="btn btn-outline-secondary me-2">답글</button>
-            <button type="button" class="btn btn-outline-danger me-2" disabled>삭제</button>
           </c:if>
           <button type="button" class="btn btn-outline-info" onclick="location.href='${contextPath}/synchBoard/list'">목록으로</button>
           
         </div>
       </div>
       <div class="card-footer text-muted text-center">
-        스프2_(답변게시판)
+        스프2_(답변게시판)<hr>
+        ${vo }
+        
       </div>
     </div>
   </div>
+  
+  <!-- 모달창 -->
+	<div class="modal fade" id="myMessage" role="dialog">
+	  <div class="modal-dialog">
+	    <div id="messageType" class="modal-content">
+	      <!-- Modal Header -->
+	      <div class="modal-header">
+	        <h4 class="modal-title"></h4>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+	      </div>
+	
+	      <!-- Modal body -->
+	      <div class="modal-body">
+	       	<p></p>
+	      </div>
+	
+	      <!-- Modal footer -->
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+	      </div>
+	
+	    </div>
+	  </div>
+	</div>
 </body>
 </html>

@@ -46,7 +46,7 @@ $(document).ready(function(){
         <h3 class="mb-0">게시판 작성</h3>
       </div>
       <div class="card-body">
-    		<form action="${contextPath }/synchBoard/modify" method="post" class="was-validated">
+    		<form action="${contextPath }/synchBoard/register" method="post" class="was-validated">
        		<input type="hidden" name="memID" value="${mvo.member.memID }" >
        		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }">
 	        

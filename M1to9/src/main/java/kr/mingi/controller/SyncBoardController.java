@@ -3,6 +3,7 @@ package kr.mingi.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,18 +55,32 @@ public class SyncBoardController {
 		return "/board/getBoard";
 	}
 	
-	@PostMapping("/delete")
-	public String deleteBoard(@RequestParam int boardIdx, RedirectAttributes rttr) {
-		boardService.deleteBoard(boardIdx);
-		rttr.addFlashAttribute("msgBody", "게시물이 정상적으로 삭제되었습니다.");	
-		return "redirect:/synchBoard/list";
+	@DeleteMapping("/delete/{boardIdx}")
+	public ResponseEntity<String> deleteBoard(@PathVariable("boardIdx") int boardIdx) {
+	    try {
+	        boardService.deleteBoard(boardIdx);
+	        return ResponseEntity.ok("게시물이 정상적으로 삭제되었습니다.");
+	    } catch (Exception e) {
+	        // 예외 로깅  진짜진짜 이거 꼭 로그 표시 해야한다. 안그러면 원인 찾는데 너무 시간이 많이 들어.. 
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시물 삭제 중 오류 발생");
+	    }
 	}
 	
 	@GetMapping("/modify/{boardIdx}")
-	public String modify(@PathVariable int boardIdx, Model model) {
+	public String modifyForm(@PathVariable int boardIdx, Model model) {
 		Board board = boardService.getTheBoard(boardIdx);
 		model.addAttribute("vo", board);
 		return "/board/modify";
+	}
+	
+	@PostMapping("/modify")
+	public String modifyBoard(@ModelAttribute Board vo, RedirectAttributes rttr) { //객체의 필드에 n개의 요청 파라미터 값을 자동으로 할당
+		System.out.println("ModelAttribute vo: " +  vo);	
+		boardService.updateBoard(vo);
+		int boardIdx = vo.getBoardIdx();
+		rttr.addFlashAttribute("msgBody", "게시물이 정상적으로 수정되었습니다.");
+		return "redirect:/synchBoard/get/" + boardIdx;
 	}
 	
 	
