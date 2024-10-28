@@ -3,8 +3,10 @@ package kr.mingi.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.mingi.common.BusinessException;
 import kr.mingi.entity.Board;
+import kr.mingi.mapper.BoardMapper;
 import kr.mingi.service.BoardService;
 import kr.mingi.service.MemberService;
 
@@ -27,13 +30,14 @@ public class SyncBoardController {
 
 	@GetMapping("/list")
 	public String getBoardList(Model model, RedirectAttributes rttr ) {
-		List<Board> boardList = boardService.getBoardList(model);
+		List<Board> boardList = boardService.getBoardList();
+		model.addAttribute("vo", boardList);
 		return "/board/synchBoardList";
 	}
 	
-	@GetMapping("/registerForm")
+	@GetMapping("/register")
 	public String registerForm() {
-		return "/board/registerForm";
+		return "/board/register";
 	}
 	
 	@PostMapping("/register")
@@ -50,7 +54,19 @@ public class SyncBoardController {
 		return "/board/getBoard";
 	}
 	
+	@PostMapping("/delete")
+	public String deleteBoard(@RequestParam int boardIdx, RedirectAttributes rttr) {
+		boardService.deleteBoard(boardIdx);
+		rttr.addFlashAttribute("msgBody", "게시물이 정상적으로 삭제되었습니다.");	
+		return "redirect:/synchBoard/list";
+	}
 	
+	@GetMapping("/modify/{boardIdx}")
+	public String modify(@PathVariable int boardIdx, Model model) {
+		Board board = boardService.getTheBoard(boardIdx);
+		model.addAttribute("vo", board);
+		return "/board/modify";
+	}
 	
 	
 	

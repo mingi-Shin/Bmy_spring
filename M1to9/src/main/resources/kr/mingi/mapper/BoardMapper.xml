@@ -12,7 +12,7 @@
 	
 	<insert id="insertBoard" parameterType="kr.mingi.entity.Board"  >
 		<selectKey keyProperty="boardIdx,boardGroup" resultType="kr.mingi.entity.Board" order="BEFORE">
-			SELECT COALESCE(MAX(boardIdx) +1, 0) AS boardIdx,
+			SELECT COALESCE(MAX(boardIdx) +1, 1) AS boardIdx,
 							COALESCE(MAX(boardGroup) +1, 0) AS boardGroup
 			FROM smgBoard
 		</selectKey>
@@ -25,7 +25,7 @@
 	</delete>
 	
 	<update id="updateBoard" parameterType="kr.mingi.entity.Board">
-	 	UPDATE TABLE smgBoard SET title = #{title}, content = #{content}, indate = #{indate}
+	 	UPDATE TABLE smgBoard SET title = #{title}, content = #{content}, indate = NOW() WEHRE boardIdx = #{boardIdx}
 	</update>
 	
 

@@ -9,15 +9,16 @@ import kr.mingi.entity.Board;
 
 public interface BoardService {
 	
-	public List<Board> getBoardList(Model model);
+	public List<Board> getBoardList();
 	
 	public Board getTheBoard(int boardIdx);
 	
 	public void insertBoard(Board vo);
 	
-	public boolean deleteBoard(int boardIdx);
+	public void deleteBoard(int boardIdx);
 	
-	public boolean updateBoard(Board vo);
+	public void updateBoard(Board vo);
+
 
 	/**
 	 * 	위의 경우는 사실 좋지 않다고 한다.

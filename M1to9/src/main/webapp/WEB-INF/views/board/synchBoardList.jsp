@@ -29,7 +29,7 @@
 		  }
 			
 			$("#registerButton").click(function(){
-				location.href="${contextPath}/synchBoard/registerForm";
+				location.href="${contextPath}/synchBoard/register"; //GET
 			});
 			  
 		});
@@ -89,8 +89,8 @@
 			    </tr>
 			  </thead>
 			  <tbody>
-			    <c:if test="${!empty boardList}">
-			      <c:forEach var="vo" items="${boardList}">
+			    <c:if test="${!empty vo}">
+			      <c:forEach var="vo" items="${vo}">
 			        <tr>
 			          <td>${vo.boardIdx}</td>
 			          <td>
@@ -105,7 +105,7 @@
 			      </c:forEach>
 			    </c:if>
 			
-			    <c:if test="${empty boardList}">
+			    <c:if test="${empty vo}">
 			      <tr>
 			        <td colspan="5" class="no-data">
 			          현재 조회가능한 게시물이 없습니다.
