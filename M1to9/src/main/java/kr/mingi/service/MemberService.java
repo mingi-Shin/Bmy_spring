@@ -23,4 +23,6 @@ public interface MemberService {
 	public boolean updateMemInfo(Member vo, RedirectAttributes rttr);
 	
 	
+	
+	
 }

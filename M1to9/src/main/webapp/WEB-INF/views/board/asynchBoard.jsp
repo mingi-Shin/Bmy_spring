@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>   
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>   
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
@@ -11,81 +12,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>회원 게시판</title>
+  <title>비동기 게시판</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Latest compiled and minified CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Latest compiled JavaScript -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+ 	<style>
+	  table {
+	    border-collapse: collapse;
+	    width: 100%;
+	    margin: 20px 0;
+	  }
+	
+	  th, td {
+	    border: solid 1px #ddd;
+	    padding: 10px;
+	    text-align: left;
+	  }
+	
+	  th {
+	    background-color: #f2f2f2;
+	  }
+	
+	  a {
+	    color: #007BFF;
+	    text-decoration: none;
+	  }
+	
+	  a:hover {
+	    text-decoration: underline;
+	  }
+	
+	  .no-data {
+	    text-align: center;
+	    color: #888;
+	    padding: 10px;
+	  }
+	</style>
+	
   <script type="text/javascript">
   	$(document).ready(function(){ // 문서가 시작되면 가장먼저 동작할 함수 호출 
+  		
   		loadBoardList();
   		showBoard();
   		goInsert();
+  		
+  		//모달
+		  if(${!empty msgBody}){
+			  $("#myMessage").modal("show"); 
+		  }
 		
   	});
   	
-  	function loadBoardList(){ // 호출 내용은 바로바로
-  		$.ajax({ // (비동기 전송)서버와 통신 : 게시판 리스트 가져오기 
-  			url : "board/all", // == @GetMapping("/boardList.do")
-  			type : "GET",
-  			dataType : "json",
-  			success : makeView, // boardList.do가 실행되고 처리된 값 == return을 받아서 처리하는 함수 -> 콜백함수  
-  			error : function(xhr, status, error){ alert('에러 : ' + error ); }
+  	//게시판 목록 불러오기 
+  	function loadBoardList(){ 
+  		$.ajax({
+  			url: `${contextPath}/asynchBoard/list`,
+  			method: 'GET',
+  			dataType: 'json',
+  			success: makeView,
+  			error: function(jqXHR){ 
+  				alert("에러: ", jqXHR.responseText); 
+  			}
   		});
-  	}
-  	
-  	
-  	function makeView(data){ // boardList.do의 return값 list가 data 변수에 들어가있다.
-  		//받은 데이터로 게시판 리스트를 동적으로 만들자!
-  		//console.log(data)
-  		let htmlList = "<table class='table table-bordered'>";
-  		htmlList += "<tr>";
-  		htmlList += "<th> 번호 </th>";
-  		htmlList += "<th> 제목 </th>";
-  		htmlList += "<th> 작성자 </th>";
-  		htmlList += "<th> 작성일 </th>";
-  		htmlList += "<th> 조회수 </th>";
-  		htmlList += "</tr>";
-  		
-  		$.each(data, function(index, obj){ // index 혹은 key 
-  	  		htmlList += "<tr>";
-  	  		console.log('index: ' + index + '-> ' + 'obj.idx: ' + obj.idx);
-  	  		htmlList += "<td>"+ obj.idx+"</td>";
-  	  		htmlList += "<td id='ti"+obj.idx+"'><a href='javascript:goContent("+obj.idx+")'>"+obj.title+"</a></td>";
-  	  		htmlList += "<td>"+obj.writer+"</td>";
-  	  		htmlList += "<td >"+obj.indate.split(' ')[0]+"</td>";
-  	  		htmlList += "<td id='cnt"+obj.idx+"'>"+obj.count+"</td>";
-  	  		htmlList += "</tr>";
+ 		
+  		// 게시판 동적 생성 
+	  	function makeView(data){ // boardList.do의 return값 list가 data 변수에 들어가있다.
+	  		let htmlList = "<table><thead>";
+	  		htmlList += "<tr>";
+	  		htmlList += "<th> 인덱스 </th>";
+	  		htmlList += "<th> 제목 </th>";
+	  		htmlList += "<th> 글쓴이 </th>";
+	  		htmlList += "<th> 작성일 </th>";
+	  		htmlList += "<th> 조회수 </th>";
+	  		htmlList += "</tr></thead>";
+	 			htmlList +="<tbody>";
+	 			
+	 			if(data){
+		  		$.each(data, function(index, vo){
+		  			htmlList +="<tr>";
+		  			htmlList +="<td>" + vo.boardIdx + "</td>"; 
+		 	  		htmlList += "<td id='ti"+vo.boardIdx+"'><a href='javascript:goContent("+vo.boardIdx+")'>"+vo.title+"</a></td>";
+		 	  		htmlList += "<td>"+ vo.writer +"</td>";
+		 	  		htmlList += "<td>";
+		 	  		htmlList += vo.indate;
+		 	  		htmlList += "</td>";
+		 	  		htmlList += "<td id='cnt"+vo.boardIdx+"'>"+ vo.count +"</td>";
+		 	  		htmlList += "</tr>";
+		 	  		htmlList += "<tr id='c"+ vo.boardIdx + "' style='display:none'>";
+		 	  		htmlList += "<th>내용</th>";
+		 	  		htmlList += "<td colspan='4'>";
+		 	  		htmlList += "<textarea id='con"+ vo.boardIdx + "' rows='7' class='form-control' readonly ></textarea>";
+	 				
+		 	  		if('${mvo.member.memID}' == vo.memID){
+			  	  		htmlList += "<br>"
+			  	  		htmlList += "<a href='javascript:goUpdateForm("+vo.boardIdx+")' id='m"+vo.boardIdx+"' class='btn btn-warning btn-sm'> 수정 </a> &nbsp;"
+			  	  		htmlList += "<a href='javascript:goDelete("+vo.boardIdx+")' id='d"+vo.boardIdx+"' class='btn btn-danger btn-sm'> 삭제 </a> &nbsp;"
+	  	  		}
+	 	  			htmlList += "</td>";
+	  	  		htmlList += "</tr>";
+	 				}) 
+		  		
+	 			}	else {
+		 	  		htmlList += "<tr>";
+		 	  		htmlList += "<td colspan='5' class='no-data'>";
+		 	  		htmlList += "현재 조회가능한 게시물이 없습니다.";
+		 	  		htmlList += "</td>";
+		 	  		htmlList += "</tr>";
+		 			}
+	 			
+	  			htmlList += "</tbody>";
+	  			htmlList += "</table>";
+	  			
+	  			$("#view").html(htmlList);
+	  	  		
+  	  		$("#view").css("display", "block");  // 글쓰기 완료후 리스트창 오픈
+  	  		$("#writeForm").css("display", "none"); // 글쓰기 완료후 글쓰기 폼 닫기
   	  		
-  	  		htmlList += "<tr id='c"+obj.idx+"' style='display:none'>";
-  	  		htmlList += "<th>내용</th>";
-  	  		htmlList += "<td colspan='4'>";
-  	  		htmlList += "<textarea id='con"+obj.idx+"' rows='7' class='form-control' readonly ></textarea>";
-  	  		
-  	  		if('${mvo.member.memID}' == obj.memID){
-	  	  		htmlList += "<br>"
-	  	  		htmlList += "<a href='javascript:goUpdateForm("+obj.idx+")' id='m"+obj.idx+"' class='btn btn-warning btn-sm'> 수정 </a> &nbsp;"
-	  	  		htmlList += "<a href='javascript:goDelete("+obj.idx+")' id='d"+obj.idx+"' class='btn btn-danger btn-sm'> 삭제 </a> &nbsp;"
-  	  		}  	  		
-  	  		htmlList += "</td>";
-  	  		htmlList += "</tr>";
-  	  		
-  		});
+ 			}
+ 		}
   		
-  		htmlList += "</table>";
-  		
-  		$("#view").html(htmlList);
-  		
-  		$("#view").css("display", "block");  // 글쓰기 완료후 리스트창 오픈
-  		$("#writeForm").css("display", "none"); // 글쓰기 완료후 글쓰기 폼 닫기
-  		
-  	}
-  	
   	/* 게시물 글쓰기 버튼 클릭시 이벤트 */
   	function showBoard(){
 	  	let writeButton = document.getElementById('writeBoardButton');
@@ -161,55 +208,57 @@
   	}
   	
   	/* 상세보기 : content 보이기_숨기기 */
-  	function goContent(idx){ //1, 2, 3 ...
-  		if($("#c"+idx).css("display") == "none"){
+  	function goContent(boardIdx){ //1, 2, 3 ...
+  		if($("#c"+boardIdx).css("display") == "none"){
   			
-  			// 서버에서 content가져와서 붙여넣기 
   			$.ajax({
-  				url : "board/"+idx,
+  				url : "board/"+boardIdx,
   				type : "GET",
   				//data : {"idx" : idx},
   				datatype: "JSON",
   				success : function(voData){
-  					$("#con"+idx).val(voData.content);
+  					$("#con"+boardIdx).val(voData.content);
   					
-  					$("#cnt"+idx).text(voData.count);
+  					$("#cnt"+boardIdx).text(voData.count);
   				},
-  				error : function(){alert("error");}
+  				error: function(error){
+						alert("조회 중 오류가 발생했습니다.");
+						console.error("조회 중 오류 발생:", error);
+					}
   				
   			});
 
-	  		$("#c"+idx).css("display", "table-row"); // block이 아니라 table-row 
+	  		$("#c"+boardIdx).css("display", "table-row"); // block이 아니라 table-row 
   		}else{
-	  		$("#c"+idx).css("display", "none"); // block이 아니라 table-row 
+	  		$("#c"+boardIdx).css("display", "none"); 
   		}
 
   	}
   	
   	/* 글 수정 준비 (폼 생성) */
-  	function goUpdateForm(idx){  		
-  		$("#c"+idx+" textarea").prop("readonly", false); //or textarea에 id값을 주고 $().attr("readonly", false)로 수정 
-  		$("#c"+idx+" textarea").css({"border-color" : "red", 
+  	function goUpdateForm(boardIdx){  		
+  		$("#c"+boardIdx+" textarea").prop("readonly", false); //or textarea에 id값을 주고 $().attr("readonly", false)로 수정 
+  		$("#c"+boardIdx+" textarea").css({"border-color" : "red", 
   									 "border-width" : "2px"}); //테두리 강조  
   		
   		
-  		let titleValueOrin = $("#ti"+idx).text(); //원래제목 
-  		let newTitle = "<input type='text' id='newTi"+idx+"' class='form-control' value='"+titleValueOrin+"' style='border-color:red; border-width:2px;'> </input>"; //제목창 form
-  		$("#ti"+idx).html(newTitle); //제목창 호출 
+  		let titleValueOrin = $("#ti"+boardIdx).text(); //원래제목 
+  		let newTitle = "<input type='text' id='newTi"+boardIdx+"' class='form-control' value='"+titleValueOrin+"' style='border-color:red; border-width:2px;'> </input>"; //제목창 form
+  		$("#ti"+boardIdx).html(newTitle); //제목창 호출 
   		
-  		let updateButton = "<a href='javascript:boardUpdate("+idx+")' id='up"+idx+"' class='btn btn-primary btn-sm'> 등록 </a> &nbsp;"
+  		let updateButton = "<a href='javascript:boardUpdate("+boardIdx+")' id='up"+boardIdx+"' class='btn btn-primary btn-sm'> 등록 </a> &nbsp;"
   		//$("#m"+idx).html(updateButton); // css깨짐 발생 
-  		$("#m"+idx).replaceWith(updateButton);
+  		$("#m"+boardIdx).replaceWith(updateButton);
   		
   		let cancelButton = "<a href='javascript:loadBoardList()' class='btn btn-warning btn-sm'>취소</a>";
-  		$("#d"+idx).replaceWith(cancelButton);
+  		$("#d"+boardIdx).replaceWith(cancelButton);
   		
   	}
   	/* 글 수정 완료 (폼 업로드_Ajax) */
-	function boardUpdate(idx){
+	function boardUpdate(boardIdx){
   		
-  		let newContent = $("#c"+idx+" textarea").val(); //일반적으로 textarea의 값은 val()로 가져온다. 
-  		let newTitle = $("#newTi"+idx).val();
+  		let newContent = $("#c"+boardIdx+" textarea").val(); //일반적으로 textarea의 값은 val()로 가져온다. 
+  		let newTitle = $("#newTi"+boardIdx).val();
   		
 			let csrfHeaderName = "${_csrf.headerName}";
  			let csrfTokenValue = "${_csrf.token}";
@@ -217,9 +266,9 @@
   		$.ajax({
   			url : "board/update",
   			method : "PUT",
-  			contentType : 'application/json;charset=utf-8', // data가 JSON형식임을 서버에게 알림 
+  			contentType : 'application/json;charset=utf-8', // data가 JSON형식임을 서비스에게 알림 (아래)
   			data : JSON.stringify({ // Javascript를 JSON으로 바꿔주기 
-  				"idx" : idx,
+  				"boardIdx" : boardIdx,
   				"title" : newTitle,
   				"content" : newContent,
   			}),
@@ -230,37 +279,39 @@
   				alert('수정 성공');
   				loadBoardList();
   			}, 
-  			error : function(){alert('error : ' + idx);}
+  			error: function(error){
+				alert("수정 중 오류가 발생했습니다.");
+				console.error("수정 중 오류 발생:", error);
+				}
   		});
 	}
   	
   	/* 글 삭제 */
-  	function goDelete(idx){
+  	function goDelete(boardIdx){
   		
-  		if(confirm(idx + '번 글을 삭제하시겠습니까?')){
-  			deleteBoard(idx);
+  		if(confirm(boardIdx + '번 글을 삭제하시겠습니까?')){
+  			deleteBoard(boardIdx);
   		} else {
   			alert('삭제가 취소되었습니다.');
   		}
   		
-  		function deleteBoard(idx){
+  		function deleteBoard(boardIdx){
   			
   			let csrfHeaderName = "${_csrf.headerName}";
  				let csrfTokenValue = "${_csrf.token}";
   			
 	  		$.ajax({
-	  			url : "board/" + idx, // PathVariable 값 
+	  			url : "board/" + boardIdx, // PathVariable 값 
 	  			type : "DELETE",
 	  			//data : { "idx" : idx }, //주의 : data값은 객체형식이어야 한다. RESTful방식에선 생략 
 	  			beforeSend: function(xhr){
  	  				xhr.setRequestHeader(csrfHeaderName, csrfTokenValue)
  	  			},
 	  			success : function(response){
-	 	  				alert( idx+'번 게시물을 삭제하였습니다.');
+	 	  				alert( boardIdx+'번 게시물을 삭제하였습니다.');
 	 	  				loadBoardList(); //쓰고나면 리스트 갱신해
-	 	  				
-	 	  				},
-	 	  		error : function(){alert('error : ' + idx);}
+  				},
+	 	  		error : function(){alert('error : ' + boardIdx);}
 	  		});
   		}
   	}
@@ -292,10 +343,6 @@
 	        </tr>
 	        <tr>
 	          <td>작성자</td>
-	          <security:authorize access="isAnonymous()">
-		          <td><input type="text" id="writer" name="writer" class="form-control" value="guest" readonly/></td>
-	          </security:authorize>
-	          
 	          <security:authorize access="isAuthenticated()">
 		          <td><input type="text" id="writer" name="writer" class="form-control" value="${mvo.member.memName }" readonly/></td>
 	          </security:authorize>
@@ -310,9 +357,33 @@
     	</form>
     	
     </div>
-    <div class="card-footer">인프런_스프1탄_박매일</div>
+    <div class="card-footer">인프런_박매일</div>
   </div>
-</div>
 
+
+	<div class="modal fade" id="myMessage" role="dialog">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <!-- Modal Header -->
+	      <div class="modal-header">
+	        <h4 class="modal-title">${msgTitle }</h4>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+	      </div>
+	
+	      <!-- Modal body -->
+	      <div class="modal-body">
+	       	<p>${msgBody }</p>
+	      </div>
+	
+	      <!-- Modal footer -->
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+	      </div>
+	
+	    </div>
+	  </div>
+	</div>
+  
+</div>
 </body>
 </html>

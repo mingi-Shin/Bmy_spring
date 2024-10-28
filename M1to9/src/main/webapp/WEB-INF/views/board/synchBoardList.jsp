@@ -78,6 +78,8 @@
   <div class="card">
     <div class="card-header" >게시판 목록</div>
     <div class="card-body" >
+    
+    
 			<table>
 			  <thead>
 			    <tr>

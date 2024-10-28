@@ -20,5 +20,6 @@ public interface MemberMapper {
 	public void updateMemInfo(Member vo);
 	
 	public void deleteAuth(String memID); //mapper의 paramType과 맞아야지임마
+	
      
 }

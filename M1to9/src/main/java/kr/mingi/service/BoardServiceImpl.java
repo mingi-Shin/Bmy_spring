@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.mingi.common.BusinessException;
 import kr.mingi.entity.Board;
+import kr.mingi.entity.Member;
 import kr.mingi.mapper.BoardMapper;
 import kr.mingi.mapper.MemberMapper;
 import lombok.extern.log4j.Log4j;
@@ -111,6 +112,11 @@ public class BoardServiceImpl implements BoardService {
 			log.error("예기치 못한 오류 발생", e); // 기타 비즈니스 로직 오류: 범용 
 	        throw new BusinessException("예기치 못한 오류가 발생했습니다."); // 예외 발생
 		}
+	}
+
+	@Override
+	public void updateCount(int boardIdx) {
+		boardMapper.updateCount(boardIdx);
 	}
 	
 	

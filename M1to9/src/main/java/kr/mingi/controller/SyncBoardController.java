@@ -51,6 +51,7 @@ public class SyncBoardController {
 	@GetMapping("/get/{boardIdx}") // URL 경로에 boardIdx를 포함시킴
 	public String getTheBoard(@PathVariable int boardIdx, RedirectAttributes rttr, Model model ) {
 		Board board = boardService.getTheBoard(boardIdx);
+		boardService.updateCount(boardIdx); //조회수 증가 
 		model.addAttribute("vo", board);
 		return "/board/getBoard";
 	}

@@ -60,7 +60,8 @@ public class SecurityConfig {
 			.and()
 	        .authorizeRequests()
 	        	.antMatchers("/member/memImageForm.do").authenticated() //이미지업로드 페이지 접근제한
-		        .anyRequest().permitAll() // 모든 요청을 허용
+		        .antMatchers("/synchBoard/*").authenticated()
+	        	.anyRequest().permitAll() // 모든 요청을 허용
 	        .and()
 		    .formLogin()
 		        .loginPage("/member/memLoginForm.do")

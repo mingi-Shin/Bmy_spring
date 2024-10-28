@@ -51,7 +51,7 @@
           <a class="nav-link" href="${contextPath}/synchBoard/list">동기식 게시판1</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">비동기식 게시판2</a>
+          <a class="nav-link" href="${contextPath}/asynchBoard/viewPage">비동기식 게시판2</a>
         </li>  
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">고객센터</a>

@@ -28,6 +28,10 @@
 	 	UPDATE smgBoard SET title = #{title}, content = #{content}, indate = NOW() WHERE boardIdx = #{boardIdx}
 	</update>
 	
+	<update id="updateCount" parameterType="int">
+		UPDATE smgBoard SET count = count + 1 WHERE boardIdx = #{boardIdx}
+	</update>
+	
 
 	
 

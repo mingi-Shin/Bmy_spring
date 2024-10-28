@@ -20,4 +20,7 @@ public interface BoardMapper {
      
      public void updateBoard(Board vo);
      
+	 public void updateCount(int boardIdx);
+
+     
 }
