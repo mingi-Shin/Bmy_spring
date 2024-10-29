@@ -2,6 +2,7 @@ package kr.mingi.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -59,9 +60,12 @@ public class SecurityConfig {
 				//.ignoringAntMatchers("/member/memUpdate.do") //업로드 요청에 대해서만 CSRF 예외 처리 -> 권장되지 않음 
 			.and()
 	        .authorizeRequests()
+		        .antMatchers(HttpMethod.POST, "/synchBoard/register").hasRole("WRITE")
+		        .antMatchers(HttpMethod.POST, "/asynchBoard/board/new").hasRole("WRITE")
 	        	.antMatchers("/member/memImageForm.do").authenticated() //이미지업로드 페이지 접근제한
 		        .antMatchers("/synchBoard/*").authenticated()
-	        	.anyRequest().permitAll() // 모든 요청을 허용
+		        .antMatchers("/asynchBoard/*").authenticated()
+	        	.anyRequest().permitAll() // 모든 요청을 허용: 맨밑 위치 
 	        .and()
 		    .formLogin()
 		        .loginPage("/member/memLoginForm.do")

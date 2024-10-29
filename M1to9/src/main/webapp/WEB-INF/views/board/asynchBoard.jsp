@@ -192,8 +192,18 @@
  	  				alert('게시물 작성에 성공');
  	  				
  	  				window.goBackMain(); //쓰고나면 리스트 갱신해, 목록으로 텍스트를 글쓰기로 다시 바꿔. 
- 	  				},
- 	  			error : function(){alert('error');}
+ 	  				
+ 	  			},
+  				error: function(jqXHR) {
+			    	let errorMessage = "알 수 없는 오류가 발생했습니다.";
+ 				    if (jqXHR.status === 403) {
+ 				        errorMessage = "권한이 없습니다. 접근할 수 없습니다.";
+ 				    } else if (jqXHR.status === 500) {
+ 	  				        errorMessage = jqXHR.responseText || "서버 오류가 발생했습니다.";
+ 				    }
+ 				    console.log(errorMessage);
+ 				    alert("오류: " + errorMessage + "\n" + jqXHR.status + "입니다");
+  				}
  	  		});
   			
   			// 폼 작성됐던 글 초기화
@@ -372,7 +382,7 @@
 	
 	      <!-- Modal body -->
 	      <div class="modal-body">
-	       	<p>${msgBody }</p>
+	       	<p id="errorMessage">${msgBody }</p>
 	      </div>
 	
 	      <!-- Modal footer -->

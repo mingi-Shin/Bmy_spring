@@ -22,6 +22,6 @@ public interface BoardService {
 
 	public void updateCount(int boardIdx);
 	
-
+	public void replyProcess(Board vo);
 
 }

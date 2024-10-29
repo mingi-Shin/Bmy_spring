@@ -1,21 +1,22 @@
 ------- smgBoard --------
 
 CREATE TABLE smgBoard(
-	boardIdx INT NOT NULL, --1씩 증가할거임 
+	boardIdx INT PRIMARY KEY, --1씩 증가할거임 
 	memID VARCHAR(50) NOT NULL,
 	title VARCHAR(200) NOT NULL,
 	content VARCHAR(2000) NOT NULL,
 	writer VARCHAR(30) NOT NULL,
-	indate TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW(),
+	indate TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, -- 작성 시각 (타임존 포함) --TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW(),
 	count INT DEFAULT 0,
 	-- 댓글기능 추가 --
-	boardGroup INT, --원글과 댓글 묶기, 1씩 증가할거임 
-	boardSequence INT, --댓글 순
-	boardLevel INT, --들여쓰기 속성 
-	boardAvailable INT, --원글이 삭제되었는지 여부 
-	PRIMARY KEY(boardIdx),
+	boardGroup INT NOT NULL, --원글과 댓글 묶기, 1씩 증가할거임 
+	boardSequence INT NOT NULL, --댓글 순 (원글에 대한 모든 댓글의 순서=갯수)
+	boardLevel INT NOT NULL, --들여쓰기 속성 (원글의 댓글: 1, 댓글의 댓글:2, 댓글의댓글의댓글:3 ... )
+	boardAvailable BOOLEAN DEFAULT TRUE, --원글이 삭제되었는지 여부 
 	CONSTRAINT fk_member_board FOREIGN KEY (memID) REFERENCES smgMember(memID) ON DELETE CASCADE
 );
+-- 최적화: 그룹과 시퀀스를 기준으로 정렬하는 인덱스
+CREATE INDEX idx_board_group_seq ON smgBoard (boardGroup, boardSequence);
 
 
 SELECT * FROM smgBoard;

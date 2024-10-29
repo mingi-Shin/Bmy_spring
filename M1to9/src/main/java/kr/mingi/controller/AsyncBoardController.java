@@ -28,7 +28,7 @@ public class AsyncBoardController {
 	public ModelAndView viewPage() {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("board/asynchBoard");
-		mav.addObject("msgBody", "비동기 게시판에 접속하셨습니다." );
+		//mav.addObject("msgBody", "비동기 게시판에 접속하셨습니다." );
 		return mav;
 	}
 

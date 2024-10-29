@@ -7,7 +7,7 @@
 <title>Access denied</title>
 </head>
 <body>
-	<h2>Access Denied - you are no authorized to access this resources.</h2>
+	<h2>접근 불가 - 접근 권한이 적합하지 않습니다.</h2>
 	<hr>
 	<a href="${pageContext.request.contextPath }/">Back to Home Page</a>
 </body>

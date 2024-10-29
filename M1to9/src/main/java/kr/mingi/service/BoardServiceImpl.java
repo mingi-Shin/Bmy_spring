@@ -118,6 +118,12 @@ public class BoardServiceImpl implements BoardService {
 	public void updateCount(int boardIdx) {
 		boardMapper.updateCount(boardIdx);
 	}
+
+	@Override
+	public void replyProcess(Board vo) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 
