@@ -100,6 +100,16 @@
           
         </div>
       </div>
+      
+      <!-- 댓글 공간: 새로고침 버튼ajax구현도 가능 -->
+      <div>
+      	${voList }
+      </div>
+      
+      <!-- 댓글 작성란: 보통 ajax -->
+      <div>
+      	
+      </div>
       <div class="card-footer text-muted text-center">
         스프2_(답변게시판)<hr>
         ${vo }

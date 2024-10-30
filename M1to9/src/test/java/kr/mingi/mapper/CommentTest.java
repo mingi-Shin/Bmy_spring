@@ -7,27 +7,18 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import kr.mingi.config.RootConfig;
-import kr.mingi.entity.Board;
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j;
 
 @Log4j
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {RootConfig.class})
-public class BoardTest {
+public class CommentTest {
 
 	@Autowired
-	private BoardMapper boardMapper;
+	private CommentMapper commMapper;
 	
 	@Test
-	public void insertBoard() {
-		Board vo = new Board();
-		vo.setMemID("ningning");
-		vo.setTitle("테스트임다");
-		vo.setContent("테스트내용임다");
-		vo.setWriter("닝닝");
-		boardMapper.insertBoard(vo);
-		log.info(vo);
+	public void insert() {
 		
 	}
 }

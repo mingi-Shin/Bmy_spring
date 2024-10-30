@@ -25,7 +25,7 @@ public class MemberTest {
 	@Autowired
 	private MemberMapper memMapper;
 	
-	//@Test
+	@Test
 	public void insertMemberTest() {
 		Member vo = new Member();
 		vo.setMemID("ningning");
@@ -41,9 +41,9 @@ public class MemberTest {
 		AuthVO auth1 = new AuthVO();
 		AuthVO auth2 = new AuthVO();
 		auth1.setMemID(vo.getMemID());
-		auth1.setAuth("ROLE_READ_ESPA");
+		auth1.setAuth("ROLE_READ");
 		auth2.setMemID(vo.getMemID());
-		auth2.setAuth("ROLE_READ_BTS");
+		auth2.setAuth("ROLE_WRITE");
 		authList.add(auth1);
 		authList.add(auth2);
 		

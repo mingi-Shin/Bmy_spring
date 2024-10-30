@@ -1,37 +1,56 @@
 ------- smgBoard --------
 
 CREATE TABLE smgBoard(
-	boardIdx INT PRIMARY KEY, --1씩 증가할거임 
+	boardIdx INT PRIMARY KEY, --1씩 증가할거임: COALSCE..
 	memID VARCHAR(50) NOT NULL,
 	title VARCHAR(200) NOT NULL,
 	content VARCHAR(2000) NOT NULL,
 	writer VARCHAR(30) NOT NULL,
 	indate TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, -- 작성 시각 (타임존 포함) --TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW(),
 	count INT DEFAULT 0,
-	-- 댓글기능 추가 --
-	boardGroup INT NOT NULL, --원글과 댓글 묶기, 1씩 증가할거임 
-	boardSequence INT NOT NULL, --댓글 순 (원글에 대한 모든 댓글의 순서=갯수)
-	boardLevel INT NOT NULL, --들여쓰기 속성 (원글의 댓글: 1, 댓글의 댓글:2, 댓글의댓글의댓글:3 ... )
 	boardAvailable BOOLEAN DEFAULT TRUE, --원글이 삭제되었는지 여부 
 	CONSTRAINT fk_member_board FOREIGN KEY (memID) REFERENCES smgMember(memID) ON DELETE CASCADE
 );
 -- 최적화: 그룹과 시퀀스를 기준으로 정렬하는 인덱스
 CREATE INDEX idx_board_group_seq ON smgBoard (boardGroup, boardSequence);
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-SELECT * FROM smgBoard;
+
+--좋아요 테이블(좋/싫)
+CREATE TABLE boardLike(
+	likeIdx SERIAL PRIMARY KEY,
+	boardIdx INT REFERENCES smgBoard(boardIdx) ON DELETE CASCADE,
+	memIdx INT REFERENCES smgMember(memIdx) ON DELETE CASCADE,
+	reaction VARCHAR(10) CHECK (reaction IN ('like', 'dislike')),
+	UNIQUE (boardIdx, memIdx)
+);
+
+--댓글 테이블
+CREATE TABLE smgComment(
+	commentIdx SERIAL PRIMARY KEY,
+	memID VARCHAR(50) NOT NULL,
+	comment VARCHAR(500) NOT NULL,
+	boardIdx INT NOT NULL,
+	commentLevel INT NOT NULL, -- 들여쓰기 (게시물댓글:1, 대댓글:2 ...)
+	commentSequence INT NOT NULL, -- 댓글순서
+	indate TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+	commentAvailable BOOLEAN DEFAULT TRUE,
+	CONSTRAINT fk_member_comment FOREIGN KEY (memID) REFERENCES smgMember(memID) ON DELETE SET DEFAULT, --댓글단 회원 탈퇴시, 댓글은 기본값으로.. (0, "탈퇴한 회원") 
+	CONSTRAINT fk_board_comment FOREIGN KEY (boardIdx) REFERENCES smgBoard(boardIdx) ON DELETE CASCADE
+);
+
+
+
 --SELECT IFNULL(MAX(boardIdx)+1, 1) FROM tblBoard; --> MySql 방식 
 SELECT COALESCE(MAX(boardIdx)+1, 1) FROM tblBoard; --postgresql 방식 
  
-TRUNCATE TABLE smgMember; --TURNCATE : 자르기
-DELETE FROM tblBoard WHERE memID NOT IN (SELECT memID FROM smgMember);
-
 -----------------------------------------------------------------------------------------------------------
 ------ smgMember -----------
 
 CREATE TABLE smgMember(
 	memIdx INT NOT NULL ,
-	memID VARCHAR(50) NOT NULL UNIQUE,
+	memID VARCHAR(50) DEFAULT 'deleted' NOT NULL UNIQUE,
 	memPwd VARCHAR(200) NOT NULL,
 	memName VARCHAR(50) NOT NULL,
 	memEmail VARCHAR(50) DEFAULT NULL,
@@ -43,11 +62,10 @@ CREATE TABLE smgMember(
 	PRIMARY KEY(memIdx)
 );
 
-SELECT * FROM smgMember;
-DELETE FROM smgMember WHERE memID = 'ningning';
+INSERT INTO smgMember (memIdx, memID, memPwd, memName, memEmail, memProfile, is_active, memAddr, latitude, longitude) 
+VALUES (0, 'deleted', 'ssy917', '탈퇴한 회원', NULL, 'defaultProfile.jpg', FALSE, NULL, 0, 0);
 
 ALTER TABLE smgMember ALTER COLUMN memPwd TYPE VARCHAR(200), ALTER COLUMN memPwd SET NOT NULL;
-ALTER TABLE smgMember ALTER COLUMN memProfile TYPE VARCHAR(300), ALTER COLUMN memProfile SET DEFAULT 'default_profile.png';
 
 ------ authVO -----------
 
@@ -62,12 +80,3 @@ UPDATE smgAuth SET auth = 'ROLE_MANAGER' WHERE memID = 'ningning';
 INSERT INTO smgAuth VALUES (DEFAULT, 'winter', 'ROLE_WRITE');
 
 -- 임시 데이터 주입 ------------------------------------------------------------------------------------------
-INSERT INTO smgMember
-SELECT COALESCE(MAX(memIdx)+1, 1),'admin','ssy917','신민기','010-1111-1111'
-FROM smgMember;
-
-
-INSERT INTO smgBoard 
-SELECT COALESCE(MAX(BoardIdx)+1, 1), 'admin', 'testTitle01', 'testContent123', '신민기', NOW(), 0,
-COALESCE(MAX(boardGroup) +1, 0), 0, 0, 1
-FROM smgBoard;

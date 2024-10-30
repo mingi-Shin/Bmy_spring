@@ -81,8 +81,6 @@
 			});
 		}
 	}
-  /* 아이디 최소자릿수 확인 */
-  
 	
 	/* 비밀번호 최소자릿수 확인 */
 	function checkPasswordNum(){
@@ -230,6 +228,8 @@
 	    			</td>
 	    		</tr>
     		</table>
+    		
+    		<!-- 임시 코드 -->
     		<input type="hidden" id="latitude" name="latitude" value="1.0">
     		<input type="hidden" id="longitude" name=longitude" value="2.0" >
     		<input type="hidden" id="email" name="memEmail" value="">

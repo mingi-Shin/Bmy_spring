@@ -11,13 +11,12 @@
 	</select>
 	
 	<insert id="insertBoard" parameterType="kr.mingi.entity.Board"  >
-		<selectKey keyProperty="boardIdx,boardGroup" resultType="kr.mingi.entity.Board" order="BEFORE">
-			SELECT COALESCE(MAX(boardIdx) +1, 1) AS boardIdx,
-							COALESCE(MAX(boardGroup) +1, 0) AS boardGroup
+		<selectKey keyProperty="boardIdx" resultType="kr.mingi.entity.Board" order="BEFORE">
+			SELECT COALESCE(MAX(boardIdx) +1, 1) AS boardIdx
 			FROM smgBoard
 		</selectKey>
-		INSERT INTO smgBoard (boardIdx, memID, title, content, writer, boardGroup, boardSequence, boardLevel, boardAvailable)
-		VALUES (#{boardIdx}, #{memID}, #{title}, #{content}, #{writer}, #{boardGroup}, 0, 0, TRUE)
+		INSERT INTO smgBoard (boardIdx, memID, title, content, writer, boardAvailable)
+		VALUES (#{boardIdx}, #{memID}, #{title}, #{content}, #{writer}, TRUE)
 	</insert>
 	
 	<delete id="deleteBoard" parameterType="int">
