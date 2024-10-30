@@ -18,10 +18,11 @@ public class CommentServiceImpl implements CommentService {
 	@Autowired
 	private CommentMapper commMapper;
 
+	//해당 게시물 댓글 리스트 
 	@Override
-	public List<Comment> getCommentList(int boardIdx) {
+	public List<Comment> getCommentList(int boardIdx, String sortOrder) {
 		try {
-			List<Comment> commList= commMapper.getCommentList(boardIdx);
+			List<Comment> commList= commMapper.getCommentList(boardIdx, sortOrder);
 			return commList;
 		} catch (DataAccessException e) { // DB관련오류 
 			log.error("DB접근 중 오류 발생", e);

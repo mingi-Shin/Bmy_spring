@@ -10,8 +10,7 @@ public class Comment {
 	private String memID;
 	private String comment;
 	private int boardIdx;
-	private int boardSequence;
-	private int boardLevel;
+	private int parentIdx;
 	private Date indate;
 	private boolean commentAvailable;
 }

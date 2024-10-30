@@ -6,7 +6,7 @@ import kr.mingi.entity.Comment;
 
 public interface CommentService {
 	
-	public List<Comment> getCommentList(int boardIdx); //해당게시판 댓글 
+	public List<Comment> getCommentList(int boardIdx, String sortOrder); //해당게시판 댓글 
 	
 	public void insertComment(Comment vo);
 	

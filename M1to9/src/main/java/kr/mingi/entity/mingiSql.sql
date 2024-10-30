@@ -32,12 +32,12 @@ CREATE TABLE smgComment(
 	memID VARCHAR(50) NOT NULL,
 	comment VARCHAR(500) NOT NULL,
 	boardIdx INT NOT NULL,
-	commentLevel INT NOT NULL, -- 들여쓰기 (게시물댓글:1, 대댓글:2 ...)
-	commentSequence INT NOT NULL, -- 댓글순서
+	parentIdx INT DEFAULT NULL, -- 대댓글일 경우 부모 댓글 ID (자신과의 관계)
 	indate TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
 	commentAvailable BOOLEAN DEFAULT TRUE,
 	CONSTRAINT fk_member_comment FOREIGN KEY (memID) REFERENCES smgMember(memID) ON DELETE SET DEFAULT, --댓글단 회원 탈퇴시, 댓글은 기본값으로.. (0, "탈퇴한 회원") 
-	CONSTRAINT fk_board_comment FOREIGN KEY (boardIdx) REFERENCES smgBoard(boardIdx) ON DELETE CASCADE
+	CONSTRAINT fk_board_comment FOREIGN KEY (boardIdx) REFERENCES smgBoard(boardIdx) ON DELETE CASCADE,
+	CONSTRAINT fk_parent_comment FOREIGN KEY (parentIdx) REFERENCES smgComment(commentIdx) ON DELETE CASCADE -- 부모 댓글 외래 키
 );
 
 

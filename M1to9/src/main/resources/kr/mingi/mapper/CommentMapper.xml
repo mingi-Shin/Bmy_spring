@@ -1,28 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.mingi.mapper.CommentMapper">
-
-
-	<!-- 댓글정렬: 최신/오래된 -->
+	
 	<select id="getCommentList" resultType="kr.mingi.entity.Comment">
-		SELECT * FROM smgComment WHERE BoardIdx = #{boardIdx} 
-		ORDER BY indate ${sortOrder}, commentLevel ASC, commentSequence ASC 
+    SELECT * FROM smgComment WHERE BoardIdx = #{boardIdx} 
+    ORDER BY 
+        CASE 
+            WHEN parentIdx IS NULL THEN 0 <!-- 부모 댓글 우선 -->
+            ELSE 1 
+        END, 
+        COALESCE(parentIdx, commentIdx) ASC, <!-- 부모 댓글은 최신순 -->
+        indate ASC <!-- 대댓글은 생성순으로 정렬 -->
+    ${sortOrder}
 	</select>
 	
-	<!-- 부모댓글 레벨 확인 -->
-	<select id="getCommentLevel" resultType="kr.mingi.entity.Comment">
-		SELECT commentLevel FROM smgComment WHERE commentIdx = #{commentIdx}
-	</select>
-	
-	<!-- 댓글작성: 1차댓글은 서비스에서 vo.setCommentLevel을 1로 고정, 대댓글은 부모댓글 레벨 확인 활용  -->
+	<!-- 댓글작성: 1차댓글은 서비스에서 vo.setCommentLevel을 1로 고정, 대댓글은 부모댓글 레벨 확인 후 +1  -->
 	<insert id="insertComment" parameterType="kr.mingi.entity.Comment">
-		<selectKey keyProperty="commentSequence" resultType="int" order="BEFORE">
-			SELECT COALESCE(MAX(commentSequence)+1, 0) AS commentSequence FROM smgComment
-			WHERE boardIdx = #{boardIdx} AND commentLevel = #{commentLevel}
-		</selectKey>
-		INSERT INTO smgComment 
-		VALUES memID = #{memID}, comment = #{comment}, boardIdx = #{boardIdx},  
-						commentLevel = #{commentLevel}, commentSequence = #{commentSequence} 			 
+		INSERT INTO smgComment (memID, comment, boardIdx, parentIdx) <!-- 명시적으로 써주는게 좋다 -->
+		VALUES (#{memID}, #{comment}, #{boardIdx}, #{parentIdx}) 			 
 	</insert>
 
 </mapper>
