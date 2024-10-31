@@ -21,19 +21,21 @@ public class CommentTest {
 	@Autowired
 	private CommentMapper commMapper;
 	
-	//@Test
+	@Test
 	public void insert() {
 		Comment commVO = new Comment();
-		commVO.setMemID("ningning");
-		commVO.setBoardIdx(1);
-		commVO.setComment("첫번째 댓글: 과일");
+		commVO.setMemID("winter");
+		commVO.setMemName("윈터");
+		commVO.setBoardIdx(2);
+		commVO.setComment("2번째 댓글_1대댓글: 윈터가 민기 더 좋아하거든"); //parentIdx = null
+		commVO.setParentIdx(2); //null을 넣으려면 int가 아니라 integer해야함 
 		commMapper.insertComment(commVO);
 		log.info(commVO);
 	}
 	
 	//@Test
 	public void list() {
-		List<Comment> commList = commMapper.getCommentList(1, "DESC");
+		List<Comment> commList = commMapper.getCommentList(2, "DESC");
 		for(Comment vo : commList) {
 			log.info(vo);
 		}

@@ -25,6 +25,9 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
+		
+		getCommentList();
+		
 		let msgBody = "${msgBody}";
 		if(msgBody !== ""){
 			alert(msgBody);
@@ -32,7 +35,7 @@
 	
 	});
 
-
+	//게시물 삭제
 	function deleteBoard(boardIdx){
 		$.ajax({
 			url: '/synchBoard/delete/' + boardIdx,
@@ -46,7 +49,56 @@
 			},
 			error: function(){alert("error발생")}
 		});
+	}
+	
+	//댓글 불러오기
+	function getCommentList(){
+		console.log('댓글불렁모');
+		let boardIdx = '${vo.boardIdx}';
 		
+		$.ajax({
+			url: '${contextPath}/comment/list', //contextPath 생략하면 못찾아 
+			type: 'GET',
+			data: {
+				'boardIdx' : boardIdx,
+				'sortOrder' : 'DESC'
+			},
+			success: function(data){
+				makeCommentList(data);
+				console.log(data);
+				
+			},
+			error: function(xhr, status, error) {
+			    console.error("댓글 리스트 불러오기 실패:");
+			    console.error("상태 코드:", xhr.status);         // HTTP 상태 코드 (예: 404, 500 등)
+			    console.error("상태 텍스트:", xhr.statusText);    // 상태 텍스트 (예: "Not Found" 등)
+			    console.error("응답 본문:", xhr.responseText);   // 서버가 반환한 오류 메시지 본문
+			    console.error("에러 메시지:", error);            // JavaScript 오류 메시지
+			}
+		});
+	}
+	
+	function makeCommentList(data){
+		let htmlList = "";
+		if(data !== null){
+			$.each(data, function(index, vo){ //JQuery문: data가 배열이든 객체든 반복 
+				htmlList += "<tr>";
+				htmlList += "<td>" + vo.memName + "</td>";
+				htmlList += "<td>" + vo.indate + "</td>";
+				htmlList += "</tr>";
+				htmlList += "<tr>";
+				htmlList += "<td>" + vo.comment  + "</td>";
+				htmlList += "</tr>";
+			});
+		} else {
+			htmlList += "<tr>";
+			htmlList += "<td>";
+			htmlList += "첫 댓글을 작성해보세요!";
+			htmlList += "</td>";
+			htmlList += "</tr>";
+		}
+		
+		$("#commentTableBody").html(htmlList);
 	}
 	
 </script>
@@ -81,7 +133,7 @@
             </tr>
             <tr>
             	<th>작성일</th>
-            	<td><fmt:formatDate pattern="yyyy-MM-dd" value= "${vo.indate }" /></td>
+            	<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value= "${vo.indate }" /></td>
             </tr>
             
           </tbody>
@@ -103,17 +155,36 @@
       
       <!-- 댓글 공간: 새로고침 버튼ajax구현도 가능 -->
       <div>
-      	${voList }
+      	<table class="table table-striped table-borderless" >
+      		<tbody id="commentTableBody">
+      		
+      		</tbody>
+      	</table>
       </div>
       
-      <!-- 댓글 작성란: 보통 ajax -->
-      <div>
-      	
-      </div>
+      <!-- 1차 부모댓글: parentIdx = null -->
+      <security:authorize access="hasRole('ROLE_WRITE')"> 
+	      <div>
+	      	<form action="" method="post"> 
+	      		<table class="table table-striped table-borderless">
+	      			<tr>
+	      				<th>
+	      					<input type="text" id="memName" class="form-control" value="${mvo.member.memName }" readOnly>
+	      				</th>
+	      				<td>
+	      					<input type="text" id="comment" class="form-control" name="comment" >
+	      					<input type="hidden" id="memID" class="form-control" name="memID" value="${mvo.member.memID}">
+	      					<input type="hidden" id="boardIdx" class="form-control" name="boardIdx" value="${vo.boardIdx }">
+	      					<input type="hidden" id="parentIdx" class="form-control" name="parentIdx" value="NULL">
+	      				</td>
+	      			</tr>
+	      		</table>
+	      	</form>
+	      </div>
+      </security:authorize>
+      
       <div class="card-footer text-muted text-center">
         스프2_(답변게시판)<hr>
-        ${vo }
-        
       </div>
     </div>
   </div>

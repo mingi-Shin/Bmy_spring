@@ -125,7 +125,7 @@
 	  			htmlList += "</tbody>";
 	  			htmlList += "</table>";
 	  			
-	  			$("#view").html(htmlList);
+	  			$("#view").html(htmlList); 
 	  	  		
   	  		$("#view").css("display", "block");  // 글쓰기 완료후 리스트창 오픈
   	  		$("#writeForm").css("display", "none"); // 글쓰기 완료후 글쓰기 폼 닫기

@@ -30,8 +30,10 @@ CREATE TABLE boardLike(
 CREATE TABLE smgComment(
 	commentIdx SERIAL PRIMARY KEY,
 	memID VARCHAR(50) NOT NULL,
+	memName VARCHAR(50) NOT NULL,
 	comment VARCHAR(500) NOT NULL,
 	boardIdx INT NOT NULL,
+	commentGroup INT NOT NULL,
 	parentIdx INT DEFAULT NULL, -- 대댓글일 경우 부모 댓글 ID (자신과의 관계)
 	indate TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
 	commentAvailable BOOLEAN DEFAULT TRUE,
@@ -39,6 +41,9 @@ CREATE TABLE smgComment(
 	CONSTRAINT fk_board_comment FOREIGN KEY (boardIdx) REFERENCES smgBoard(boardIdx) ON DELETE CASCADE,
 	CONSTRAINT fk_parent_comment FOREIGN KEY (parentIdx) REFERENCES smgComment(commentIdx) ON DELETE CASCADE -- 부모 댓글 외래 키
 );
+
+ALTER TABLE smgComment ADD COLUMN memName VARCHAR(50) NOT NULL;
+
 
 
 
@@ -80,3 +85,5 @@ UPDATE smgAuth SET auth = 'ROLE_MANAGER' WHERE memID = 'ningning';
 INSERT INTO smgAuth VALUES (DEFAULT, 'winter', 'ROLE_WRITE');
 
 -- 임시 데이터 주입 ------------------------------------------------------------------------------------------
+
+

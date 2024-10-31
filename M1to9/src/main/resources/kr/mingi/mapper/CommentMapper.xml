@@ -3,21 +3,18 @@
 <mapper namespace="kr.mingi.mapper.CommentMapper">
 	
 	<select id="getCommentList" resultType="kr.mingi.entity.Comment">
-    SELECT * FROM smgComment WHERE BoardIdx = #{boardIdx} 
-    ORDER BY 
-        CASE 
-            WHEN parentIdx IS NULL THEN 0 <!-- 부모 댓글 우선 -->
-            ELSE 1 
-        END, 
-        COALESCE(parentIdx, commentIdx) ASC, <!-- 부모 댓글은 최신순 -->
-        indate ASC <!-- 대댓글은 생성순으로 정렬 -->
-    ${sortOrder}
+		SELECT * FROM smgComment WHERE boardIdx = #{boardIdx} 
+		ORDER BY COALESCE(parentIdx, commentIdx) ${sortOrder}, indate ASC
 	</select>
-	
-	<!-- 댓글작성: 1차댓글은 서비스에서 vo.setCommentLevel을 1로 고정, 대댓글은 부모댓글 레벨 확인 후 +1  -->
-	<insert id="insertComment" parameterType="kr.mingi.entity.Comment">
-		INSERT INTO smgComment (memID, comment, boardIdx, parentIdx) <!-- 명시적으로 써주는게 좋다 -->
-		VALUES (#{memID}, #{comment}, #{boardIdx}, #{parentIdx}) 			 
-	</insert>
 
+	
+	<!-- 댓글작성: 1댓글은 NULL, 대댓글은 부모댓글의 commentIdx -->
+	<insert id="insertComment" parameterType="kr.mingi.entity.Comment">
+		INSERT INTO smgComment (memID, memName, comment, boardIdx, parentIdx, commentGroup)
+		VALUES (#{memID}, #{memName}, #{comment}, #{boardIdx}, #{parentIdx}, #{commentGroup})
+	</insert>
+	<!-- commentGroup은 부모댓글과 자식댓글 묶음인데 (정렬하기 편하기도 하고), 어떻게 처리할까? DB에서 or 서비스에서 -->
+	
+	
+	
 </mapper>
