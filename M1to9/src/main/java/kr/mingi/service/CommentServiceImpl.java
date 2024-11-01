@@ -38,13 +38,12 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	public void insertComment(Comment vo) {
-		Comment commVO = new Comment();
 		try {
-			int commLevel = commMapper.getCommentLevel(vo.getCommentIdx());
-			if(commLevel == 1) {
-				//1차댓글임
-				
-				
+			if(vo.getParentIdx() == null) { //1차댓글: parentIdx=null, Group=CommentIdx 
+				vo.setCommentGroup(vo.getCommentIdx()); 
+				commMapper.insertComment(vo);
+			} else {
+				commMapper.insertComment(vo); //2차 이후 댓글 
 			}
 		} catch (DataAccessException e) { // DB관련오류 
 			log.error("DB접근 중 오류 발생", e);

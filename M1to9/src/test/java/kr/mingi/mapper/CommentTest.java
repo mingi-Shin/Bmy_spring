@@ -27,8 +27,9 @@ public class CommentTest {
 		commVO.setMemID("winter");
 		commVO.setMemName("윈터");
 		commVO.setBoardIdx(2);
-		commVO.setComment("2번째 댓글_1대댓글: 윈터가 민기 더 좋아하거든"); //parentIdx = null
-		commVO.setParentIdx(2); //null을 넣으려면 int가 아니라 integer해야함 
+		commVO.setCommentGroup(2);
+		commVO.setComment("2번 댓글의 댓글: 아이브는 잘 모르겠어"); //parentIdx = null
+		commVO.setParentIdx(3); //null을 넣으려면 int가 아니라 integer해야함 
 		commMapper.insertComment(commVO);
 		log.info(commVO);
 	}

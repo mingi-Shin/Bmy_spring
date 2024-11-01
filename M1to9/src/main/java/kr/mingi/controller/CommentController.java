@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.mingi.entity.Comment;
 import kr.mingi.service.CommentService;
 import kr.mingi.service.MemberService;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 @RequestMapping("/comment")
 @RestController
 public class CommentController {
@@ -46,9 +49,11 @@ public class CommentController {
 		return commList;
 	}
 	
-	@PutMapping("/register")
-	public String insertComment(@ModelAttribute Comment vo) {
-		
-		return "redirect:/comment/list/" + vo.getBoardIdx();
+	@PostMapping("/register")
+	public void insertComment(Comment vo) {
+		commService.insertComment(vo); 
 	}
+	
+	
+	
 }

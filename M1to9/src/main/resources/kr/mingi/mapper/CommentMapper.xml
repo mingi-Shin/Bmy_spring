@@ -4,7 +4,7 @@
 	
 	<select id="getCommentList" resultType="kr.mingi.entity.Comment">
 		SELECT * FROM smgComment WHERE boardIdx = #{boardIdx} 
-		ORDER BY COALESCE(parentIdx, commentIdx) ${sortOrder}, indate ASC
+		ORDER BY commentGroup ${sortOrder}, COALESCE(parentIdx, commentIdx) ASC, indate ASC
 	</select>
 
 	
@@ -13,7 +13,15 @@
 		INSERT INTO smgComment (memID, memName, comment, boardIdx, parentIdx, commentGroup)
 		VALUES (#{memID}, #{memName}, #{comment}, #{boardIdx}, #{parentIdx}, #{commentGroup})
 	</insert>
-	<!-- commentGroup은 부모댓글과 자식댓글 묶음인데 (정렬하기 편하기도 하고), 어떻게 처리할까? DB에서 or 서비스에서 -->
+	<!-- 
+		commentGroup은 최상위 부모의 commentGroup을 따라가게
+		= parentIdx가 null이면 commentGroup은 자기 commentIdx,
+			parentIdx가 존재하면, 
+		 
+		parentIdx는 부모댓글:null, 대댓글:부모commentIdx,
+		= ajax에서 parentIdx를 "" 빈 문자열로 전달, 
+			자식댓글은 댓글작성칸 동적생성해서 부모댓글의 cvo.commentIdx를 parentIdx로 대입  
+	 -->
 	
 	
 	
