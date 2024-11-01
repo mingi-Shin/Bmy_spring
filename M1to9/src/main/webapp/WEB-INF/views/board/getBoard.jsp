@@ -140,7 +140,7 @@
     $("#commentTableBody").html(htmlList);
 }
 	
-	//댓글작성
+	//댓글작성 (여기는 if문이라 좀더 수정이 필요하다. )
 	function registerComment(event){
 		console.log("registerComment() 실행 ");
 		
