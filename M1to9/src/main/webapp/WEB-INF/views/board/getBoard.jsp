@@ -31,6 +31,21 @@
 			alert(msgBody);
 		}
 		
+		// 링크 깔끔하게 해주기: data-** 상요 
+		$("button").on("click", function(event){
+			let formData = $("#frm");
+			let btn = $(this).data("btn"); // 누른 버튼의 data- ?? 값을 가져와라
+			if(btn == 'modify'){
+				//let boardIdx = formData.find("#goPageIdx").val(); // find도 있음
+				formData.attr("action", "${contextPath}/synchBoard/modify/${boardIdx}"); // pathVariable은 URL로 직접 자료를 받기때문에 명시해줘야함 
+			} else if(btn == 'list') {
+				formData.find("#goPageIdx").remove();
+				formData.attr("action", "${contextPath}/synchBoard/list");
+			}
+			formData.submit();
+		});
+		
+		
 		getCommentList();
 		
 		openReComment(this);
@@ -230,13 +245,13 @@
         </table>
         <div class="text-center mt-4">
           <c:if test="${!empty mvo && mvo.member.memID eq vo.memID}">
-            <button type="button" class="btn btn-outline-primary me-2" onclick="location.href='${contextPath}/synchBoard/modify/${vo.boardIdx }'">수정</button>
+            <button type="button" data-btn="modify" class="btn btn-outline-primary me-2">수정</button>
             
           </c:if>
           <c:if test="${empty mvo || mvo.member.memID ne vo.memID}">
             <button type="button" class="btn btn-outline-primary me-2" disabled>수정</button>
           </c:if>
-          <button type="button" class="btn btn-outline-info" onclick="location.href='${contextPath}/synchBoard/list'">목록으로</button>
+          <button type="button" data-btn="list" class="btn btn-outline-info">목록으로</button>
           
         </div>
       </div>
@@ -273,6 +288,10 @@
 	      </div>
       </security:authorize>
       
+      <form id="frm" method="get">
+				<input type="hidden" id="goPageIdx" name="boardIdx" value="<c:out value='${vo.boardIdx}' />" />      
+			</form>
+			
       <div class="card-footer text-muted text-center">
         스프2_(답변게시판)<hr>
       </div>
