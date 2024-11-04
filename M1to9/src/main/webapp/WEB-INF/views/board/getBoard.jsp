@@ -211,11 +211,11 @@
             </tr>
             <tr>
               <th scope="row">제목</th>
-              <td>${vo.title}</td>
+              <td><c:out value="${vo.title}" /></td>
             </tr>
             <tr>
               <th scope="row">내용</th>
-              <td><textarea rows="6" class="form-control" readonly>${vo.content}</textarea></td>
+              <td><textarea rows="6" class="form-control" readonly><c:out value="${vo.content}"/></textarea></td>
             </tr>
             <tr>
               <th scope="row">작성자</th>
@@ -231,12 +231,10 @@
         <div class="text-center mt-4">
           <c:if test="${!empty mvo && mvo.member.memID eq vo.memID}">
             <button type="button" class="btn btn-outline-primary me-2" onclick="location.href='${contextPath}/synchBoard/modify/${vo.boardIdx }'">수정</button>
-            <button type="button" class="btn btn-outline-secondary me-2">답글</button>
             
           </c:if>
           <c:if test="${empty mvo || mvo.member.memID ne vo.memID}">
             <button type="button" class="btn btn-outline-primary me-2" disabled>수정</button>
-            <button type="button" class="btn btn-outline-secondary me-2">답글</button>
           </c:if>
           <button type="button" class="btn btn-outline-info" onclick="location.href='${contextPath}/synchBoard/list'">목록으로</button>
           

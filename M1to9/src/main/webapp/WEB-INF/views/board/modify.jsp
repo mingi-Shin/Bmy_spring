@@ -95,7 +95,7 @@
 									<label class="form-label" for="title">제목: </label>
 								</th>
 	              <td>
-	              	<input class="form-control" id="title" name="title" placeholder="Title" type="text" value="${vo.title }" required>
+	              	<input class="form-control" id="title" name="title" placeholder="Title" type="text" value="<c:out value='${vo.title }' />" required>
 	              	<div class="valid-feedback">Valid</div>
   								<div class="invalid-feedback">Please fill out this field.</div>
 								</td>
@@ -105,7 +105,7 @@
 	              	<label class="form-label" for="content">내용: </label>
 	              </th>
 	              <td>
-         	  			<textarea class="form-control" id="content" name="content" placeholder="Content" rows="10" required>${vo.content }</textarea>
+         	  			<textarea class="form-control" id="content" name="content" placeholder="Content" rows="10" required><c:out value='${vo.content }'/></textarea>
          	  			<div class="valid-feedback">Valid</div>
   								<div class="invalid-feedback">Please fill out this field.</div>
 	              </td>

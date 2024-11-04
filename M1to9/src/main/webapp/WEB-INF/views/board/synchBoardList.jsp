@@ -96,7 +96,7 @@
 			        <tr>
 			          <td>${vo.boardIdx}</td>
 			          <td>
-			            <a href="${contextPath}/synchBoard/get/${vo.boardIdx}">${vo.title}</a>
+			            <a href="${contextPath}/synchBoard/get/${vo.boardIdx}"><c:out value="${vo.title}"/></a> <!-- xss방지  -->
 			          </td>
 			          <td>${vo.writer}</td>
 			          <td>

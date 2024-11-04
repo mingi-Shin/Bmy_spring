@@ -65,6 +65,16 @@
 		
   	});
   	
+  	//HTML동적 생성 시, xss위조 방지
+  	function escapeHtml(unsafe) {
+   		return unsafe
+		    .replace(/&/g, "&amp;")
+		    .replace(/</g, "&lt;")
+		    .replace(/>/g, "&gt;")
+		    .replace(/"/g, "&quot;")
+		    .replace(/'/g, "&#039;");
+  	}
+  	
   	//게시판 목록 불러오기 
   	function loadBoardList(){ 
   		$.ajax({
@@ -93,7 +103,9 @@
 		  		$.each(data, function(index, vo){
 		  			htmlList +="<tr>";
 		  			htmlList +="<td>" + vo.boardIdx + "</td>"; 
-		 	  		htmlList += "<td id='ti"+vo.boardIdx+"'><a href='javascript:goContent("+vo.boardIdx+")'>"+vo.title+"</a></td>";
+		 	  		htmlList += "<td id='ti"+vo.boardIdx+"'><a href='javascript:goContent("+vo.boardIdx+")'>"
+		 	  		htmlList += escapeHtml(vo.title); // XSS 방지를 위해 escapeHtml 사용
+		 	  		htmlList += "</a></td>";
 		 	  		htmlList += "<td>"+ vo.writer +"</td>";
 		 	  		htmlList += "<td>";
 		 	  		htmlList += vo.indate;
