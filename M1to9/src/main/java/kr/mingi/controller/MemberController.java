@@ -35,10 +35,12 @@ public class MemberController {
 
 	@PostMapping("/register")
 	public String register(Member member, RedirectAttributes rttr) {
-		boolean isRegistered = memberService.register(member, rttr);
+		boolean isRegistered = memberService.register(member);
 		if(isRegistered) {
+			rttr.addFlashAttribute("msgBody", "회원가입에 성공하셨습니다.");
 			return "redirect:/";
 		} else {
+			rttr.addFlashAttribute("msgBody", "회원가입에 실패하셨습니다.");
 			return "redirect:/member/memRegister.do";
 		}
 	}

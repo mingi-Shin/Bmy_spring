@@ -136,11 +136,11 @@
 		// 초기 등록버튼 비활성화
 		submitButton.attr('disabled', true);
 		
-		// 나이 값 체크, 아이디 중복확인 유무 체크  
 		
 		submitButton.on('click', checkSubmit);
 		
 		function checkSubmit(){
+			emailComplete();  
 			
 			document.frm.submit();
 		}

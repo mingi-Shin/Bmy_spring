@@ -54,13 +54,12 @@ public class MemberServiceImpl implements MemberService {
 
     // 회원가입
     @Override
-    public boolean register(Member vo, RedirectAttributes rttr) {
+    public boolean register(Member vo) {
         // 서버사이드 검증(= 2차 검증)
         try {
             validateUserInput(vo); // 입력값 검증
         } catch (IllegalArgumentException e) {
         	e.printStackTrace();
-            rttr.addFlashAttribute("msgBody", e.getMessage());
             return false;  // 예외 발생 시 다음 단계 진행하지 않도록 false 리턴
         }
 
@@ -69,7 +68,6 @@ public class MemberServiceImpl implements MemberService {
             checkDuplicate(vo);
         } catch (IllegalArgumentException e) {
         	e.printStackTrace();
-            rttr.addFlashAttribute("msgBody", e.getMessage());
             return false;
         }
 
@@ -78,7 +76,6 @@ public class MemberServiceImpl implements MemberService {
             String encryptedPw = pwEncoder.encode(vo.getMemPwd());
             vo.setMemPwd(encryptedPw);
         } else {
-            rttr.addFlashAttribute("msgBody", "비밀번호가 유효하지 않습니다.");
             return false;
         }
 
@@ -87,7 +84,6 @@ public class MemberServiceImpl implements MemberService {
             memMapper.insertMember(vo);
         } catch (Exception e) {
         	e.printStackTrace();
-            rttr.addFlashAttribute("msgBody", "회원 저장 중 문제가 발생했습니다.");
             return false;  // 예외 발생 시 false 리턴
         }
 
@@ -104,10 +100,8 @@ public class MemberServiceImpl implements MemberService {
             }
         } catch (Exception e) {
         	e.printStackTrace();
-            rttr.addFlashAttribute("msgBody", "권한 저장 중 문제가 발생했습니다.");
             return false;  // 예외 발생 시 false 리턴
         }
-        rttr.addFlashAttribute("msgBody", "회원가입이 완료되었습니다.");
         
         //바로 로그인처리
         Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication(); //null이 아니엇네??

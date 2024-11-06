@@ -14,7 +14,7 @@ import kr.mingi.entity.Member;
 
 public interface MemberService {
 
-	public boolean register(Member vo, RedirectAttributes rttr); 
+	public boolean register(Member vo); 
 	
 	public int checkDuplicate(String memID); 
 	

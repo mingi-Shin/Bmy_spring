@@ -111,7 +111,7 @@ $(document).ready(function(){
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
 		      </div>
-s		    </div>
+		    </div>
 		  </div>
 		</div>
     

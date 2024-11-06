@@ -116,6 +116,55 @@
 			    </c:if>
 			  </tbody>
 			</table>
+			
+			<security:authorize access="hasRole('ADMIN')">
+				<button id="randomRegisterBtn" onclick="randomRegister()">관리자 랜덤글</button>
+			</security:authorize>
+			<script>
+				// memID, title, content, writer,
+				const member = [['winter', '윈터'], ['karina', '카리나'], ['ningning', '닝닝'], ['jijel', '지젤']];
+				const title1 = ['즐거운 ','행복한 ','우울한 ','바쁜 '];
+				const title2 = ['아침', '하루', '오후'];
+				const content = ['월요일입니다.','화요일입니다.','수요일입니다.','목요일입니다.','금요일입니다.','토요일입니다.','일요일입니다.'];
+				
+				function randomRegister(){
+					let selectedM = member[Math.floor(Math.random() * member.length)];
+					let selectedT1 = title1[Math.floor(Math.random() * title1.length)]; 
+					let selectedT2 = title2[Math.floor(Math.random() * title2.length)]; 
+					let selectedC = content[Math.floor(Math.random() * content.length)];
+					
+					$.ajax({
+						url: `${contextPath}/asynchBoard/board/new`,
+						type: 'post',
+						data: {
+							'memID' : selectedM[0],
+							'writer' : selectedM[1],
+							'title' : selectedT1 + selectedT2,
+							'content' : selectedC,
+						},
+						beforeSend: function(xhr){
+			  				xhr.setRequestHeader(csrfHeaderName, csrfTokenValue)
+		  			},
+						success : function(data){
+							window.location.href='${contextPath}/synchBoard/list';
+						},
+						error: function(jqXHR) {
+				    	let errorMessage = "알 수 없는 오류가 발생했습니다.";
+					    if (jqXHR.status === 403) {
+				        errorMessage = "권한이 없습니다. 접근할 수 없습니다.";
+					    } else if (jqXHR.status === 500) {
+				        errorMessage = jqXHR.responseText || "서버 오류가 발생했습니다.";
+					    }
+					    console.log(errorMessage);
+					    alert("오류: " + errorMessage + "\n" + jqXHR.status + "입니다");
+						}
+						
+					});
+					
+				}
+				
+			</script>
+			
 	    <button id="registerButton" class="btn btn-primary float-end">글쓰기 </button>
     </div>
     <div class="card-footer">card foot</div>

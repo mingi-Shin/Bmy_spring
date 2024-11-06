@@ -86,4 +86,6 @@ INSERT INTO smgAuth VALUES (DEFAULT, 'winter', 'ROLE_WRITE');
 
 -- 임시 데이터 주입 ------------------------------------------------------------------------------------------
 
+SELECT * FROM smgBoard ORDER BY indate LIMIT 10 OFFSET 0;
+SELECT * FROM smgBoard ORDER BY indate LIMIT 10 OFFSET 10;
 

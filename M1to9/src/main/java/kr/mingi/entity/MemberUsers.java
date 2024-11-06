@@ -12,7 +12,7 @@ import lombok.Data;
 
 //인증 후 사용자 정보를 저장 (UserDetails)
 @Data
-public class MemberUsers extends User{ //User는 UserDetails인터페이스의 구현체 
+public class MemberUsers extends User{ //User는 UserDetails인터페이스의 구현체 (security의)
 
 	private Member member; // MemberUsers 객체가 Member 객체를 참조가능: MemberUsers는 Member와 User 클래스의 합성을 위한 클래스이다. 
 	
