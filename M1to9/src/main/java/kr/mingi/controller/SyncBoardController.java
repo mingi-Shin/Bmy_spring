@@ -18,6 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.mingi.common.BusinessException;
 import kr.mingi.entity.Board;
+import kr.mingi.entity.Criteria;
+import kr.mingi.entity.PageMaker;
 import kr.mingi.mapper.BoardMapper;
 import kr.mingi.service.BoardService;
 import kr.mingi.service.MemberService;
@@ -30,9 +32,18 @@ public class SyncBoardController {
 	private BoardService boardService;
 
 	@GetMapping("/list")
-	public String getBoardList(Model model, RedirectAttributes rttr ) {
-		List<Board> boardList = boardService.getBoardList();
+	public String getBoardList(Criteria cri, Model model, RedirectAttributes rttr ) {
+		List<Board> boardList = boardService.getBoardList(cri);
 		model.addAttribute("vo", boardList);
+		rttr.addFlashAttribute("msgBody", "동기 게시판 입장");
+		
+		//페이징 처리에 필요한 부분
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(boardService.totalCount());//전체 페이지의 수, makePaging()실행됨  
+		model.addAttribute("pageMaker", pageMaker);
+		
+		
 		return "/board/synchBoardList";
 	}
 	

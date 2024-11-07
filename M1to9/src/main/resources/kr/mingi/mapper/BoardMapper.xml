@@ -2,8 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.mingi.mapper.BoardMapper">
 
-	<select id="getBoardList" resultType="kr.mingi.entity.Board">
+	<select id="getBoardList" resultType="kr.mingi.entity.Board" parameterType="kr.mingi.entity.Criteria">
 		SELECT * FROM smgBoard ORDER BY boardIdx DESC
+		LIMIT #{pageStart} OFFSET #{perPageNum}
 	</select>
 	
 	<select id="getTheBoard" resultType="kr.mingi.entity.Board">
@@ -12,7 +13,7 @@
 	
 	<insert id="insertBoard" parameterType="kr.mingi.entity.Board"  >
 		<selectKey keyProperty="boardIdx" resultType="kr.mingi.entity.Board" order="BEFORE">
-			SELECT COALESCE(MAX(boardIdx) +1, 1) AS boardIdx
+			SELECT COALESCE(MAX(boardIdx) +1, 0) AS boardIdx
 			FROM smgBoard
 		</selectKey>
 		INSERT INTO smgBoard (boardIdx, memID, title, content, writer, boardAvailable)
@@ -31,7 +32,9 @@
 		UPDATE smgBoard SET count = count + 1 WHERE boardIdx = #{boardIdx}
 	</update>
 	
-
+	<select id="totalCount">
+		SELECT COUNT(*) FROM smgBoard
+	</select>
 	
 
 </mapper>

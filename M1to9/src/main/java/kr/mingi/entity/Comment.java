@@ -11,7 +11,7 @@ public class Comment {
 	private String memName;
 	private String comment;
 	private int boardIdx;
-	private Integer commentGroup; //1번 부모 댓글의 idx? 아니면 따로?
+	private Integer commentGroup; //1번 부모 댓글의 idx, 그의 자손들(댓글들)
 	private Integer parentIdx; 
 	private Date indate;
 	private boolean commentAvailable;

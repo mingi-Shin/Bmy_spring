@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.mingi.common.BusinessException;
 import kr.mingi.entity.Board;
+import kr.mingi.entity.Criteria;
 import kr.mingi.entity.Member;
 import kr.mingi.mapper.BoardMapper;
 import kr.mingi.mapper.MemberMapper;
@@ -23,9 +24,9 @@ public class BoardServiceImpl implements BoardService {
 	private BoardMapper boardMapper;
 
 	@Override
-	public List<Board> getBoardList() {
+	public List<Board> getBoardList(Criteria cri) {
 		try {
-			List<Board> boardList = boardMapper.getBoardList();
+			List<Board> boardList = boardMapper.getBoardList(cri);
 			return boardList;
 		} catch (DataAccessException e) { // DB관련오류 
 			log.error("DB접근 중 오류 발생", e);
@@ -123,6 +124,12 @@ public class BoardServiceImpl implements BoardService {
 	public void replyProcess(Board vo) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public int totalCount() {
+		int totalCount = boardMapper.totalCount();
+		return totalCount;
 	}
 	
 	

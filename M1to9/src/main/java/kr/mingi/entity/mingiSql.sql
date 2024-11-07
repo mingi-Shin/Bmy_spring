@@ -1,5 +1,4 @@
 ------- smgBoard --------
-
 CREATE TABLE smgBoard(
 	boardIdx INT PRIMARY KEY, --1씩 증가할거임: COALSCE..
 	memID VARCHAR(50) NOT NULL,
@@ -14,9 +13,6 @@ CREATE TABLE smgBoard(
 -- 최적화: 그룹과 시퀀스를 기준으로 정렬하는 인덱스
 CREATE INDEX idx_board_group_seq ON smgBoard (boardGroup, boardSequence);
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
 --좋아요 테이블(좋/싫)
 CREATE TABLE boardLike(
 	likeIdx SERIAL PRIMARY KEY,
@@ -43,10 +39,6 @@ CREATE TABLE smgComment(
 );
 
 ALTER TABLE smgComment ADD COLUMN memName VARCHAR(50) NOT NULL;
-
-
-
-
 --SELECT IFNULL(MAX(boardIdx)+1, 1) FROM tblBoard; --> MySql 방식 
 SELECT COALESCE(MAX(boardIdx)+1, 1) FROM tblBoard; --postgresql 방식 
  
@@ -86,6 +78,6 @@ INSERT INTO smgAuth VALUES (DEFAULT, 'winter', 'ROLE_WRITE');
 
 -- 임시 데이터 주입 ------------------------------------------------------------------------------------------
 
-SELECT * FROM smgBoard ORDER BY indate LIMIT 10 OFFSET 0;
-SELECT * FROM smgBoard ORDER BY indate LIMIT 10 OFFSET 10;
+SELECT * FROM smgBoard ORDER BY indate LIMIT 5 OFFSET 0;
+SELECT * FROM smgBoard ORDER BY indate LIMIT 5 OFFSET 15;
 

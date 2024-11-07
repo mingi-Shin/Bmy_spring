@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.mingi.entity.Board;
+import kr.mingi.entity.Criteria;
 import kr.mingi.service.BoardService;
 
 @RestController //  @ResponsBody 생략 가능 
@@ -33,8 +34,8 @@ public class AsyncBoardController {
 	}
 
 	@GetMapping("/list")
-	public List<Board> getBoardList() {
-		List<Board> boardList = boardService.getBoardList();
+	public List<Board> getBoardList(Criteria cri) {
+		List<Board> boardList = boardService.getBoardList(cri);
 		return boardList;
 	}
 	
