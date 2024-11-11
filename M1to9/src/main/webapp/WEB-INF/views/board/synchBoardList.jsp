@@ -171,20 +171,26 @@
     <div class="card-footer">card foot</div>
     ${mvo }
   </div>
-	<!-- 페이징 처리 뷰 -->
-	<div style="text-align: center;">
-			
+	
+	<!-- 페이징 처리 뷰: ${pageMaker } -->
+	<div class="pull-right">  
+		<ul class="pagination">
 	<!-- 이전처리 -->
 	
 			
 	<!-- 페이지 번호 처리 -->
-
-
+			<c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
+			  <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+			  <li class="page-item"><a class="page-link" href="#">1</a></li>
+			  <li class="page-item active"><a class="page-link" href="#">2</a></li>
+			  <li class="page-item"><a class="page-link" href="#">3</a></li>
+			  <li class="page-item"><a class="page-link" href="#">Next</a></li>
+			</c:forEach>
 	<!-- 다음처리 -->
-	
-	
+		</ul>		
 	</div>
 	<!-- END -->
+	
 	<div class="modal fade" id="myMessage" role="dialog">
 	  <div class="modal-dialog">
 	    <div class="modal-content">

@@ -8,7 +8,7 @@ public class Criteria {
 	private int perPageNum; // 한 페이지의 가용 게시글 수 
 	
 	public Criteria() {
-		// 생성시 초기값 
+		// 생성시 설정값  
 		this.currentPage = 1;
 		this.perPageNum = 10;
 	}

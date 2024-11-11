@@ -43,7 +43,6 @@ public class SyncBoardController {
 		pageMaker.setTotalCount(boardService.totalCount());//전체 페이지의 수, makePaging()실행됨  
 		model.addAttribute("pageMaker", pageMaker);
 		
-		
 		return "/board/synchBoardList";
 	}
 	

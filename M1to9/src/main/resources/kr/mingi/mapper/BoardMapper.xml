@@ -32,7 +32,7 @@
 		UPDATE smgBoard SET count = count + 1 WHERE boardIdx = #{boardIdx}
 	</update>
 	
-	<select id="totalCount">
+	<select id="totalCount" resultType="int">
 		SELECT COUNT(*) FROM smgBoard
 	</select>
 	

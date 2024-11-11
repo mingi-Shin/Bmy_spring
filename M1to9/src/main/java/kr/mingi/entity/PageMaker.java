@@ -30,7 +30,7 @@ public class PageMaker {
 		
 		// 3.화면에 보여질 시작 페이지 번호 
 		startPage = (endPage - displayPageNum) + 1;
-		if(startPage <= 0) startPage = 1;
+		if(startPage <= 0) startPage = 1; //endPage가 마지막에서 일찍 끝날경우 
 		
 		// 4.전체의 마지막 페이지 번호 계산
 		int tempEndPage = (int)Math.ceil(totalCount/(double)cri.getPerPageNum());
