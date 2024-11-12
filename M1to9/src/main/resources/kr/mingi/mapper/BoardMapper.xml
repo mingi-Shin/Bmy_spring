@@ -4,7 +4,7 @@
 
 	<select id="getBoardList" resultType="kr.mingi.entity.Board" parameterType="kr.mingi.entity.Criteria">
 		SELECT * FROM smgBoard ORDER BY boardIdx DESC
-		LIMIT #{pageStart} OFFSET #{perPageNum}
+		LIMIT #{perPageNum} OFFSET #{pageStart}
 	</select>
 	
 	<select id="getTheBoard" resultType="kr.mingi.entity.Board">

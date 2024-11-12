@@ -18,5 +18,8 @@ public class Criteria {
 		return (currentPage-1) * perPageNum;	// 0~		10~		20~
 	}
 	
+	//myBatis 에서 #{pageStart}를 찾고있는데, 해당 변수가 없으면 getPageStart()로 값을 가져온다. 
+	
+	
     
 }

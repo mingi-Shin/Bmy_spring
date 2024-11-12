@@ -33,18 +33,21 @@
 			});
 			
 			//관리자용 글 랜덤생성기 
-			randomRegister();
+			$("#randomRegisterBtn").click(randomRegister);
 			  
 		});
 		
 		function randomRegister(){
+			console.log("랜덤글 등록 실행");
 			// memID, title, content, writer,
 			const member = [['winter', '윈터'], ['karina', '카리나'], ['ningning', '닝닝'], ['jijel', '지젤']];
 			const title1 = ['즐거운 ','행복한 ','우울한 ','바쁜 ', '절망적인 '];
 			const title2 = ['아침', '오후', '하루', '야식시간'];
 			const content = ['월요일입니다.','화요일입니다.','수요일입니다.','목요일입니다.','금요일입니다.','토요일입니다.','일요일입니다.'];
+			register();
 			
 			function register(){
+				console.log("register()실행");
 				let selectedM = member[Math.floor(Math.random() * member.length)];
 				let selectedT1 = title1[Math.floor(Math.random() * title1.length)]; 
 				let selectedT2 = title2[Math.floor(Math.random() * title2.length)]; 
@@ -126,7 +129,7 @@
   <div class="card">
     <div class="card-header" >게시판 목록</div>
 		<security:authorize access="hasRole('ADMIN')">
-			<button id="randomRegisterBtn" onclick="randomRegister()">관리자 랜덤글</button>
+			<button type="button" id="randomRegisterBtn">관리자 랜덤글 등록</button>
 		</security:authorize>
     <div class="card-body" >
     
@@ -169,24 +172,33 @@
 	    <button id="registerButton" class="btn btn-primary float-end">글쓰기 </button>
     </div>
     <div class="card-footer">card foot</div>
-    ${mvo }
   </div>
 	
 	<!-- 페이징 처리 뷰: ${pageMaker } -->
-	<div class="pull-right">  
-		<ul class="pagination">
+	<div>  
+		<ul class="pagination justify-content-center" style="margin:20px 0">
 	<!-- 이전처리 -->
-	
-			
+		<c:if test="${pageMaker.prev }">
+		  <li class="paginate_button previous">
+		  	<a class="page-link" href="${contextPath }/synchBoard/list?currentPage=${pageMaker.startPage - 1}">previous</a>
+	  	</li>
+		</c:if>
 	<!-- 페이지 번호 처리 -->
-			<c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
-			  <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-			  <li class="page-item"><a class="page-link" href="#">1</a></li>
-			  <li class="page-item active"><a class="page-link" href="#">2</a></li>
-			  <li class="page-item"><a class="page-link" href="#">3</a></li>
-			  <li class="page-item"><a class="page-link" href="#">Next</a></li>
+			<c:forEach var="pageNum" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
+				<c:if test="${pageMaker.cri.currentPage != pageNum }">
+				  <li class="page-item"><a class="page-link" href="${contextPath }/synchBoard/list?currentPage=${pageNum}">${pageNum }</a></li>
+				</c:if>
+				<c:if test="${pageMaker.cri.currentPage == pageNum }">
+				  <li class="page-item active"><a class="page-link" href="${contextPath }/synchBoard/list?currentPage=${pageNum}">${pageNum }</a></li>
+				</c:if>
 			</c:forEach>
 	<!-- 다음처리 -->
+ 		<c:if test="${pageMaker.next }">
+		  <li class="paginate_button next">
+		  	<a class="page-link" href="${contextPath }/synchBoard/list?currentPage=${pageMaker.endPage + 1}">next</a>
+	  	</li>
+		</c:if>
+	
 		</ul>		
 	</div>
 	<!-- END -->

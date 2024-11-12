@@ -19,8 +19,12 @@ public class BoardServiceTest {
 	@Autowired
 	BoardService boardService;
 	
+	@Autowired
+	MemberService memService;
+	
 	@Test
 	public void testGetList() {
+		//로그인필요 
 		Criteria cri = new Criteria();
 		cri.setCurrentPage(1);
 		cri.setPerPageNum(10);
