@@ -51,7 +51,7 @@ public class SyncBoardController {
 	}
 	
 	@PostMapping("/register")
-	public String registerBoard(@ModelAttribute Board vo, RedirectAttributes rttr) {
+	public String registerBoard(@ModelAttribute Board vo, RedirectAttributes rttr, @ModelAttribute("cri") Criteria cri) {
 		boardService.insertBoard(vo);
 		rttr.addFlashAttribute("msgBody", "게시물이 성공적으로 작성되었습니다.");
 		return "redirect:/synchBoard/list";

@@ -34,6 +34,25 @@
 			
 			//관리자용 글 랜덤생성기 
 			$("#randomRegisterBtn").click(randomRegister);
+			
+			//페이지이동 jQuery로 
+			let pageFrm = $("#pageFrm");
+			$(".page-item a").on("click", function(e){ //page-item하의 a태그들 
+				e.preventDefault(); // e tag의 기능을 막음
+				
+				let currentPage = $(this).attr("href"); //페이지 번호
+				pageFrm.find("#currentPage").val(currentPage);
+				pageFrm.submit(); // ${contextPath}/synchBoard/list
+			});
+			
+			//상세보기 클릭시 이동하기(a링크 태그에는 boardIdx값만 전달) -> 페이지이동 jQuery와 합친 코드 
+			$(".move").on("click", function(e){
+				e.preventDefault(); // a tag의 기능 막음
+				let tag = "<input type='hidden' name='boardIdx' value='"+ boardIdx +"'>";
+				pageFrm.append(tag);
+				pageFrm.attr("action", "${contextPath}/synchBoard/get");
+				pageFrm.submit();
+			});
 			  
 		});
 		
@@ -148,9 +167,16 @@
 			      <c:forEach var="vo" items="${vo}">
 			        <tr>
 			          <td>${vo.boardIdx}</td>
-			          <td>
-			            <a href="${contextPath}/synchBoard/get/${vo.boardIdx}"><c:out value="${vo.title}"/></a> <!-- xss방지  -->
-			          </td>
+			          <c:if test="${vo.boardAvailable eq false }">
+			          	<td class="deleted-data">
+				      			[삭제된 게시물입니다.]
+				      		</td>
+			          </c:if>
+			          <c:if test="${vo.boardAvailable ne false }">
+			          	<td>
+			            <a class="move" href="${vo.boardIdx}"><c:out value="${vo.title}"/></a> <!-- xss방지  -->
+			          	</td>
+			          </c:if>
 			          <td>${vo.writer}</td>
 			          <td>
 			            <fmt:formatDate value="${vo.indate}" pattern="yyyy-MM-dd"/>
@@ -179,30 +205,35 @@
 		<ul class="pagination justify-content-center" style="margin:20px 0">
 	<!-- 이전처리 -->
 		<c:if test="${pageMaker.prev }">
-		  <li class="paginate_button previous">
-		  	<a class="page-link" href="${contextPath }/synchBoard/list?currentPage=${pageMaker.startPage - 1}">previous</a>
+		  <li class="page-item previous">
+		  	<a class="page-link" href="${pageMaker.startPage - 1}">previous</a>
 	  	</li>
 		</c:if>
 	<!-- 페이지 번호 처리 -->
 			<c:forEach var="pageNum" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
-				<c:if test="${pageMaker.cri.currentPage != pageNum }">
-				  <li class="page-item"><a class="page-link" href="${contextPath }/synchBoard/list?currentPage=${pageNum}">${pageNum }</a></li>
-				</c:if>
-				<c:if test="${pageMaker.cri.currentPage == pageNum }">
-				  <li class="page-item active"><a class="page-link" href="${contextPath }/synchBoard/list?currentPage=${pageNum}">${pageNum }</a></li>
-				</c:if>
+				<li class="page-item ${pageMaker.cri.currentPage != pageNum ? '' : 'active' }" >
+				<a class="page-link" href="${pageNum}">
+				${pageNum }
+				</a></li>				
 			</c:forEach>
 	<!-- 다음처리 -->
  		<c:if test="${pageMaker.next }">
-		  <li class="paginate_button next">
-		  	<a class="page-link" href="${contextPath }/synchBoard/list?currentPage=${pageMaker.endPage + 1}">next</a>
+		  <li class="page-item next">
+		  	<a class="page-link" href="${pageMaker.endPage + 1}">next</a>
 	  	</li>
 		</c:if>
-	
 		</ul>		
 	</div>
 	<!-- END -->
 	
+	<form id="pageFrm" action="${contextPath }/synchBoard/list" method="get">
+		<!-- 게시물 번호(boardIdx) 추가: 동적  -->
+		<input type="hidden" id="currentPage" name="currentPage" value="${pageMaker.cri.currentPage}" >
+		<input type="hidden" id="perPageNum" name="perPageNum" value="${pageMaker.cri.perPageNum}" >
+	</form>
+	
+	
+	<!-- Modal 추가 -->
 	<div class="modal fade" id="myMessage" role="dialog">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
