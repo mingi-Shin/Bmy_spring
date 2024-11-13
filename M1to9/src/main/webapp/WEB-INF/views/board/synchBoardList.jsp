@@ -35,22 +35,29 @@
 			//관리자용 글 랜덤생성기 
 			$("#randomRegisterBtn").click(randomRegister);
 			
-			//페이지이동 jQuery로 
+			
+			/** 폼 하나로 n개의 메서드와 매개변수 생성 */
+			// 1. 페이지이동 jQuery로 
 			let pageFrm = $("#pageFrm");
-			$(".page-item a").on("click", function(e){ //page-item하의 a태그들 
+			$(".page-item a").on("click", function(e){ //page-item클래스 하의 a태그들 
 				e.preventDefault(); // e tag의 기능을 막음
 				
-				let currentPage = $(this).attr("href"); //페이지 번호
-				pageFrm.find("#currentPage").val(currentPage);
+				let currentPage = $(this).attr("href"); //페이지 번호 값 
+				pageFrm.find("#currentPage").val(currentPage); //버튼의 href속성 값을 form의 currentPage값에 대입 
 				pageFrm.submit(); // ${contextPath}/synchBoard/list
 			});
 			
-			//상세보기 클릭시 이동하기(a링크 태그에는 boardIdx값만 전달) -> 페이지이동 jQuery와 합친 코드 
-			$(".move").on("click", function(e){
-				e.preventDefault(); // a tag의 기능 막음
-				let tag = "<input type='hidden' name='boardIdx' value='"+ boardIdx +"'>";
-				pageFrm.append(tag);
-				pageFrm.attr("action", "${contextPath}/synchBoard/get");
+			// 2. 상세보기 클릭시 이동하기(a링크 태그에는 boardIdx값만 전달) -> 페이지이동 jQuery와 합친 코드 
+			$(".move").on("click", function(event){ //move클래스 클릭시 기능 활성화 
+				event.preventDefault(); // a tag의 기능 막음
+				console.log("move버튼 클릭 ");
+				
+				let boardIdx = $(this).attr("href"); // 클릭된 요소의 href 값 가져오기: boardIdx 
+				console.log("href값은??: " , boardIdx);
+				
+				let tag = "<input type='hidden' name='boardIdx' value='"+ boardIdx +"'>"; // boardIdx값 넣은 input태그 생성 : 컨트롤러에서 @RequestParm으로 받아야함.
+				pageFrm.append(tag); //form에 input태그를 추가하고, 
+				pageFrm.attr("action", "${contextPath}/synchBoard/get/"+boardIdx); //메서드를 바꿈, 나는 @PathVariable로 받고싶어서 Idx를 추가함 -> 이러면 input으로 넘기는게 무의미해지긴 함 
 				pageFrm.submit();
 			});
 			  
@@ -164,24 +171,26 @@
 			  </thead>
 			  <tbody>
 			    <c:if test="${!empty vo}">
-			      <c:forEach var="vo" items="${vo}">
+			      <c:forEach var="bvo" items="${vo}">
 			        <tr>
-			          <td>${vo.boardIdx}</td>
-			          <c:if test="${vo.boardAvailable eq false }">
+			          <td>${bvo.boardIdx}</td>
+			          <c:if test="${bvo.boardAvailable eq false }">
 			          	<td class="deleted-data">
 				      			[삭제된 게시물입니다.]
 				      		</td>
 			          </c:if>
-			          <c:if test="${vo.boardAvailable ne false }">
+			          <c:if test="${bvo.boardAvailable ne false }">
 			          	<td>
-			            <a class="move" href="${vo.boardIdx}"><c:out value="${vo.title}"/></a> <!-- xss방지  -->
+				            <a class="move" href="${bvo.boardIdx}">
+				            	<c:out value="${bvo.title}"/> <!-- c:out -> xss방지  -->
+				            </a> 
 			          	</td>
 			          </c:if>
-			          <td>${vo.writer}</td>
+			          <td>${bvo.writer}</td>
 			          <td>
-			            <fmt:formatDate value="${vo.indate}" pattern="yyyy-MM-dd"/>
+			            <fmt:formatDate value="${bvo.indate}" pattern="yyyy-MM-dd"/>
 			          </td>
-			          <td>${vo.count}</td>
+			          <td>${bvo.count}</td>
 			        </tr>
 			      </c:forEach>
 			    </c:if>
@@ -226,8 +235,9 @@
 	</div>
 	<!-- END -->
 	
+	<!-- jQuery로 링크 및 매개변수 던지기 -->
 	<form id="pageFrm" action="${contextPath }/synchBoard/list" method="get">
-		<!-- 게시물 번호(boardIdx) 추가: 동적  -->
+		<!-- 게시물 번호(boardIdx) 추가: JS로 동적추가  -->
 		<input type="hidden" id="currentPage" name="currentPage" value="${pageMaker.cri.currentPage}" >
 		<input type="hidden" id="perPageNum" name="perPageNum" value="${pageMaker.cri.perPageNum}" >
 	</form>

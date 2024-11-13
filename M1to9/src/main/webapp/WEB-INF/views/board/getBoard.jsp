@@ -41,7 +41,7 @@
 				formData.attr("action", "${contextPath}/synchBoard/modify/${boardIdx}"); // pathVariable은 URL로 직접 자료를 받기때문에 명시해줘야함 
 			} else if(btn == 'list') {
 				formData.find("#goPageIdx").remove();
-				formData.attr("action", "${contextPath}/synchBoard/list");
+				formData.attr("action", "${contextPath}/synchBoard/list"); //input의 cri.currentPage값 넘어감: 페이지값 유지, 해당메서드는 매개변수로 cri를 추가로 받음   
 			}
 			formData.submit();
 		});
@@ -289,8 +289,10 @@
 	      </div>
       </security:authorize>
       
+      <!-- 리스트로 이동시 페이지 목록 유지하기: input태그 cri객체  -->
       <form id="frm" method="get">
 				<input type="hidden" id="goPageIdx" name="boardIdx" value="<c:out value='${vo.boardIdx}' />" />      
+				<input type="hidden" name="currentPage" value="${cri.currentPage }" />      
 			</form>
 			
       <div class="card-footer text-muted text-center">

@@ -51,14 +51,15 @@ public class SyncBoardController {
 	}
 	
 	@PostMapping("/register")
-	public String registerBoard(@ModelAttribute Board vo, RedirectAttributes rttr, @ModelAttribute("cri") Criteria cri) {
+	public String registerBoard(@ModelAttribute Board vo, RedirectAttributes rttr) {
 		boardService.insertBoard(vo);
 		rttr.addFlashAttribute("msgBody", "게시물이 성공적으로 작성되었습니다.");
 		return "redirect:/synchBoard/list";
 	}
 	
 	@GetMapping("/get/{boardIdx}") // URL 경로에 boardIdx를 포함시킴
-	public String getTheBoard(@PathVariable int boardIdx, RedirectAttributes rttr, Model model ) {
+	public String getTheBoard(@PathVariable int boardIdx, RedirectAttributes rttr, Model model, @ModelAttribute("cri") Criteria cri) { // cri는 목록되돌아가기 할 때, 해당 페이지로 넘어가기 위함
+		//boardIdx를 URL링크로 받았었는데, form으로 받게되면서 @PathVariable이 작동하지 않게됐다.
 		Board board = boardService.getTheBoard(boardIdx);
 		boardService.updateCount(boardIdx); //조회수 증가 
 		model.addAttribute("vo", board);
@@ -86,14 +87,22 @@ public class SyncBoardController {
 	
 	@PostMapping("/modify")
 	public String modifyBoard(@ModelAttribute Board vo, RedirectAttributes rttr) { //객체의 필드에 n개의 요청 파라미터 값을 자동으로 할당
-		System.out.println("ModelAttribute vo: " +  vo);	
 		boardService.updateBoard(vo);
-		int boardIdx = vo.getBoardIdx();
 		rttr.addFlashAttribute("msgBody", "게시물이 정상적으로 수정되었습니다.");
+		
+		int boardIdx = vo.getBoardIdx();
 		return "redirect:/synchBoard/get/" + boardIdx;
 	}
 	
 	
-	
+	/**
+	 * URL경로에 포함된 변수 사용: @PathVariable
+	 * 폼 데이터로 전달된 변수 사용: @RequestParm
+	 * 
+	 * @ModelAttribute("cri") Criteria cri를 매개변수로 받는 의미:
+	 * 		뷰에 전달할 모델 객체인 Criteria를 자동생성하고, 이를 모델에 추가하여 뷰에서 사용할 수 있도록 하기 위함.
+	 * 		model.addAttribute()를 안써도 되며, HTTP요청 파라미터와 Criteria객체의 필드를 자동으로 매핑해줌.
+	 * 
+	 * */
 
 }

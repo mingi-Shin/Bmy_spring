@@ -135,6 +135,8 @@
       </div>
     </div>
     
+    
+    <!-- 모달창 -->
 	  <div class="modal fade" id="myMessage" role="dialog">
 		  <div class="modal-dialog">
 		    <div class="modal-content">
@@ -151,7 +153,7 @@
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
 		      </div>
-s		    </div>
+		    </div>
 		  </div>
 		</div>
     
