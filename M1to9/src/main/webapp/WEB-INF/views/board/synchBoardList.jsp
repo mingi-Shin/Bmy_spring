@@ -206,34 +206,62 @@
 			</table>
 	    <button id="registerButton" class="btn btn-primary float-end">글쓰기 </button>
     </div>
-    <div class="card-footer">card foot</div>
+    
+    <div class="card-footer">
+    	<!-- 페이징 처리 뷰: ${pageMaker } -->
+			<div>  
+				<ul class="pagination justify-content-center" style="margin:20px 0">
+			<!-- 이전처리 -->
+				<c:if test="${pageMaker.prev }">
+				  <li class="page-item previous">
+				  	<a class="page-link" href="${pageMaker.startPage - 1}">previous</a>
+			  	</li>
+				</c:if>
+			<!-- 페이지 번호 처리 -->
+					<c:forEach var="pageNum" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
+						<li class="page-item ${pageMaker.cri.currentPage != pageNum ? '' : 'active' }" >
+						<a class="page-link" href="${pageNum}">
+						${pageNum }
+						</a></li>				
+					</c:forEach>
+			<!-- 다음처리 -->
+		 		<c:if test="${pageMaker.next }">
+				  <li class="page-item next">
+				  	<a class="page-link" href="${pageMaker.endPage + 1}">next</a>
+			  	</li>
+				</c:if>
+				</ul>		
+			</div>
+			<!-- END -->
+			
+			<!-- 검색메뉴 -->
+			<div class="d-flex justify-content-center">
+				<form action="${contextPath }/synchBoard/list" method="get" class="d-flex w-50">
+					<select class="form-select" name="type" style="width: 30%;">
+						<option value="title">제목</option>
+						<option value="content">내용</option>
+						<option value="writer">작성자</option>
+						<option value="titcont">제목+내용</option>
+					</select>
+					<input type="text" class="form-control" name="keyword" style="width: 50%;">
+					<button type="submit" class="btn btn-outline-secondary" style="width: 20%;">검색</button>
+				</form>
+			</div>
+	
+			
+			
+    </div>
+    
+    
+    
+    
   </div>
 	
-	<!-- 페이징 처리 뷰: ${pageMaker } -->
-	<div>  
-		<ul class="pagination justify-content-center" style="margin:20px 0">
-	<!-- 이전처리 -->
-		<c:if test="${pageMaker.prev }">
-		  <li class="page-item previous">
-		  	<a class="page-link" href="${pageMaker.startPage - 1}">previous</a>
-	  	</li>
-		</c:if>
-	<!-- 페이지 번호 처리 -->
-			<c:forEach var="pageNum" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
-				<li class="page-item ${pageMaker.cri.currentPage != pageNum ? '' : 'active' }" >
-				<a class="page-link" href="${pageNum}">
-				${pageNum }
-				</a></li>				
-			</c:forEach>
-	<!-- 다음처리 -->
- 		<c:if test="${pageMaker.next }">
-		  <li class="page-item next">
-		  	<a class="page-link" href="${pageMaker.endPage + 1}">next</a>
-	  	</li>
-		</c:if>
-		</ul>		
-	</div>
-	<!-- END -->
+	
+	
+
+	
+	
 	
 	<!-- jQuery로 링크 및 매개변수 던지기 -->
 	<form id="pageFrm" action="${contextPath }/synchBoard/list" method="get">

@@ -39,7 +39,7 @@ public class SyncBoardController {
 		//페이징 처리에 필요한 부분
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri); 
-		pageMaker.setTotalCount(boardService.totalCount());//전체 페이지의 수, makePaging()실행됨  
+		pageMaker.setTotalCount(boardService.totalCount(cri));//전체 페이지의 수, makePaging()실행됨, type&keyword -> cri  
 		model.addAttribute("pageMaker", pageMaker);
 		
 		return "/board/synchBoardList";

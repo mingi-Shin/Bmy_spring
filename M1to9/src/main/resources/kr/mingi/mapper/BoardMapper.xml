@@ -1,11 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.mingi.mapper.BoardMapper">
+	
+	<!-- 동적 sql: 필드요소는 Criteria클래스에 속함 -->
+	<sql id="search">
+		<if test="type=='title'">
+			WHERE title LIKE CONCAT('%',#{keyword},'%') AND smgBoard.boardAvailable IS TRUE
+		</if>
+		<if test="type=='content'">
+			WHERE content LIKE CONCAT('%',#{keyword},'%') AND smgBoard.boardAvailable IS TRUE
+		</if>
+		<if test="type=='writer'">
+			WHERE writer LIKE CONCAT('%',#{keyword},'%') AND smgBoard.boardAvailable IS TRUE
+		</if>
+		<if test="type=='titcont'">
+			WHERE title LIKE CONCAT('%',#{keyword},'%') OR content LIKE CONCAT('%',#{keyword},'%') 
+		</if>
+	</sql>
 
 	<select id="getBoardList" resultType="kr.mingi.entity.Board" parameterType="kr.mingi.entity.Criteria">
-		SELECT * FROM smgBoard ORDER BY boardIdx DESC
+		SELECT * FROM smgBoard 
+		<include refid="search" />
+		ORDER BY boardIdx DESC
 		LIMIT #{perPageNum} OFFSET #{pageStart}
 	</select>
+	
+	<select id="totalCount" resultType="int" parameterType="kr.mingi.entity.Criteria">
+		SELECT COUNT(*) FROM smgBoard
+		<include refid="search" /> <!-- 조회결과 페이징처리 -->
+	</select>
+	
+	
 	
 	<select id="getTheBoard" resultType="kr.mingi.entity.Board">
 		SELECT * FROM smgBoard WHERE boardIdx = #{boardIdx}	
@@ -32,9 +57,6 @@
 		UPDATE smgBoard SET count = count + 1 WHERE boardIdx = #{boardIdx}
 	</update>
 	
-	<select id="totalCount" resultType="int">
-		SELECT COUNT(*) FROM smgBoard
-	</select>
 	
 
 </mapper>
