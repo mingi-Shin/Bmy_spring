@@ -39,6 +39,7 @@ public class SyncBoardController {
 		//페이징 처리에 필요한 부분
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri); 
+		System.out.println(cri);
 		pageMaker.setTotalCount(boardService.totalCount(cri));//전체 페이지의 수, makePaging()실행됨, type&keyword -> cri  
 		model.addAttribute("pageMaker", pageMaker);
 		
@@ -79,19 +80,24 @@ public class SyncBoardController {
 	}
 	
 	@GetMapping("/modify/{boardIdx}")
-	public String modifyForm(@PathVariable int boardIdx, Model model) {
+	public String modifyForm(@PathVariable int boardIdx, Model model, @ModelAttribute("cri") Criteria cri) {
 		Board board = boardService.getTheBoard(boardIdx);
 		model.addAttribute("vo", board);
 		return "/board/modify";
 	}
 	
 	@PostMapping("/modify")
-	public String modifyBoard(@ModelAttribute Board vo, RedirectAttributes rttr) { //객체의 필드에 n개의 요청 파라미터 값을 자동으로 할당
+	public String modifyBoard(@ModelAttribute Board vo, RedirectAttributes rttr, Criteria cri) { // ModelAttribute: 객체의 필드에 n개의 요청 파라미터 값을 자동으로 할당
 		boardService.updateBoard(vo);
 		rttr.addFlashAttribute("msgBody", "게시물이 정상적으로 수정되었습니다.");
 		
+		rttr.addAttribute("currentPage", cri.getCurrentPage());
+		rttr.addAttribute("perPageNum", cri.getPerPageNum());
+		rttr.addAttribute("type", cri.getType());
+		rttr.addAttribute("keyword", cri.getKeyword());
+		
 		int boardIdx = vo.getBoardIdx();
-		return "redirect:/synchBoard/get/" + boardIdx;
+		return "redirect:/synchBoard/get/"+ boardIdx;
 	}
 	
 	

@@ -231,7 +231,7 @@
             </tr>
             <tr>
               <th scope="row">내용</th>
-              <td><textarea rows="6" class="form-control" readonly><c:out value="${vo.content}"/></textarea></td>
+              <td><textarea rows="6" class="form-control" readonly><c:out value="${vo.content} ${cri }"/></textarea></td>
             </tr>
             <tr>
               <th scope="row">작성자</th>
@@ -289,10 +289,13 @@
 	      </div>
       </security:authorize>
       
-      <!-- 리스트로 이동시 페이지 목록 유지하기: input태그 cri객체  -->
+      <!-- 리스트로 이동시, 수정시 이전 페이지 목록 및 검색결과 유지하기: input태그 cri객체  -->
       <form id="frm" method="get">
 				<input type="hidden" id="goPageIdx" name="boardIdx" value="<c:out value='${vo.boardIdx}' />" />      
 				<input type="hidden" name="currentPage" value="${cri.currentPage }" />      
+				<input type="hidden" name="perPageNum" value="${cri.perPageNum }" />      
+				<input type="hidden" name="type" value="${cri.type }">
+				<input type="hidden" name="keyword" value="${cri.keyword }">
 			</form>
 			
       <div class="card-footer text-muted text-center">

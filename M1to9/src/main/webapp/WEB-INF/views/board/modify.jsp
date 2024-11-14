@@ -25,7 +25,7 @@
 <script type="text/javascript">
 		
 	$(document).ready(function(){
-		goDelete();
+		//goDelete();
 		
 		//로그인 오류시 실패 모달창show
 	  if(${!empty msgBody}){
@@ -57,10 +57,7 @@
 						alert("삭제 중 오류가 발생했습니다.");
 						console.error("삭제 중 오류 발생:", error);
 					}
-					
 				});
-				
-				
 			} else {
 				return;
 			}
@@ -120,6 +117,10 @@
 	            </tr>
 	          </tbody>
 	        </table>
+		        <input type="hidden" name="currentPage" value="<c:out value='${cri.currentPage }'/>">
+		        <input type="hidden" name="perPageNum" value="<c:out value='${cri.perPageNum }'/>">
+		        <input type="hidden" name="type" value="<c:out value='${cri.type }'/>">
+		        <input type="hidden" name="keyword" value="<c:out value='${cri.keyword }'/>">
 	        <div class="text-center mt-4">
 	        	<security:authorize access="isAuthenticated()">
         			<!-- <button type="button" onclick="location.href='${contextPath}/synchBoard/delete/${vo.boardIdx}'">삭제</button> -->
@@ -132,6 +133,7 @@
       </div>
       <div class="card-footer text-muted text-center">
         스프2_(답변게시판)
+        ${cri }
       </div>
     </div>
     

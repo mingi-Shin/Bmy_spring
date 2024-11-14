@@ -14,7 +14,7 @@ public class Criteria {
 	public Criteria() {
 		// 생성시 설정값  
 		this.currentPage = 1;
-		this.perPageNum = 10;
+		this.perPageNum = 5;
 	}
 	
 	//현재 페이지의 게시글 시작번호 (맵퍼에서 게시물idx를 0번부터 시작하기로)

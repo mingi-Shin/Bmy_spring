@@ -50,14 +50,12 @@
 			// 2. 상세보기 클릭시 이동하기(a링크 태그에는 boardIdx값만 전달) -> 페이지이동 jQuery와 합친 코드 
 			$(".move").on("click", function(event){ //move클래스 클릭시 기능 활성화 
 				event.preventDefault(); // a tag의 기능 막음
-				console.log("move버튼 클릭 ");
-				
 				let boardIdx = $(this).attr("href"); // 클릭된 요소의 href 값 가져오기: boardIdx 
-				console.log("href값은??: " , boardIdx);
 				
 				let tag = "<input type='hidden' name='boardIdx' value='"+ boardIdx +"'>"; // boardIdx값 넣은 input태그 생성 : 컨트롤러에서 @RequestParm으로 받아야함.
 				pageFrm.append(tag); //form에 input태그를 추가하고, 
 				pageFrm.attr("action", "${contextPath}/synchBoard/get/"+boardIdx); //메서드를 바꿈, 나는 @PathVariable로 받고싶어서 Idx를 추가함 -> 이러면 input으로 넘기는게 무의미해지긴 함 
+				
 				pageFrm.submit();
 			});
 			  
@@ -198,7 +196,7 @@
 			    <c:if test="${empty vo}">
 			      <tr>
 			        <td colspan="5" class="no-data">
-			          현재 조회가능한 게시물이 없습니다.
+			          조회가능한 게시물이 없습니다.
 			        </td>
 			      </tr>
 			    </c:if>
@@ -238,36 +236,30 @@
 			<div class="d-flex justify-content-center">
 				<form action="${contextPath }/synchBoard/list" method="get" class="d-flex w-50">
 					<select class="form-select" name="type" style="width: 30%;">
-						<option value="title">제목</option>
-						<option value="content">내용</option>
-						<option value="writer">작성자</option>
-						<option value="titcont">제목+내용</option>
+						<!-- 페이지 이동시에도 검색기록 유지 -->
+						<option value="title" 	${pageMaker.cri.type == 'title' ? 'selected' : ''}>		제목</option>
+						<option value="content" ${pageMaker.cri.type == 'content' ? 'selected' : ''}>	내용</option>
+						<option value="writer" 	${pageMaker.cri.type == 'writer' ? 'selected' : ''}>	작성자</option>
+						<option value="titcont" ${pageMaker.cri.type == 'titcont' ? 'selected' : ''}>	제목+내용</option>
 					</select>
-					<input type="text" class="form-control" name="keyword" style="width: 50%;">
+					<input type="text" class="form-control" name="keyword" style="width: 50%;" value="${pageMaker.cri.keyword }">
 					<button type="submit" class="btn btn-outline-secondary" style="width: 20%;">검색</button>
 				</form>
 			</div>
-	
-			
 			
     </div>
-    
-    
-    
     
   </div>
 	
 	
-	
-
-	
-	
-	
 	<!-- jQuery로 링크 및 매개변수 던지기 -->
 	<form id="pageFrm" action="${contextPath }/synchBoard/list" method="get">
-		<!-- 게시물 번호(boardIdx) 추가: JS로 동적추가  -->
+		<!-- 여기 하나 더, 게시물 번호(boardIdx) 추가: JS로 동적추가 해줌  -->
 		<input type="hidden" id="currentPage" name="currentPage" value="${pageMaker.cri.currentPage}" >
 		<input type="hidden" id="perPageNum" name="perPageNum" value="${pageMaker.cri.perPageNum}" >
+		<!-- 페이지 이동시 검색결과 유지 -->
+		<input type="hidden" id="type" name="type" value="${pageMaker.cri.type}" >
+		<input type="hidden" id="keyword" name="keyword" value="${pageMaker.cri.keyword}" >
 	</form>
 	
 	
