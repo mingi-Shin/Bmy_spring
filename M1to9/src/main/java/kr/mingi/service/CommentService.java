@@ -10,8 +10,6 @@ public interface CommentService {
 	
 	public void insertComment(Comment vo);
 	
-	public void updateCommentGroup(Comment vo);
-	
 	public void updateComment(Comment vo);
 	
 	public void deleteComment(int commentIdx);

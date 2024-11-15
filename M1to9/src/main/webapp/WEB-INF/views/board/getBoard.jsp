@@ -88,7 +88,7 @@
  			},
 			data: {
 				'boardIdx' : boardIdx,
-				'sortOrder' : 'DESC'
+				'sortOrder' : 'ASC' // 댓글순 최신: DESC, 댓글순 오래된순: ASC
 			},
 			success: function(data){
 				makeCommentList(data);

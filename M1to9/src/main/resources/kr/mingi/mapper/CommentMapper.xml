@@ -9,15 +9,11 @@
 
 	
 	<!-- 댓글작성: 1댓글은 NULL, 대댓글은 부모댓글의 commentIdx -->
-	<insert id="insertComment" parameterType="kr.mingi.entity.Comment">
+	<insert id="insertComment" parameterType="kr.mingi.entity.Comment" useGeneratedKeys="true" keyProperty="commentIdx">
 		INSERT INTO smgComment (memID, memName, comment, boardIdx, parentIdx, commentGroup)
 		VALUES (#{memID}, #{memName}, #{comment}, #{boardIdx}, #{parentIdx}, #{commentGroup})
+		RETURNING commentIdx
 	</insert>
-	
-	<!-- 최상위 부모댓글 등록 후, commentGroup 업뎃  -->
-	<select id="getCommentIdx" parameterType="kr.mingi.entity.Comment" resultType="kr.mingi.entity.Comment">
-		SELECT commentIdx FROM smgComment WHERE commentIdx = #{commentIdx} 
-	</select>
 	
 	<update id="updateCommentGroup" parameterType="kr.mingi.entity.Comment">
 		UPDATE smgComment SET commentGroup = commentIdx WHERE commentIdx = #{commentIdx}
