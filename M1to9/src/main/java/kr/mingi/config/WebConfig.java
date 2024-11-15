@@ -13,7 +13,7 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 		
 		encodingFilter.setEncoding("UTF-8");
 		encodingFilter.setForceEncoding(true); //요청(request)뿐만 아니라 응답(response)에도 동일한 인코딩이 적용되도록 강제합니다. 
-												//기본적으로는 요청에만 적용되지만, 이 옵션을 통해 응답에도 적용되게 만듭니다.
+												//기본적으로는 요청에만 적용되지만, 이 옵션(ForceEncoding)을 통해 응답에도 적용되게 만듭니다.
 		return new Filter[] {encodingFilter};
 	}
 

@@ -39,8 +39,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public void insertComment(Comment vo) {
 		try {
-			if(vo.getParentIdx() == null) { //1차댓글: parentIdx=null, Group=CommentIdx 
-				vo.setCommentGroup(vo.getCommentIdx()); 
+			if(vo.getParentIdx() == null) { //최상위 부모 댓글: parentIdx=null, Group에 CommentIdx 대입 for 댓글리스트 묶음 정렬
 				commMapper.insertComment(vo);
 			} else {
 				commMapper.insertComment(vo); //2차 이후 댓글 
@@ -58,6 +57,23 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
+	public void updateCommentGroup(Comment vo) {
+		try {
+			commMapper.updateCommentGroup(vo);
+		} catch (DataAccessException e) { // DB관련오류 
+			log.error("DB접근 중 오류 발생", e);
+			throw new BusinessException("데이터 조회 중 오류가 발생헀습니다.");
+		} catch (BusinessException e) {
+	        log.error("로직처리 중 오류 발생", e);
+	        throw new BusinessException("비지니스 로직 처리 중 오류가 발생헀습니다."); 
+		} catch (Exception e) {
+			log.error("예기치 못한 오류 발생", e); // 기타 비즈니스 로직 오류: 범용 
+	        throw new BusinessException("예기치 못한 오류가 발생했습니다."); // 예외 발생
+		}
+		
+	}
+	
+	@Override
 	public void updateComment(Comment vo) {
 		// TODO Auto-generated method stub
 		
@@ -68,5 +84,6 @@ public class CommentServiceImpl implements CommentService {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }

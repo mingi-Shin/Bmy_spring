@@ -15,9 +15,13 @@ public interface CommentMapper {
 	
 	public void insertComment(Comment vo);
 	
+	public void updateCommentGroup(Comment vo); //최상위 부모댓글 Group업뎃 
+	
 	public void updateComment(Comment vo);
 	
 	public void deleteComment(int commentIdx);
+	
+	
 	
 	
 }

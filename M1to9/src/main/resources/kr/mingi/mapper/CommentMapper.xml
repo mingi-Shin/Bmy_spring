@@ -13,10 +13,25 @@
 		INSERT INTO smgComment (memID, memName, comment, boardIdx, parentIdx, commentGroup)
 		VALUES (#{memID}, #{memName}, #{comment}, #{boardIdx}, #{parentIdx}, #{commentGroup})
 	</insert>
+	
+	<!-- 최상위 부모댓글 등록 후, commentGroup 업뎃  -->
+	<select id="getCommentIdx" parameterType="kr.mingi.entity.Comment" resultType="kr.mingi.entity.Comment">
+		SELECT commentIdx FROM smgComment WHERE commentIdx = #{commentIdx} 
+	</select>
+	
+	<update id="updateCommentGroup" parameterType="kr.mingi.entity.Comment">
+		UPDATE smgComment SET commentGroup = commentIdx WHERE commentIdx = #{commentIdx}
+	</update>
+	
 	<!-- 
-		commentGroup은 최상위 부모의 commentGroup을 따라가게
-		= parentIdx가 null이면 commentGroup은 자기 commentIdx,
-			parentIdx가 존재하면, 
+		트리거는 디버깅 및 변경이 어렵고, 실행 흐름 추적이 복잡함..
+		commentGroup 입력처리는 그냥 insert하고 나서 update하자.
+		....
+	
+		자식 댓글의 commentGroup은 최상위 부모 댓글의 commentGroup을 따라가게
+		= parentIdx가 null이면 commentGroup은 자기 commentIdx (==최상위댓글),
+			parentIdx가 존재하면 대댓글이라는 의미이므로, commentGroup은 최상위 댓글의 commentIdx
+			그래야 정렬할 때, commentGroup에 의해 끼리끼리 묶음 정렬이 되지 
 		 
 		parentIdx는 부모댓글:null, 대댓글:부모commentIdx,
 		= ajax에서 parentIdx를 "" 빈 문자열로 전달, 

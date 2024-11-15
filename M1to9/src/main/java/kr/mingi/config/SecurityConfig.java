@@ -94,14 +94,14 @@ public class SecurityConfig {
   	WebSecurityConfigurerAdapter를 사용하지 않고, 대신 SecurityFilterChain을 정의하여 보안 구성
   	또한, AuthenticationManagerBuilder는 별도로 관리할 수 있도록 구성
 */
-/*
+/**
  	WebSecurityConfigurerAdapter클래스를 상속하여 SecurityConfig객체를 생성한다.
 	- @EnableWebSecurity는 스프링MVC와 스프링 시큐리티를 결합하는 클래스이다.
 	- configure() 메서드를 Override하고 관련 설정을 한다.
- * */
+*/
 /**
   	시큐리티로 로그인/로그아웃을 처리하면
   	mapper까지 기입 안해도 된다. 
   	mapper에 기입할땐 커스텀인증을 내가 직접 만들때이다. 
- */
+*/
 

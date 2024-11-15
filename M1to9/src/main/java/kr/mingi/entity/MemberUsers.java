@@ -25,7 +25,7 @@ public class MemberUsers extends User{ //User는 UserDetails인터페이스의 �
 	public MemberUsers(Member mvo) {
 		super(mvo.getMemID(), mvo.getMemPwd(), 
 				mvo.getAuthList().stream()
-					.map( auth -> new SimpleGrantedAuthority(auth.getAuth()))
+					.map(auth -> new SimpleGrantedAuthority(auth.getAuth()))
 						.collect(Collectors.toList())
 						//List<AuthVO> --> collection<SimpleGrantedAuthority> 변환해줘야 함 
 						
@@ -37,7 +37,7 @@ public class MemberUsers extends User{ //User는 UserDetails인터페이스의 �
 						 User 클래스의 생성자에 전달합니다.
 						*/
 			);
-		System.out.println("4.MemberUsers()생성자: super()로 부모인 User클래스 생성자 호출 -> Get ID, Password, Auth , 또한 this.Member객체에 mvo 초기화");
+		System.out.println("4.MemberUsers()생성: super()로 부모인 User클래스 생성자 호출 -> Get ID, Password, Auth , 또한 this.Member객체에 mvo 대입");
 		this.member = mvo;
 		//member객체를 추가함으로써 사용자 정보를 보다 풍부하게 관리가 가능해짐 
 		//이로써 MemberUsers 클래스는 Member 클래스와 User클래스 둘 모두 사용 가능한 복합클래스가 되었다.

@@ -9,10 +9,10 @@
     <Logger name="kr.mingi.mapper" level="debug" additivity="false">
       <AppenderRef ref="Console"/>
     </Logger>
-    <Logger name="kr.mingi.service" level="info" additivity="false">
+    <Logger name="kr.mingi.service" level="debug" additivity="false">
       <AppenderRef ref="Console"/>
     </Logger>
-    <Logger name="kr.mingi.controller" level="info" additivity="false">
+    <Logger name="kr.mingi.controller" level="debug" additivity="false">
     	<AppenderRef ref="Console"/>
     </Logger>
     <!-- 하나의 Root 로거만 필요 -->
@@ -28,7 +28,8 @@
 	</Loggers>
 </Configuration>
 
-<!-- Appender = 어디로 출력할지  
+<!-- Appender = 어디로 출력할지(생략불가) 
+
 			log.info()는 기록되는 로그, 위의 level은 출력되는 레벨의 로그. 둘이 다르다. 
 			additivity="false" 는 상위 로거로 로그가 전파되지 않도록.. 중복로그 방지 
 -->

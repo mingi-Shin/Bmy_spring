@@ -128,16 +128,19 @@
 	      // 해당 댓글의 답글버튼 누르면 나옴
 	      htmlList += "<tr id='reCommDiv" + cvo.commentIdx + "' style='display: none;'>"; // 트의 구조로 수정
 	      htmlList += "<td colspan='2'>"; // 두 개의 열을 차지하도록 설정
+	      
 	      htmlList += "<form id='reCommForm" + cvo.commentIdx + "'>";
 	      htmlList += "<div>"; // 태그 추가: div로 그룹화
 	      htmlList += "<textarea type='text' class='form-control' name='comment' rows='2'>";
 	      htmlList += "@" + cvo.memName + "  "; //누구한테 답장한 건지 기본출력 
 	      htmlList += "</textarea>";
+	      
 	      htmlList += "<input type='hidden' name='boardIdx' value='" + cvo.boardIdx + "'>";
 	      htmlList += "<input type='hidden' name='memID' value='" + '${mvo.member.memID}' + "'>";
 	      htmlList += "<input type='hidden' name='memName' value='" + '${mvo.member.memName}' + "'>";
 	      htmlList += "<input type='hidden' name='parentIdx' value='" + cvo.commentIdx + "'>";
 	      htmlList += "<input type='hidden' name='commentGroup' value='" + cvo.commentGroup + "'>";
+	      
 	      htmlList += "</div>";
 	      htmlList += "<button type='button' id='registerReComment_" + cvo.commentIdx + "' class='btn btn-sm' onclick='registerComment(this)'>"; // 버튼 ID 고유화
 	      htmlList += "등록</button>";
@@ -158,17 +161,19 @@
 	
 	//댓글작성 (여기는 if문이라 좀더 수정이 필요하다. )
 	function registerComment(event){
-		console.log("registerComment() 실행 ");
+		alert("registerComment() 실행 ");
 		
+
 		const clickedButtonId = $(event).attr("id"); //버튼id 확인 
-		console.log(clickedButtonId);
+		//자식댓글 commentIdx 추출용 
 		const commentIdx = clickedButtonId.split("_")[1]; // commentIdx 추출
-		console.log(commentIdx);
 		
 		let fData;
-		if(clickedButtonId.includes("registerComment")){
+		if(clickedButtonId.includes("registerComment")){ // 최상위 부모댓글 
 				fData = $("#commForm").serialize(); // 폼의 데이터를 URL-encoded 형식으로 직렬화
-		} else if (clickedButtonId.includes("registerReComment")){
+		} else if (clickedButtonId.includes("registerReComment")){ // 자식댓글 
+				alert("자식댓글 작성 ");
+				alert(commentIdx);
 				fData = $("#reCommForm" + commentIdx).serialize(); // 폼의 데이터를 URL-encoded 형식으로 직렬화
 		} else {
 				alert("오류: 잘못된 form 제출시도");
@@ -203,7 +208,8 @@
 	}
 
 	function openReComment(commentIdx){
-		console.log("commentIdx: ", commentIdx);
+		console.log("commentIdx: ");
+		console.log(commentIdx);
 		$("#reCommDiv"+commentIdx).css("display", "block");
 	}
 		
@@ -266,7 +272,7 @@
       	</table>
       </div>
       
-      <!-- 1차 부모댓글: parentIdx = null -->
+      <!-- 1차 부모댓글: parentIdx = null, commentGroup = 자기commentIdx(mapper에서 해야함) -->
       <security:authorize access="hasRole('ROLE_WRITE')"> 
 	      <div>
 	      	<form id="commForm"> 
