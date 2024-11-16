@@ -14,16 +14,15 @@ public class Criteria {
 	public Criteria() {
 		// 생성시 설정값  
 		this.currentPage = 1;
-		this.perPageNum = 5;
+		this.perPageNum = 10;
 	}
 	
-	//현재 페이지의 게시글 시작번호 (맵퍼에서 게시물idx를 0번부터 시작하기로)
+	//페이지의 게시글 시작번호
 	public int getPageStart() {					// 1page	2page	3page
 		return (currentPage-1) * perPageNum;	// 0~		10~		20~
 	}
 	
+	
 	//myBatis 에서 #{pageStart}를 찾고있는데, 해당 변수가 없으면 getPageStart()로 값을 가져온다. 
-	
-	
     
 }

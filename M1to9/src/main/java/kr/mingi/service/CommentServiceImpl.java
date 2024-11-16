@@ -41,10 +41,11 @@ public class CommentServiceImpl implements CommentService {
 		try {
 			if(vo.getParentIdx() == null) { //최상위 부모 댓글: parentIdx=null, Group에 CommentIdx 대입 for 댓글리스트 묶음 정렬
 				commMapper.insertComment(vo);
-				// 반환된 commentIdx 확인
+				// mapper에서 RETURNING 된 commentIdx 확인
 				System.out.println("Generated commentIdx: " + vo.getCommentIdx());
 				commMapper.updateCommentGroup(vo);
 			} else {
+				// 최상위 댓글이 아닌 자손댓글들 
 				commMapper.insertComment(vo); //2차 이후 댓글 
 			}
 		} catch (DataAccessException e) { // DB관련오류 

@@ -25,6 +25,7 @@
 		SELECT * FROM smgMember member LEFT OUTER JOIN smgAuth auth
 			ON member.memID = auth.memID WHERE member.memID = #{username} <!-- security에서 username던짐 -->
 	</select>
+	
 	<resultMap type="kr.mingi.entity.Member" id="memberMap">
 		<id property="memIdx" column="memIdx"/>
 		<result property="memID" column="memID"/>

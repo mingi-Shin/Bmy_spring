@@ -27,7 +27,7 @@
 	
 	<select id="totalCount" resultType="int" parameterType="kr.mingi.entity.Criteria">
 		SELECT COUNT(*) FROM smgBoard
-		<include refid="search" /> <!-- 조회결과 페이징처리 -->
+		<include refid="search" /> <!-- 검색 결과에 따라 페이징처리 -->
 	</select>
 	
 	

@@ -12,7 +12,7 @@ public class Comment {
 	private String comment;
 	private int boardIdx;
 	private Integer commentGroup; //1번 부모 댓글의 idx, 그의 자손들(댓글들)을 묶어 정렬하기 위함 
-	private Integer parentIdx; 
+	private Integer parentIdx; // 누구 댓글에 대한 대댓글인지 
 	private Date indate;
 	private boolean commentAvailable; //댓글삭제여부 
 }

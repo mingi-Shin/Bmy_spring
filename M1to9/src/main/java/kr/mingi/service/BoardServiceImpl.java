@@ -45,7 +45,6 @@ public class BoardServiceImpl implements BoardService {
 	public Board getTheBoard(int boardIdx) {
 		try {
 			Board boardVO = boardMapper.getTheBoard(boardIdx);
-			
 			if(boardVO == null) {
 				throw new BusinessException("해당 게시글이 존재하지 않습니다.");
 			}

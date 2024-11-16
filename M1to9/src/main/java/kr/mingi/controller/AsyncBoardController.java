@@ -18,7 +18,7 @@ import kr.mingi.entity.Board;
 import kr.mingi.entity.Criteria;
 import kr.mingi.service.BoardService;
 
-@RestController //  @ResponsBody 생략 가능 
+@RestController //  @ResponsBody + @Controller 
 @RequestMapping("/asynchBoard/*")
 public class AsyncBoardController {
 	
