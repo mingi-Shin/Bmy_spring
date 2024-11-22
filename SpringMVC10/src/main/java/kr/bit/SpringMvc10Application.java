@@ -11,3 +11,13 @@ public class SpringMvc10Application {
 	}
 
 }
+
+
+/*
+@SpringBootApplication
+은 아래의 3 어노테이션을 포함한다. 
+
+@SpringBootConfiguration
+@EnableAutoConfiguration
+@ComponentScan
+ * **/

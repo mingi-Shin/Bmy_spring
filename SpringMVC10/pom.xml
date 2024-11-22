@@ -65,17 +65,36 @@
 			<scope>runtime</scope>
 		</dependency>
 		
-		<!-- JSP사용시 -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-		</dependency>
 		
-		<dependency>
-			<groupId>org.apache.tomcat.embed</groupId>
-			<artifactId>tomcat-embed-jasper</artifactId>
-		</dependency>
+		<!-- JSP사용시: 톰캣 10.1. 기준으로  -->
+		<!-- JSP API -->
+    <dependency>
+        <groupId>jakarta.servlet.jsp</groupId>
+        <artifactId>jakarta.servlet.jsp-api</artifactId>
+        <version>4.0.0</version>
+        <scope>provided</scope>
+    </dependency>
+    <!-- Tomcat Embedded Jasper -->
+    <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-jasper</artifactId>
+    </dependency>
+    <!-- Jakarta Annotations -->
+    <dependency>
+        <groupId>jakarta.annotation</groupId>
+        <artifactId>jakarta.annotation-api</artifactId>
+    </dependency>
+    <!-- JSTL API -->
+    <dependency>
+        <groupId>jakarta.servlet.jsp.jstl</groupId>
+        <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+    </dependency>
+    <!-- JSTL Implementation -->
+    <dependency>
+        <groupId>org.glassfish.web</groupId>
+        <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+    </dependency>
+		
 
 	</dependencies>
 

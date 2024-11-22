@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.bit.entity.Board;
 import kr.bit.service.BoardService;
+import lombok.extern.log4j.Log4j;
 
 @Controller
 public class BoardController {

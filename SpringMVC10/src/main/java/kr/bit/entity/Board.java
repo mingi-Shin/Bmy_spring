@@ -41,6 +41,6 @@ public class Board { // VO <-- ORM --> Table
 	@Column(insertable = false, updatable = false ,columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP") 
 	private Date indate; // CURRENT_TIMESTAMP == now()
 	@Column(insertable = false, updatable = false , columnDefinition = "INT DEFAULT 0")
-	private Long count;
+	private int count;
 	
 }
