@@ -40,9 +40,21 @@
 				} else if (whatYouGonnaDo == 'updateForm'){
 					regForm.find("#title").prop("readonly", false); //수정가능하게 
 					regForm.find("#content").prop("readonly", false); //수정가능하게 
-					let changeButton = "<button type='button' class='btn btn-sm btn-primary m-1'> 수정완료 </button> ";
-					$("#updateSpan").html(changeButton); //html()은 DOM 요소를 갈아치운다 .. html이 최선일까? 보안은 어떡하고??
-				} 
+					//let changeButton = "<button type='button' data-what='update' class='btn btn-sm btn-primary m-1'> 수정완료 </button> ";
+					//$("#updateSpan").html(changeButton); //html()은 DOM 요소를 갈아치운다 .. html이 최선일까? 보안은 어떡하고??
+					
+					/** .html() 과 .append()는 새로운 DOM요소를 추가하는 것이기에 기존의 이벤트리스너가 적용되지 않는다.
+					let button = $('<button>', {
+						type: 'button',
+						'data-what':'update',
+						class: 'btn btn-sm btn-primary m-1',
+						text: '수정완료'
+					});
+					$('#updateSpan').empty().append(button);
+					*/		
+				} else if (whatYouGonnaDo == 'update'){
+					alert('update');
+				}
 			});
 			
 			
