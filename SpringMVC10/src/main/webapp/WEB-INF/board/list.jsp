@@ -17,26 +17,40 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			
-			let regForm = $("#regForm"); //JQuery 객체이므로, Object임 
+			let regForm = $("#regForm"); //JQuery 객체이므로, regForm은 Object임 
 			$("button").on("click", function(e){
 				let whatYouGonnaDo = $(this).data("what");
 				if (whatYouGonnaDo == 'register'){
-					if(regForm[0].checkValidity()){ //JQuery객체에 [0]을 붙여서, DOM객체로 만들고 checkValidity() 내장함수 호출 
+					//등록 전 유효성 검사.
+					if(regForm[0].checkValidity()){ //JQuery객체에 [0]을 붙여서, JQuery객체를 DOM객체로 만들고 checkValidity() 내장함수 호출 
 						regForm.submit();
-						console.log("requried  작동중, 유효성 검사 성공");
 					} else {
 						regForm[0].reportValidity(); //사용자에게 피드백을 제공
-						console.log("requried  작동중, 유효성 검사 실패");
 					}
 				} else if (whatYouGonnaDo == 'reset'){
 					regForm[0].reset();
-				}
+				} else if (whatYouGonnaDo == 'list'){
+					location.href="${cpath}/list";
+				} else if (whatYouGonnaDo == 'remove'){
+					//let idx = '${vo.boardIdx }'; //json으로 가져온 거라 안됨.
+					let boardIdx = regForm.find('#boardIdx').val();
+					if(confirm(boardIdx + "번 게시물을 삭제하시겠습니까? ")){
+						location.href="${cpath}/remove?boardIdx="+boardIdx;	
+					}
+				} else if (whatYouGonnaDo == 'updateForm'){
+					regForm.find("#title").prop("readonly", false); //수정가능하게 
+					regForm.find("#content").prop("readonly", false); //수정가능하게 
+					let changeButton = "<button type='button' class='btn btn-sm btn-primary m-1'> 수정완료 </button> ";
+					$("#updateSpan").html(changeButton); //html()은 DOM 요소를 갈아치운다 .. html이 최선일까? 보안은 어떡하고??
+				} 
 			});
+			
 			
 			// a tag 클릭시 상세보기
 			$("a").on("click", function(e){
 				e.preventDefault(); // 1.a태그 기능 막고
 				let boardIdx = $(this).attr("href"); // 2.href값 가져오고
+				
 				$.ajax({
 					url : "${cpath}/get",
 					type : "get",
@@ -57,6 +71,7 @@
 			regForm.find("#title").val(vo.title); //아, find는 몰랐네!
 			regForm.find("#content").val(vo.content);
 			regForm.find("#writer").val(vo.writer);
+			regForm.find("#boardIdx").val(vo.boardIdx);
 			//값 읽기전용으로 
 			regForm.find("input").prop("readonly", true);
 			regForm.find("textarea").prop("readonly", true);
@@ -148,6 +163,7 @@
     			<div class="card">
     				<div class="card-body">
     					<form id="regForm" action="${cpath }/register" method="post">
+    						<input type="hidden" id="boardIdx" name="boardIdx" > <!-- boardIdx 가져오려고 만든 hidden -->
     						<div class="form-group">
     							<label for="title">제목: </label>
     							<input type="text" class="form-control" id="title" name="title" placeholder="Enter title" required>
@@ -165,9 +181,9 @@
 	    						<button type="button" data-what="reset" class="btn btn-sm btn-secondary m-1" >취소</button>
     						</div>
     						<div id="updateDiv" class="d-flex justify-content-end">
-    							<button type="button" data-what="list" class="btn btn-sm btn-info m-1" style="display:none ">목록</button>
-    							<button type="button" data-what="updateForm" class="btn btn-sm btn-warning m-1" style="display:none ">수정</button>
-    							<button type="button" data-what="remove" class="btn btn-sm btn-danger m-1" style="display:none ">삭제</button>
+    							<button type="button" data-what="list" 				class="btn btn-sm btn-info m-1" 		style="display:none ">목록</button>
+    							<span id="updateSpan"><button type="button" data-what="updateForm" 	class="btn btn-sm btn-warning m-1" 	style="display:none ">수정</button></span>
+    							<button type="button" data-what="remove" 			class="btn btn-sm btn-danger m-1" 	style="display:none ">삭제</button>
     						</div>
     					</form>
     				</div>
@@ -207,11 +223,15 @@
 </html>
 
 <!-- 
-* button이 submit이면 required가 작동하는데, button이므로 내가 JS에서 수동으로 해줘야함. 
+* button이 submit이면 required가 자동 작동하는데, button이므로 내가 script에서 수동으로 해줘야함. 
 regForm은 jQuery 객체이기 때문에, checkValidity()와 reportValidity()를 직접 호출할 수 없습니다. 
 이 메서드는 DOM 객체에서만 동작합니다.
 jQuery 객체를 DOM 객체로 변환하려면 .get(0) 또는 [0]을 사용해야 합니다.
 
+
+•	html(): 기존 내용을 완전히 덮어씌움.
+•	append()/prepend(): 기존 내용은 유지하면서 새로운 콘텐츠를 추가.
+•	text(): HTML이 아닌 단순 텍스트를 설정.
 
 
  -->

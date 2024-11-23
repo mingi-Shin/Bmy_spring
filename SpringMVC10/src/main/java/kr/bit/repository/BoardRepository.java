@@ -15,3 +15,11 @@ public interface BoardRepository extends JpaRepository<Board, Long>{ //entity, p
 
 	
 }
+
+/**
+ * 	JPA는.. 
+ *	Repository 에서 JpaRepository<entity, primaryKey Type>을 extends 해서,  
+ * 	내장함수를 가져오거나, 쿼리메서드를 정의해서 Service에서 호출.
+ * 
+ * 
+ * */

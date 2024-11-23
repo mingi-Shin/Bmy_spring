@@ -44,3 +44,9 @@ public class Board { // VO <-- ORM --> Table
 	private int count;
 	
 }
+/**
+ * 	JPA는.. 
+ *	entity 에서 vo와 스키마를 정의하여 DB구조를 만들고. 
+ * 
+ * 
+ * */
