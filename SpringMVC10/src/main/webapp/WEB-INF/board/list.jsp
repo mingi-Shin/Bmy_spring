@@ -19,17 +19,53 @@
 			
 			let regForm = $("#regForm"); //JQuery 객체이므로, Object임 
 			$("button").on("click", function(e){
-				console.log(e);
 				let whatYouGonnaDo = $(this).data("what");
 				if (whatYouGonnaDo == 'register'){
-					regForm.submit();
+					if(regForm[0].checkValidity()){ //JQuery객체에 [0]을 붙여서, DOM객체로 만들고 checkValidity() 내장함수 호출 
+						regForm.submit();
+						console.log("requried  작동중, 유효성 검사 성공");
+					} else {
+						regForm[0].reportValidity(); //사용자에게 피드백을 제공
+						console.log("requried  작동중, 유효성 검사 실패");
+					}
 				} else if (whatYouGonnaDo == 'reset'){
 					regForm[0].reset();
 				}
-				
 			});
 			
+			// a tag 클릭시 상세보기
+			$("a").on("click", function(e){
+				e.preventDefault(); // 1.a태그 기능 막고
+				let boardIdx = $(this).attr("href"); // 2.href값 가져오고
+				$.ajax({
+					url : "${cpath}/get",
+					type : "get",
+					data : {"boardIdx" : boardIdx}, // 클라 -> 서버
+					dataType : "json", // 서버 -> 클라
+					success : printBoard,
+					error : function(){
+						alert("error");
+					}
+				});
+			});
 		});	
+		
+		// a tag클릭시 가져온 데이터 뿌려줘 
+		function printBoard(vo){
+			//값 대입
+			let regForm = $("#regForm");
+			regForm.find("#title").val(vo.title); //아, find는 몰랐네!
+			regForm.find("#content").val(vo.content);
+			regForm.find("#writer").val(vo.writer);
+			//값 읽기전용으로 
+			regForm.find("input").prop("readonly", true);
+			regForm.find("textarea").prop("readonly", true);
+			console.log($("#updateDiv")); 
+			//버튼UI 수정: jQuery 함수 사용
+			$("#regDiv button").hide(); 
+			$("#updateDiv button").show(); 
+			
+		}
 	
 	</script>
 	
@@ -98,7 +134,7 @@
     							<c:forEach var="vo" items="${list}">
     								<tr>
     									<td>${vo.boardIdx }</td>
-    									<td>${vo.title }</td>
+    									<td><a href="${vo.boardIdx}">${vo.title }</a></td>
     									<td>${vo.writer }</td>
     									<td><fmt:formatDate value="${vo.indate }" pattern="yyyy-MM-dd" /></td>
     								</tr>
@@ -114,19 +150,24 @@
     					<form id="regForm" action="${cpath }/register" method="post">
     						<div class="form-group">
     							<label for="title">제목: </label>
-    							<input type="text" class="form-control" id="title" name="title" placeholder="Enter title" >
+    							<input type="text" class="form-control" id="title" name="title" placeholder="Enter title" required>
     						</div>
     						<div class="form-group">
     							<label for="title">내용: </label>
-    							<textarea rows="9" class="form-control" id="content" name="content"></textarea>
+    							<textarea rows="9" class="form-control" id="content" name="content" required></textarea>
     						</div>
     						<div class="form-group">
     							<label for="writer">작성자: </label>
-    							<input type="text" class="form-control" id="writer" name="writer" placeholder="Enter wirter">
+    							<input type="text" class="form-control" id="writer" name="writer" placeholder="Enter wirter" required>
     						</div>
-    						<div class="d-flex justify-content-end">
-	    						<button type="button" data-what="register" class="btn btn-sm btn-primary m-2" >등록</button>
-	    						<button type="button" data-what="reset" class="btn btn-sm btn-secondary m-2" >취소</button>
+    						<div id="regDiv" class="d-flex justify-content-end">
+	    						<button type="button" data-what="register" class="btn btn-sm btn-primary m-1" >등록</button>
+	    						<button type="button" data-what="reset" class="btn btn-sm btn-secondary m-1" >취소</button>
+    						</div>
+    						<div id="updateDiv" class="d-flex justify-content-end">
+    							<button type="button" data-what="list" class="btn btn-sm btn-info m-1" style="display:none ">목록</button>
+    							<button type="button" data-what="updateForm" class="btn btn-sm btn-warning m-1" style="display:none ">수정</button>
+    							<button type="button" data-what="remove" class="btn btn-sm btn-danger m-1" style="display:none ">삭제</button>
     						</div>
     					</form>
     				</div>
@@ -164,3 +205,14 @@
 
 </body>
 </html>
+
+<!-- 
+* button이 submit이면 required가 작동하는데, button이므로 내가 JS에서 수동으로 해줘야함. 
+regForm은 jQuery 객체이기 때문에, checkValidity()와 reportValidity()를 직접 호출할 수 없습니다. 
+이 메서드는 DOM 객체에서만 동작합니다.
+jQuery 객체를 DOM 객체로 변환하려면 .get(0) 또는 [0]을 사용해야 합니다.
+
+
+
+ -->
+

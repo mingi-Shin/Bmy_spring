@@ -1,6 +1,7 @@
 package kr.bit.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,13 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public void register(Board vo) {
 		boardRepository.save(vo);
+	}
+
+	@Override
+	public Board get(Long boardIdx) {
+		Optional<Board> vo =  boardRepository.findById(boardIdx);
+		return vo.get(); // Optional은 뭐고 왜 get이 붙지?
+				
 	}
 
 }

@@ -8,5 +8,5 @@ public interface BoardService {
 
 	public List<Board> getList();
 	public void register(Board vo);
-	
+	public Board get(Long boardIdx);
 }

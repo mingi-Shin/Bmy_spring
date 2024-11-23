@@ -14,5 +14,4 @@ public interface BoardRepository extends JpaRepository<Board, Long>{ //entity, p
 	public Board findByWriter(String writer); //find + 엔티티 이름 + By + 변수 이름
 
 	
-	
 }
