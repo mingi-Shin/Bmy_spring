@@ -38,4 +38,9 @@ public class BoardServiceImpl implements BoardService{
 		boardRepository.deleteById(boardIdx);
 	}
 
+	@Override
+	public void update(Board vo) {
+		boardRepository.save(vo); //update따로 없고 save쓰면 됨: insert, update 모두 가능 
+	}
+
 }

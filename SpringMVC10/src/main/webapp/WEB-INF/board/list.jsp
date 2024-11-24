@@ -40,23 +40,29 @@
 				} else if (whatYouGonnaDo == 'updateForm'){
 					regForm.find("#title").prop("readonly", false); //수정가능하게 
 					regForm.find("#content").prop("readonly", false); //수정가능하게 
-					//let changeButton = "<button type='button' data-what='update' class='btn btn-sm btn-primary m-1'> 수정완료 </button> ";
-					//$("#updateSpan").html(changeButton); //html()은 DOM 요소를 갈아치운다 .. html이 최선일까? 보안은 어떡하고??
-					
-					/** .html() 과 .append()는 새로운 DOM요소를 추가하는 것이기에 기존의 이벤트리스너가 적용되지 않는다.
+					// .html()에 의해 완전히 교체된 요소와 .append()에 의해 새로 생긴 요소는 기존의 이벤트리스너가 작동하지 못한다.
+					// .html()은 상황에 따라 XSS위험이 존재, append()로 해보자.
 					let button = $('<button>', {
 						type: 'button',
-						'data-what':'update',
+						id: 'changeButton',
 						class: 'btn btn-sm btn-primary m-1',
 						text: '수정완료'
 					});
 					$('#updateSpan').empty().append(button);
-					*/		
-				} else if (whatYouGonnaDo == 'update'){
-					alert('update');
-				}
+					
+					//이벤트위임, 자식요소에 onclick함수를 넣는 것보다 낫다=https://www.notion.so/html-append-DOM-147e2244683d80a1838be94583b10301?pvs=4
+					$('#updateSpan').on('click','#changeButton',function(){
+						alert('수정합니다.');
+						regForm.attr('action','${cpath}/modify');
+						regForm.submit();
+					});
+					
+					
+				} 
 			});
 			
+			
+
 			
 			// a tag 클릭시 상세보기
 			$("a").on("click", function(e){
