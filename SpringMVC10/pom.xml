@@ -95,7 +95,22 @@
         <artifactId>jakarta.servlet.jsp.jstl</artifactId>
     </dependency>
 		
+		<!-- Spring Security 라이브러리 --> 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId> <!-- JSP 태그에서 security사용 도구 -->
+		</dependency>
 
+		
 	</dependencies>
 
 	<build>
