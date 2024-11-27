@@ -21,7 +21,7 @@
 			$("button").on("click", function(e){
 				let whatYouGonnaDo = $(this).data("what");
 				if (whatYouGonnaDo == 'register'){
-					//등록 전 유효성 검사.
+					//등록 전 유효성 검사.. 
 					if(regForm[0].checkValidity()){ //JQuery객체에 [0]을 붙여서, JQuery객체를 DOM객체로 만들고 checkValidity() 내장함수 호출 
 						regForm.submit();
 					} else {
