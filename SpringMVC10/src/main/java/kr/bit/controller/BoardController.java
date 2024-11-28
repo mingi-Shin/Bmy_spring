@@ -16,6 +16,7 @@ import kr.bit.service.BoardService;
 import lombok.extern.log4j.Log4j;
 
 @Controller
+@RequestMapping("/board")
 public class BoardController {
 	
 	@Autowired
@@ -25,7 +26,7 @@ public class BoardController {
 	public String list(Model model) {
 		List<Board> list = boardService.getList();
 		model.addAttribute("list", list);
-		return "list"; // /WEB-INF/board/list.jsp
+		return "/board/list"; // /WEB-INF/board/list.jsp
 	}
 	
 	@GetMapping("/register")

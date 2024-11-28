@@ -22,12 +22,13 @@ public class SecurityConfiguration {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		
-		//http.csrf().disable(); //CSRF인증 토큰 비활성화 -> 기존의 절차적 스타일
+		//http.csrf().disable(); //CSRF 토큰 검사를 비활성화 -> 기존의 절차적 스타일
 		http.csrf(csrf -> csrf.disable()); //-> security6.1 부터 권장되는 빌더 스타일
 		
+		/**
 		http.authorizeHttpRequests()
-			.requestMatchers("/", "/member/**").permitAll()
-			.requestMatchers("/board/**").authenticated()
+			.requestMatchers("/", "/member/**", "/error").permitAll()
+			.requestMatchers("/board/**").permitAll()
 			.and()
 			.formLogin()
 			.loginPage("/member/login")
@@ -37,7 +38,7 @@ public class SecurityConfiguration {
 			.logoutUrl("/member/logout")
 			.logoutSuccessUrl("/list");
 		http.userDetailsService(userDetailServiceImpl);
-		
+		*/
 		
 		return http.build();
 	}
