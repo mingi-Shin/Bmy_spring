@@ -32,12 +32,12 @@
                 </div>
               </div>
             </div>
-            <form action="#!">
+            <form action="${cpatn }/member/login" method="post"> <!-- security에 의해 UserDetailsServiceImpl로 ㄱ -->
               <div class="row gy-3 overflow-hidden">
                 <div class="col-12">
                   <div class="form-floating mb-3">
-                    <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
-                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" name="username" id="username" placeholder="Id" required>
+                    <label for="email" class="form-label">ID</label>
                   </div>
                 </div>
                 <div class="col-12">
