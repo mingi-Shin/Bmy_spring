@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+html {
+	background-color: black;
+}
+
+body {
+	font-family: "Poppins", sans-serif;
+	height: 100vh;
+}
+
+a {
+	color: #92badd;
+	display: inline-block;
+	text-decoration: none;
+	font-weight: 400;
+}
+

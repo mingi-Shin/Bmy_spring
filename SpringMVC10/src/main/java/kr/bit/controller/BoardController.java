@@ -22,11 +22,11 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	
-	@RequestMapping("/list")
+	@GetMapping("/list")
 	public String list(Model model) {
 		List<Board> list = boardService.getList();
 		model.addAttribute("list", list);
-		return "/board/list"; // /WEB-INF/board/list.jsp
+		return "board/list";     // /WEB-INF/board/list.jsp
 	}
 	
 	@GetMapping("/register")

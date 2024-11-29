@@ -45,6 +45,7 @@ public class SecurityConfig {
     }
     
     
+    //나만의 커스텀 SecurityFilterChain 생성(@Bean)
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		
@@ -85,16 +86,26 @@ public class SecurityConfig {
 		
 		return http.build(); // 새로운 방식으로 SecurityFilterChain을 빌드하여 반환
 	}
-    
 	
+	 
+	@Bean
+	public SecurityFilterChain customFilterChain2(HttpSecurity http) throws Exception {
+		// 하나더 만들고 싶다면.. 
+		
+		return http.build();
+	}
+    
 	
 }
 /**
-  	시큐리티 5.4?7?이상부터는 
+ * 	https://www.devyummi.com/page?id=66969cd412b680b5762f67d5 -> SecurityFilterChain 등록 방법 
+ * 
+  	시큐리티 5.4이상부터는 
   	WebSecurityConfigurerAdapter를 사용하지 않고, 대신 SecurityFilterChain을 정의하여 보안 구성
   	또한, AuthenticationManagerBuilder는 별도로 관리할 수 있도록 구성
 */
 /**
+ 	시큐리티 5.4 이하 버전: 
  	WebSecurityConfigurerAdapter클래스를 상속하여 SecurityConfig객체를 생성한다.
 	- @EnableWebSecurity는 스프링MVC와 스프링 시큐리티를 결합하는 클래스이다.
 	- configure() 메서드를 Override하고 관련 설정을 한다.
