@@ -36,6 +36,7 @@ public class SecurityConfiguration {
         // 로그인 설정
     	.formLogin()
     	.loginPage("/member/login")
+    	.loginProcessingUrl("/member/login")
     	.defaultSuccessUrl("/board/list")
         
     	.and()

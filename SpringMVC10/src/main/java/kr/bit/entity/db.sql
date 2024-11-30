@@ -1,3 +1,5 @@
 SELECT * FROM Board;
 
 DROP TABLE Board;
+
+SELECT * FROM Member;

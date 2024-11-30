@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <c:set var="cpath" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
@@ -30,12 +31,12 @@
 				} else if (whatYouGonnaDo == 'reset'){
 					regForm[0].reset();
 				} else if (whatYouGonnaDo == 'list'){
-					location.href="${cpath}/list";
+					location.href="${cpath}/board/list";
 				} else if (whatYouGonnaDo == 'remove'){
 					//let idx = '${vo.boardIdx }'; //json으로 가져온 거라 안됨.
 					let boardIdx = regForm.find('#boardIdx').val();
 					if(confirm(boardIdx + "번 게시물을 삭제하시겠습니까? ")){
-						location.href="${cpath}/remove?boardIdx="+boardIdx;	
+						location.href="${cpath}/board/remove?boardIdx="+boardIdx;	
 					}
 				} else if (whatYouGonnaDo == 'updateForm'){
 					regForm.find("#title").prop("readonly", false); //수정가능하게 
@@ -53,7 +54,7 @@
 					//이벤트위임, 자식요소에 onclick함수를 넣는 것보다 낫다=https://www.notion.so/html-append-DOM-147e2244683d80a1838be94583b10301?pvs=4
 					$('#updateSpan').on('click','#changeButton',function(){
 						alert('수정합니다.');
-						regForm.attr('action','${cpath}/modify');
+						regForm.attr('action','${cpath}/board/modify');
 						regForm.submit();
 					});
 					
@@ -70,7 +71,7 @@
 				let boardIdx = $(this).attr("href"); // 2.href값 가져오고
 				
 				$.ajax({
-					url : "${cpath}/get",
+					url : "${cpath}/board/get",
 					type : "get",
 					data : {"boardIdx" : boardIdx}, // 클라 -> 서버
 					dataType : "json", // 서버 -> 클라
@@ -137,19 +138,32 @@
     		<div class="col-lg-2" >
     			<div class="card">
     				<div class="card-body">
-    					<h4 class="card-title">Guest</h4>
+    					<h4 class="card-title"><sec:authentication property="principal.Member.name"></sec:authentication></h4>
     					<p class="card-text">회원님 방문을 환영합니다.</p>
-    					<form action="">
-    						<div class="form-group">
-    							<label for="memId">아이디</label>
-    							<input type="text" class="form-control" id="memId" name="memId">
-    						</div>
-    						<div class="form-group">
-    							<label for="memPwd">비밀번호</label>
-    							<input type="password" class="form-control" id="memPwd" name="memPwd"> 
-    						</div>
-    						<button type="button" class="btn btn-sm btn-primary form-control mt-3">로그인</button>
+    					<form action="${cpath }/member/logout" method="post">
+    						<button type="submit" class="btn btn-sm btn-primary form-control mt-3">로그아웃</button>
     					</form>
+    					<br>
+    					<sec:authorize access="hasRole('ROLE_ADMIN')">
+    					<div>등급: <sec:authentication property="principal.Member.role"/> MENU</div>
+    					<p>관리자</p>
+    					</sec:authorize>
+    					<sec:authorize access="hasRole('ROLE_MANAGER')">
+    					<div>등급: <sec:authentication property="principal.Member.role"/> MENU</div>
+    					<p>매니저</p>
+    					</sec:authorize>
+    					<sec:authorize access="hasRole('ROLE_MEMBER_READ_ONLY')">
+    					<div>등급: <sec:authentication property="principal.Member.role"/> MENU</div>
+    					<p>읽기전용 멤버</p>
+    					</sec:authorize>
+    					<sec:authorize access="hasRole('ROLE_MEMBER_READ_WRITE')">
+    					<div>등급: <sec:authentication property="principal.Member.role"/> MENU</div>
+    					<p>읽기.쓰기 멤버</p>
+    					</sec:authorize>
+    					<!--
+    						authorize는 권한을 검사해서 UI를 설정,  
+    						authentication은 principal의 필드값을 출력하기
+    					-->
     				</div>
     			</div>
     		</div>
@@ -180,7 +194,7 @@
     		<div class="col-lg-5">
     			<div class="card">
     				<div class="card-body">
-    					<form id="regForm" action="${cpath }/register" method="post">
+    					<form id="regForm" action="${cpath }/board/register" method="post">
     						<input type="hidden" id="boardIdx" name="boardIdx" > <!-- boardIdx 가져오려고 만든 hidden -->
     						<div class="form-group">
     							<label for="title">제목: </label>
@@ -192,7 +206,8 @@
     						</div>
     						<div class="form-group">
     							<label for="writer">작성자: </label>
-    							<input type="text" class="form-control" id="writer" name="writer" placeholder="Enter wirter" required>
+    							<input type="text" class="form-control" id="writer" name="writer" placeholder="Enter wirter" 
+    								value='<sec:authentication property="principal.Member.name"/>' readonly>
     						</div>
     						<div id="regDiv" class="d-flex justify-content-end">
 	    						<button type="button" data-what="register" class="btn btn-sm btn-primary m-1" >등록</button>

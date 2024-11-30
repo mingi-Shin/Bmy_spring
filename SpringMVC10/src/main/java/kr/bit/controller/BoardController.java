@@ -16,7 +16,7 @@ import kr.bit.service.BoardService;
 import lombok.extern.log4j.Log4j;
 
 @Controller
-@RequestMapping("/board")
+@RequestMapping("/board/*")
 public class BoardController {
 	
 	@Autowired
@@ -37,7 +37,7 @@ public class BoardController {
 	@PostMapping("/register")
 	public String register(Board vo) {
 		boardService.register(vo);
-		return "redirect:/list";
+		return "redirect:/board/list";
 	}
 	
 	@GetMapping("/get")
@@ -56,7 +56,7 @@ public class BoardController {
 	@PostMapping("/modify")
 	public String modify(@ModelAttribute Board vo) {
 		boardService.update(vo);
-		return "redirect:/list";
+		return "redirect:/board/list";
 	}
 	
 }

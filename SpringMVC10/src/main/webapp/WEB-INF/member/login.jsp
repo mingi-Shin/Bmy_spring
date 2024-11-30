@@ -32,7 +32,7 @@
                 </div>
               </div>
             </div>
-            <form action="${cpatn }/member/login" method="post"> <!-- security에 의해 UserDetailsServiceImpl로 ㄱ -->
+            <form action="${cpath }/member/login" method="post"> <!-- security에 의해 UserDetailsServiceImpl로 ㄱ -->
               <div class="row gy-3 overflow-hidden">
                 <div class="col-12">
                   <div class="form-floating mb-3">

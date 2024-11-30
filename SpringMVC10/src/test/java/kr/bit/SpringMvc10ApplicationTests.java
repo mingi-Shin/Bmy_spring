@@ -1,7 +1,13 @@
 package kr.bit;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import kr.bit.entity.Member;
+import kr.bit.entity.Role;
+import kr.bit.repository.MemberRepository;
 
 @SpringBootTest
 class SpringMvc10ApplicationTests {
@@ -15,10 +21,10 @@ class SpringMvc10ApplicationTests {
 	@Test
 	void createMember() {
 		Member vo = new Member();
-		vo.setUsername("winter");
+		vo.setUsername("karina@gmail.com");
 		vo.setPassword(encoder.encode("ssy4260")); //암호화
-		vo.setName("김민정");
-		vo.setRole(Role.MEMBER_READ_WRITE);
+		vo.setName("유지민");
+		vo.setRole(Role.MEMBER_READ_ONLY);
 		memberRepository.save(vo);
 	}
 
