@@ -2,6 +2,7 @@ package kr.bit.entity;
 
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -20,6 +21,7 @@ public class Member {
 	@Enumerated(EnumType.STRING) // EnumType.ORDINAL : 0 1 2 ..
 	private Role role;
 	
+	@Column(insertable = false, columnDefinition = "boolean DEFAULT true")
 	private boolean isEnabled;
 	private Date deleted_at;
 

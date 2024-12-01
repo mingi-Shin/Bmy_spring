@@ -5,6 +5,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <c:set var="cpath" value="${pageContext.request.contextPath}" />
+<c:set var="user" value="${SPRING_SECURITY_CONTEXT.authentication.principal }" />
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities }" />
 
 <!DOCTYPE html>
 <html>
@@ -17,6 +19,11 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
+			
+			console.log('${user }');
+			console.log('${user.member.name }');
+			console.log('${auth }');
+			console.log('${auth[0] }');
 			
 			let regForm = $("#regForm"); //JQuery 객체이므로, regForm은 Object임 
 			$("button").on("click", function(e){
@@ -85,6 +92,7 @@
 		
 		// a tag클릭시 가져온 데이터 뿌려줘 
 		function printBoard(vo){
+			console.log(vo); 
 			//값 대입
 			let regForm = $("#regForm");
 			regForm.find("#title").val(vo.title); //아, find는 몰랐네!
@@ -94,9 +102,18 @@
 			//값 읽기전용으로 
 			regForm.find("input").prop("readonly", true);
 			regForm.find("textarea").prop("readonly", true);
-			console.log($("#updateDiv")); 
-			//버튼UI 수정: jQuery 함수 사용
-			$("#regDiv button").hide(); 
+			//버튼UI 수정
+			$("#regDiv button").hide();
+			
+			if('${user.member.name}' != vo.writer ){
+				regForm.find("[data-what='remove']").prop("disabled", true);
+				$("button[data-what='updateForm']").attr("disabled", true);
+			}
+			if('${user.member.name}' == vo.writer ){
+				regForm.find("[data-what='remove']").prop("disabled", false);
+				$("button[data-what='updateForm']").attr("disabled", false);
+			}
+			
 			$("#updateDiv button").show(); 
 			
 		}
