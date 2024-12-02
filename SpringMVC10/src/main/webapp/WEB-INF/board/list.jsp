@@ -151,7 +151,7 @@
     <div class="card-body">
     	<h4 class="card-title">Spring boot: row와 3개의 행(2:5:5) </h4>
     	
-    	<div class="row">
+    	<div class="row"> <!-- 총 12 길이 -->
     		<div class="col-lg-2" >
     			<div class="card">
     				<div class="card-body">

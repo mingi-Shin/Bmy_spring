@@ -58,7 +58,7 @@
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="${contextPath}/getMemberList.do">멤버 조회(only ADMIN)</a></li>
             <li><a class="dropdown-item" href="${contextPath}/showDescription.do">주인장의 설명보드</a></li>
-            <li><a class="dropdown-item" href="#">미 정</a></li>
+            <li><a class="dropdown-item" href="${contextPath}/template">템플릿.jsp 바로보기 </a></li>
           </ul>
         </li>
       </ul>

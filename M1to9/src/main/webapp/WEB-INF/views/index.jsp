@@ -31,6 +31,7 @@
 			<img alt="메인 페이지 이미지" src="${contextPath }/resources/images/mainImage02.png" class="img-fluid" style="max-height: 100%; width: 100%">
 		</div>
     <div class="card-body" >
+			
 			<!-- Nav tabs -->
 			<ul class="nav nav-tabs">
 			  <li class="nav-item">
@@ -47,15 +48,15 @@
 			<!-- Tab panes -->
 			<div class="tab-content">
 			  <div class="tab-pane container active" id="home">
-			  	<h3>HOME.</h3>
+			  	<h3>HOME입니다.</h3>
 			  	
 			  </div>
 			  <div class="tab-pane container fade" id="menu1">
-			  	<h3>게시판</h3>
+			  	<h3>게시판입니다.</h3>
 			  	
 			  </div>
 			  <div class="tab-pane container fade" id="menu2">
-			  	<h3>공지사항</h3>
+			  	<h3>공지사항입니다.</h3>
 			  	
 			  </div>
 			</div>

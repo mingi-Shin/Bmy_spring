@@ -10,4 +10,9 @@ public class AdminController {
 	public String showMemberList() {
 		return "/admin/showMemberList";
 	}
+	
+	@GetMapping("/template")
+	public String showTemplate() {
+		return "/common/template";
+	}
 }

@@ -39,12 +39,24 @@
   <h1>Spring MVC01 to MVC09</h1>
   <div class="card">
     <div class="card-header" >card title</div>
+    
     <div class="card-body" >
-    
-    <!-- 바디에요 -->
-    
+	    <div class="row">
+			  <div class="col-sm-2"> <!-- sm은 작은 디바스에서도 가능, lg는 큰 디바이스에서만 가능하게 비율이 설정됨.  -->
+			  	<jsp:include page="left.jsp"></jsp:include>
+			  	col-lg-2
+			  </div>
+			  <div class="col-sm-7">
+			  	col-lg-7_콘텐츠 
+			  </div>
+			  <div class="col-sm-3">
+			  	<jsp:include page="right.jsp"></jsp:include>
+			  	col-lg-3
+			  </div>
+			</div>
     </div>
-    <div class="card-footer">card foot</div>
+    
+    <div class="card-footer">card-footer</div>
   </div>
   
 	<div class="modal fade" id="myMessage" role="dialog">
