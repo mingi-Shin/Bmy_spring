@@ -19,6 +19,9 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  
+ 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
     
   <script type="text/javascript">
 		$(document).ready(function(){
@@ -36,7 +39,6 @@
 <div class="container">
 	<jsp:include page="../common/header.jsp" />
 
-  <h1>Spring MVC01 to MVC09</h1>
   <div class="card">
     <div class="card-header" >card title</div>
     
@@ -59,6 +61,8 @@
     <div class="card-footer">card-footer</div>
   </div>
   
+  
+  <!--  모달  -->
 	<div class="modal fade" id="myMessage" role="dialog">
 	  <div class="modal-dialog">
 	    <div class="modal-content">

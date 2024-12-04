@@ -42,3 +42,10 @@
 		</div>
 	</div>
 </div>
+
+
+<!-- 
+authorize: 권한을 부여 - 권한허용: 권한이름 
+authentication: 인증 - 값: 블러올 정
+
+ -->

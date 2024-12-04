@@ -1,0 +1,40 @@
+@charset "UTF-8";
+
+table {
+  border-collapse: collapse !important;
+  width: 100% !important;
+  margin: 20px 0 !important;
+}
+
+th, td {
+  border: solid 1px #ddd !important;
+  padding: 10px !important;
+  text-align: left !important;
+}
+
+th {
+  background-color: #f2f2f2 !important;
+}
+
+table a {
+  color: #007BFF !important;
+  text-decoration: none !important;
+}
+
+table a:hover {
+  text-decoration: underline !important;
+}
+
+.no-data {
+  text-align: center !important;
+  color: #888 !important;
+  padding: 10px !important;
+}
+
+/**
+안되던 이유!!
+부트스트랩이 우선 적용되서 적용이 안되고 있었음
+해결법: 속성값 옆에 !important 붙여줘.
+
+발견 방법: 개발자도구에서 봤음
+*/

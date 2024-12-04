@@ -20,6 +20,10 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   
+	<link rel="styleSheet" href="${contextPath }/resources/css/synchBoardCss.css"> <!-- 디렉토리x, URL경로  -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  
  	<script type="text/javascript">
 		$(document).ready(function(){
 			
@@ -110,99 +114,77 @@
 		}
 
  	</script>  
- 	
-	<style>
-	  table {
-	    border-collapse: collapse;
-	    width: 100%;
-	    margin: 20px 0;
-	  }
-	
-	  th, td {
-	    border: solid 1px #ddd;
-	    padding: 10px;
-	    text-align: left;
-	  }
-	
-	  th {
-	    background-color: #f2f2f2;
-	  }
-	
-	  a {
-	    color: #007BFF;
-	    text-decoration: none;
-	  }
-	
-	  a:hover {
-	    text-decoration: underline;
-	  }
-	
-	  .no-data {
-	    text-align: center;
-	    color: #888;
-	    padding: 10px;
-	  }
-	</style>
+
 </head>
 <body>
 
 <div class="container">
 	<jsp:include page="../common/header.jsp" />
 
-  <h1>Spring MVC01 to MVC09</h1>
   <div class="card">
-    <div class="card-header" >게시판 목록</div>
+    <div class="card-header" >동기식 게시판 List</div>
 		<security:authorize access="hasRole('ADMIN')">
 			<button type="button" id="randomRegisterBtn">관리자 랜덤글 등록</button>
 		</security:authorize>
     <div class="card-body" >
-    
-			<table>
-			  <thead>
-			    <tr>
-			      <th>인덱스</th>
-			      <th>제목</th>
-			      <th>글쓴이</th>
-			      <th>작성일</th>
-			      <th>조회수</th>
-			    </tr>
-			  </thead>
-			  <tbody>
-			    <c:if test="${!empty vo}">
-			      <c:forEach var="bvo" items="${vo}">
-			        <tr>
-			          <td>${bvo.boardIdx}</td>
-			          <c:if test="${bvo.boardAvailable eq false }">
-			          	<td class="deleted-data">
-				      			[삭제된 게시물입니다.]
-				      		</td>
-			          </c:if>
-			          <c:if test="${bvo.boardAvailable ne false }">
-			          	<td>
-				            <a class="move" href="${bvo.boardIdx}">
-				            	<c:out value="${bvo.title}"/> <!-- c:out -> xss방지  -->
-				            </a> 
-			          	</td>
-			          </c:if>
-			          <td>${bvo.writer}</td>
-			          <td>
-			            <fmt:formatDate value="${bvo.indate}" pattern="yyyy-MM-dd"/>
-			          </td>
-			          <td>${bvo.count}</td>
-			        </tr>
-			      </c:forEach>
-			    </c:if>
-			
-			    <c:if test="${empty vo}">
-			      <tr>
-			        <td colspan="5" class="no-data">
-			          조회가능한 게시물이 없습니다.
-			        </td>
-			      </tr>
-			    </c:if>
-			  </tbody>
-			</table>
-	    <button id="registerButton" class="btn btn-primary float-end">글쓰기 </button>
+    	<div class="row">
+    		<div class="col-sm-2">
+    			<jsp:include page="../common/left.jsp"></jsp:include>
+    		</div>
+    		<div class="col-sm-7">
+					<table>
+					  <thead>
+					    <tr>
+					      <th>인덱스</th>
+					      <th>제목</th>
+					      <th>글쓴이</th>
+					      <th>작성일</th>
+					      <th>조회수</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <c:if test="${!empty vo}">
+					      <c:forEach var="bvo" items="${vo}">
+					        <tr>
+					          <td>${bvo.boardIdx}</td>
+					          <c:if test="${bvo.boardAvailable eq false }">
+					          	<td class="deleted-data">
+						      			[삭제된 게시물입니다.]
+						      		</td>
+					          </c:if>
+					          <c:if test="${bvo.boardAvailable ne false }">
+					          	<td>
+						            <a class="move" href="${bvo.boardIdx}">
+						            	<c:out value="${bvo.title}"/> <!-- c:out -> xss방지  -->
+						            </a> 
+					          	</td>
+					          </c:if>
+					          <td>${bvo.writer}</td>
+					          <td>
+					            <fmt:formatDate value="${bvo.indate}" pattern="yyyy-MM-dd"/>
+					          </td>
+					          <td>${bvo.count}</td>
+					        </tr>
+					      </c:forEach>
+					    </c:if>
+					
+					    <c:if test="${empty vo}">
+					      <tr>
+					        <td colspan="5" class="no-data">
+					          조회가능한 게시물이 없습니다.
+					        </td>
+					      </tr>
+					    </c:if>
+					  </tbody>
+					</table>
+			    <button id="registerButton" class="btn btn-primary float-end">글쓰기 </button>
+		    		
+    		</div>
+    		<div class="col-sm-3">
+    			<jsp:include page="../common/right.jsp"></jsp:include>
+    		</div>
+    	</div>
+
     </div>
     
     <div class="card-footer">
@@ -234,7 +216,7 @@
 			
 			<!-- 검색메뉴 -->
 			<div class="d-flex justify-content-center">
-				<form action="${contextPath }/synchBoard/list" method="get" class="d-flex w-50">
+				<form action="${contextPath }/synchBoard/list" method="get" class="d-flex w-30">
 					<select class="form-select" name="type" style="width: 30%;">
 						<!-- 페이지 이동시에도 검색기록 유지 -->
 						<option value="title" 	${pageMaker.cri.type == 'title' ? 'selected' : ''}>		제목</option>
@@ -243,7 +225,7 @@
 						<option value="titcont" ${pageMaker.cri.type == 'titcont' ? 'selected' : ''}>	제목+내용</option>
 					</select>
 					<input type="text" class="form-control" name="keyword" style="width: 50%;" value="${pageMaker.cri.keyword }">
-					<button type="submit" class="btn btn-outline-secondary" style="width: 20%;">검색</button>
+					<button type="submit" class="btn btn-outline-success ms-3" style="width: 20%;">Search</button>
 				</form>
 			</div>
 			
