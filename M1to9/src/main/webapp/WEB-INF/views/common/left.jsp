@@ -32,8 +32,15 @@
 		<div class="col-sm-12">
 			<div class="card-body">
 				<p class="card-text">MAP View</p>
+				<!-- 프로그래스 바 -->
+				<div class="Loading-progress" style="display: block;">
+					<div class="spinner-grow text-primary" role="status"> <!-- role: 접근성(Accessibility)을 위한 속성 -->
+						<span class="visually-hidden">Loading... </span>
+					</div>
+				</div>
 				<div class="input-group input-group-sm"> 
 					<input class="form-control" id="searchAddr" type="text" placeholder="SearchAddr">
+					
 					<div class="input-group-append">
 						<button type="button" class="btn btn-sm btn-success">Go</button>
 					</div>

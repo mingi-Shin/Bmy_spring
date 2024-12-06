@@ -62,6 +62,16 @@
 				
 				pageFrm.submit();
 			});
+			
+			
+			//책 검색 버튼 클릭시 처리 : 화살표함수로 해볼래 
+			$("#bookSearch").on("click", () => {
+				const bookName = $("#bookName").val();
+				getBookList(bookName);
+			});
+			
+			
+			
 			  
 		});
 		
@@ -106,12 +116,22 @@
 				    console.log(errorMessage);
 				    alert("오류: " + errorMessage + "\n" + jqXHR.status + "입니다");
 					}
-					
 				});
-				
 			}
-			
 		}
+		
+ 		function getBookList(bookName){
+ 			if(bookName == ""){
+ 				alert("책 제목을 입력하세요."); //아니면 전체 리스트 호출 
+ 				return false;
+ 			} else {
+ 				alert(bookName);
+ 				// 카카오 책 검색 오픈API 연동(키 발급)
+ 				
+ 			}
+ 			
+ 			
+		} 
 
  	</script>  
 
