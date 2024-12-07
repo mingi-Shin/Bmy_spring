@@ -70,10 +70,93 @@
 				getBookList(bookName);
 			});
 			
-			
+			//책 검색 검색어 입력 실시간 처리 
+			$("#bookName").on("keyup", (event)=> {
+				let searchKey = $(event.target).val().trim(); // 화살표함수는 자신만의 this를 가지지 않아. function을 쓰던지, event-event.target을 쓰던지 둘중 하나!!
+				getBookList(searchKey);
+			});
 			
 			  
 		});
+		// 책 API
+ 		function getBookList(bookName){
+ 			if(bookName == ""){
+ 				//alert("책 제목을 입력하세요."); //아니면 전체 리스트 호출 
+ 				return false;
+ 			} else {
+ 				// 카카오 책 검색 오픈API 연동(REST API키: 72326f8d9250ae5468ec24e75107792a )
+ 				// URL: https://dapi.kakao.com/v3/search/book?target=title
+ 				// H: Authorization: KakaoAK ${REST_API_KEY}		
+ 				$.ajax({
+ 					url : "https://dapi.kakao.com/v3/search/book?target=title&size=20",
+ 					headers	: {"Authorization": "KakaoAK 72326f8d9250ae5468ec24e75107792a"},
+ 					type : "get",
+ 					data : {"query" : bookName},
+ 					dataType : "json",
+					success : bookPrint,
+					error : function(){ alert("error 발생 ");}
+ 				});
+ 				// right.jsp 로딩 프로그레스바 표현 
+ 				$(document).ajaxStart(function(){$(".Loading-progress").show(); });
+ 				$(document).ajaxStop(function(){$(".Loading-progress").hide(); });
+ 				
+ 			}
+		} 
+		function bookPrint(data){
+			let bookList = $("#bookList");
+			bookList.empty(); // 리스트 초기화
+			console.log(data);
+			
+			if(data && data.documents.length > 0){
+				console.log("결과 있음:" + data.documents.length );
+				
+				//table
+				const bookTable = $("<table>")
+					.addClass("table-hover");
+				bookList.append(bookTable);
+				
+				//table-thead
+				const bookTHead = $("<thead>")
+					.append($("<tr>")
+						.append($("<th>").text("책이미지"))
+						.append($("<th>").text("책가격"))
+					);
+				bookTable.append(bookTHead);
+				
+				//table-tbody
+				const bookTBody = $("<tbody>");
+				bookTable.append(bookTBody);
+				
+				// $.each() - data 뿌리기
+				$.each(data.documents, function(index, bvo){
+					let bookTd = $("<tr>")
+						.append($("<td>")
+							.append($("<a>").attr("href", bvo.url).attr("target", "_blank").text(limitTextLength(bvo.title, 5)) //텍스트 길이 표시 제한 함수 적용 
+								.append($("<img>").attr("src", bvo.thumbnail).attr("alt", "책 이미지").css({width:"50px", height:"60px"})
+								)
+							)
+						)
+						.append($("<td>").text(bvo.price));
+					
+					bookTBody.append(bookTd);
+				});
+				
+			} else {
+				let emptyResultTable = $("<table>")
+					.append($("<tr>")
+							.append($("<td>").text("조회된 결과가 없습니다.")));
+				bookList.append(emptyResultTable);
+			}
+		}
+		
+		// 검색어 결과의 텍스트 표시 길이를 제한하는 함수
+		function limitTextLength(text, maxLength) {
+		    if (text.length > maxLength) {
+		        return text.slice(0, maxLength) + "...";
+		    }
+		    return text;
+		}
+		
 		
 		function randomRegister(){
 			console.log("랜덤글 등록 실행");
@@ -120,18 +203,6 @@
 			}
 		}
 		
- 		function getBookList(bookName){
- 			if(bookName == ""){
- 				alert("책 제목을 입력하세요."); //아니면 전체 리스트 호출 
- 				return false;
- 			} else {
- 				alert(bookName);
- 				// 카카오 책 검색 오픈API 연동(키 발급)
- 				
- 			}
- 			
- 			
-		} 
 
  	</script>  
 
