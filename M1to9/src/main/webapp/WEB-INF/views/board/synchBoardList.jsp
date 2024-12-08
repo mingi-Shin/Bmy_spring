@@ -20,6 +20,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.3/jquery-ui.js"></script>
 	<link rel="styleSheet" href="${contextPath }/resources/css/synchBoardCss.css"> <!-- 디렉토리x, URL경로  -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   
@@ -64,16 +65,54 @@
 			});
 			
 			
-			//책 검색 버튼 클릭시 처리 : 화살표함수로 해볼래 
+			//책 검색: 버튼(#bookSearch) 클릭시 처리 : 화살표함수로 해볼래 
 			$("#bookSearch").on("click", () => {
 				const bookName = $("#bookName").val();
 				getBookList(bookName);
 			});
 			
-			//책 검색 검색어 입력 실시간 처리 
+			//책 검색_Ver1: 실시간 조회 처리_keyup()(검색 결과를 즉시 업데이트하거나 로딩 표시가 필요한 경우 적합.)
+			/**
 			$("#bookName").on("keyup", (event)=> {
 				let searchKey = $(event.target).val().trim(); // 화살표함수는 자신만의 this를 가지지 않아. function을 쓰던지, event-event.target을 쓰던지 둘중 하나!!
 				getBookList(searchKey);
+			});
+			*/
+			
+			//책 검색_Ver2: keyup + autocomplete (사용자가 자동완성 기능을 선호할 때 적합.)
+			let searchList = []; //자동완성 목록 저장 배열
+			$("#bookName").on("keyup", function(){
+				const query = $(this).val();
+				if(query.length >= 2){ //최소 2글자 이상에서 
+					$.ajax({
+						url : "https://dapi.kakao.com/v3/search/book?target=title&size=12",
+						headers : {"Authorization": "KakaoAK 72326f8d9250ae5468ec24e75107792a"},
+						type : "get",
+						data : {"query" : query },
+						success : function(data){
+							// 서버 응답 데이터를 searchList에 업데이트
+							searchList = data.documents.map(item => item.title);
+						  // .autocomplete()의 source 동적으로 업데이트
+              $("#bookName").autocomplete("option", "source", searchList);
+						},
+						error : function(){
+							alert("Error fetching data");
+						}
+					});
+					
+				} else {
+					searchList = []; //입력값이 짧아지면 초기화??
+				}
+			});
+			// .autocomplete()로 자동완성 활성화
+			$("#bookName").autocomplete({
+				source : function(request, response){
+					response(searchList); //earchList를 자동완성 목록으로 사용
+				},
+				minlength: 2, //최소 입력 문자 수 
+				select : function(event, ui){
+					console.log("선택된 항목: ", ui.item.value);
+				}
 			});
 			
 			  
@@ -102,6 +141,7 @@
  				
  			}
 		} 
+		// 책 DATA 호출 
 		function bookPrint(data){
 			let bookList = $("#bookList");
 			bookList.empty(); // 리스트 초기화
