@@ -24,12 +24,15 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.3/jquery-ui.js"></script> <!-- jQuery-ui의 autocomplete() 호출하기 위함  -->
 	<link rel="styleSheet" href="${contextPath }/resources/css/synchBoardCss.css"> <!-- 디렉토리x, URL경로  -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4738d465399ab9f51b55101904abb261"></script> <!-- kakaoMap API -->
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoJsApiKey }"></script> <!-- kakaoMap API -->
 	
   
   
  	<script type="text/javascript">
 		$(document).ready(function(){
+			
+			const kakaoRestApiKey = "${kakaoRestApiKey}";
+			const kakaoJsApiKey = "${kakaoJsApiKey}";
 			
 			//로그인 오류시 실패 모달창show
 		  if(${!empty msgBody}){
@@ -89,7 +92,7 @@
 				if(query.length >= 2){ //최소 2글자 이상에서 
 					$.ajax({
 						url : "https://dapi.kakao.com/v3/search/book?target=title&size=12",
-						headers : {"Authorization": "KakaoAK 72326f8d9250ae5468ec24e75107792a"},
+						headers : {"Authorization": "KakaoAK " + kakaoRestApiKey},
 						type : "get",
 						data : {"query" : query },
 						success : function(data){
@@ -129,7 +132,7 @@
 					// kkaoMap API 연결 
 					$.ajax({
 						url : "https://dapi.kakao.com/v2/local/search/keyword.json",
-						headers : {"Authorization" : "KakaoAK 72326f8d9250ae5468ec24e75107792a"}, //header가 아니라 headers
+						headers : {"Authorization" : "KakaoAK " + kakaoRestApiKey}, //header가 아니라 headers
 						type : "get",
 						data : {"query" : address},
 						success : mapView,
@@ -154,7 +157,7 @@
  				// H: Authorization: KakaoAK ${REST_API_KEY}		
  				$.ajax({
  					url : "https://dapi.kakao.com/v3/search/book?target=title&size=20",
- 					headers	: {"Authorization": "KakaoAK 72326f8d9250ae5468ec24e75107792a"},
+ 					headers	: {"Authorization": "KakaoAK " + kakaoRestApiKey},
  					type : "get",
  					data : {"query" : bookName},
  					dataType : "json",

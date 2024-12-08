@@ -16,7 +16,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @MapperScan({"kr.mingi.mapper"})
-@PropertySource({"classpath:persistence-postgresql.properties"})
+@PropertySource({"classpath:persistence-postgresql.properties", "classpath:application-API-KEY.properties"}) //@PropertySource는 주로 Spring Legacy 프로젝트에서 추가 프로퍼티 파일을 로드하기 위해 사용됩니다.
 public class RootConfig {
 
 	@Autowired

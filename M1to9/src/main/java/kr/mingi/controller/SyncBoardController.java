@@ -3,6 +3,7 @@ package kr.mingi.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -31,11 +32,22 @@ public class SyncBoardController {
 	@Autowired
 	private BoardService boardService;
 
+	@Value("${kakao-rest-api-key}")
+	private String kakaoRestApiKey;
+	
+	@Value("${kakao-js-api-key}")
+	private String kakaoJsApiKey;
+	
+	
+	
 	// 게시판 전체 조회 및 페이징 처리 
 	@GetMapping("/list")
 	public String getBoardList(Criteria cri, Model model ) {
 		List<Board> boardList = boardService.getBoardList(cri);
 		model.addAttribute("vo", boardList);
+		
+		model.addAttribute("kakaoRestApiKey", kakaoRestApiKey); //APi키 쓸거
+		model.addAttribute("kakaoJsApiKey", kakaoJsApiKey);
 		
 		//페이징 처리에 필요한 부분
 		PageMaker pageMaker = new PageMaker();
