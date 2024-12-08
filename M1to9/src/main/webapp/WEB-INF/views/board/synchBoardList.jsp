@@ -20,9 +20,12 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   
-  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.3/jquery-ui.js"></script>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.3/jquery-ui.js"></script> <!-- jQuery-ui의 autocomplete() 호출하기 위함  -->
 	<link rel="styleSheet" href="${contextPath }/resources/css/synchBoardCss.css"> <!-- 디렉토리x, URL경로  -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4738d465399ab9f51b55101904abb261"></script> <!-- kakaoMap API -->
+	
   
   
  	<script type="text/javascript">
@@ -115,6 +118,29 @@
 				}
 			});
 			
+			
+			//kakao map 호출
+			$("#mapBtn").on("click", ()=>{
+				let address = $("#address").val(); //검색키워드 
+				if(address == ''){
+					alert("주소를 입력해주세요.");
+					return false;
+				} else { 
+					// kkaoMap API 연결 
+					$.ajax({
+						url : "https://dapi.kakao.com/v2/local/search/keyword.json",
+						headers : {"Authorization" : "KakaoAK 72326f8d9250ae5468ec24e75107792a"}, //header가 아니라 headers
+						type : "get",
+						data : {"query" : address},
+						success : mapView,
+						error : function() {alert("카카오 MAP 주소 호출 에러 발생");}
+					});
+				}
+			});
+			
+			
+			
+			
 			  
 		});
 		// 책 API
@@ -196,6 +222,56 @@
 		    }
 		    return text;
 		}
+		
+		
+		
+		//kakao MAP API 호출 함수 
+		function mapView(data){
+			
+			let y = data.documents[0].y;//위도 
+			let x = data.documents[0].x;//경도 
+			console.log(y, x);
+			
+			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+		    mapOption = { 
+		        center: new kakao.maps.LatLng(y, x), // 지도의 중심좌표
+		        level: 3 // 지도의 확대 레벨
+		    };
+
+			// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+			var map = new kakao.maps.Map(mapContainer, mapOption); 
+			
+			// 마커가 표시될 위치입니다 
+			var markerPosition  = new kakao.maps.LatLng(y, x);  //검색결과의 경도,위도 입력 
+
+			// 마커를 생성합니다
+			var marker = new kakao.maps.Marker({
+			    position: markerPosition
+			});
+
+			// 마커가 지도 위에 표시되도록 설정합니다
+			marker.setMap(map);
+			
+			// 회원가입 때, mvo.member.address에 내 농장 위치 입력, API홈페이지 보면 주변 nKM내 장소 검색 쿼리 예시문 있음. 참고하길 
+			var iwContent = '<div style="padding:5px;">${mvo.member.memName}<br><a href="https://map.kakao.com/link/map/Hello World!,33.450701,126.570667" style="color:blue" target="_blank">큰지도보기</a> <a href="https://map.kakao.com/link/to/Hello World!,33.450701,126.570667" style="color:blue" target="_blank">길찾기</a></div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+		    iwPosition = new kakao.maps.LatLng(y, x); //인포윈도우 표시 위치입니다
+	
+			// 인포윈도우를 생성합니다
+			var infowindow = new kakao.maps.InfoWindow({
+			    position : iwPosition, 
+			    content : iwContent 
+			});
+			  
+			// 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
+			infowindow.open(map, marker); 
+
+			// 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+			// marker.setMap(null);  
+		}
+		
+		
+		
+		
 		
 		
 		function randomRegister(){

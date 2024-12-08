@@ -39,12 +39,17 @@
 					</div>
 				</div>
 				<div class="input-group input-group-sm"> 
-					<input class="form-control" id="searchAddr" type="text" placeholder="SearchAddr">
+					<input class="form-control" type="text" id="address" placeholder="SearchAddr">
 					
 					<div class="input-group-append">
-						<button type="button" class="btn btn-sm btn-success">Go</button>
+						<button type="button" class="btn btn-sm btn-success" id="mapBtn">Go</button>
 					</div>
 				</div>
+				
+				<!-- 지도를 표시할 div 입니다 -->
+				<div id="map" style="width:100%;height:250px;"></div>
+				
+				
 			</div>
 		</div>
 	</div>

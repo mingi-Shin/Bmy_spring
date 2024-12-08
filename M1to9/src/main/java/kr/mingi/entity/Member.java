@@ -21,3 +21,5 @@ public class Member {
 									//authList[0].auth, authList[1].auth, ... 
 									// 그래서 List로 한거.. 
 }
+
+//위도 경도는 회원가입 때 주소 검색 API 활용 
