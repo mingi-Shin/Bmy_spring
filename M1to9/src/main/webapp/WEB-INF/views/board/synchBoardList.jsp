@@ -34,7 +34,7 @@
 			const kakaoRestApiKey = "${kakaoRestApiKey}";
 			const kakaoJsApiKey = "${kakaoJsApiKey}";
 			
-			//로그인 오류시 실패 모달창show
+			//로그인 오류시 실패 모달창 오픈 
 		  if(${!empty msgBody}){
 			  $("#myMessage").modal("show"); 
 		  }
