@@ -68,6 +68,12 @@ public class SecurityConfiguration {
  * 		이 클래스는 보안 설정을 커스터마이징하기 위한 기반 클래스로 사용됩니다.
  *      반면, 스프링 부트에서는 SecurityFilterChain 빈을 정의하는 방식으로 설정을 진행할 수 있습니다.
  * 
+ * 
+ * 		 **스프링 부트 3 이상(또는 스프링 시큐리티 5.7 이상)**부터는 
+ * 		@EnableWebSecurity 어노테이션을 명시적으로 추가하지 않아도, 
+ * 		SecurityFilterChain 빈을 정의하면 Spring Security 필터가 자동으로 활성화
+ * 
+ * 
  * */
 
 

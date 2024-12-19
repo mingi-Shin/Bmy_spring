@@ -45,7 +45,7 @@ public class SecurityConfig {
     }
     
     
-    //나만의 커스텀 SecurityFilterChain 생성(@Bean)
+    //나만의 커스텀 SecurityFilterChain 생성(@Bean) = @EnableWebSecurity가 있을 때만 활성화
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		
@@ -107,7 +107,7 @@ public class SecurityConfig {
 /**
  	시큐리티 5.4 이하 버전: 
  	WebSecurityConfigurerAdapter클래스를 상속하여 SecurityConfig객체를 생성한다.
-	- @EnableWebSecurity는 스프링MVC와 스프링 시큐리티를 결합하는 클래스이다.
+	- @EnableWebSecurity는 스프링 시큐리티(Web Security)를 활성화하는 어노테이션입니다.
 	- configure() 메서드를 Override하고 관련 설정을 한다.
 */
 /**
