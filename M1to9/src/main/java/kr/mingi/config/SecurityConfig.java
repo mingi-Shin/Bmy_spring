@@ -19,7 +19,7 @@ import kr.mingi.security.MemberUserDetailsService;
 
 // Spring Security : WebSecurityConfigurerAdapter를 확장하여 Spring Security의 기본 보안 기능을 커스터마이즈 
 @Configuration
-@EnableWebSecurity //시큐리티 필터 추가할거야 선언 
+@EnableWebSecurity(debug = true) //시큐리티 필터 추가할거야 선언  (debug는 서비스할 땐 삭제해)
 @EnableGlobalMethodSecurity(prePostEnabled = true) // 메소드 수준의 보안 활성화
 public class SecurityConfig {
 	
