@@ -81,7 +81,6 @@ public class SecurityConfig {
 		    .exceptionHandling()
 		        .accessDeniedPage("/m019/access-denied");
 	        //.and()
-		    //.csrf().disable(); // CSRF 보호를 비활성화할 경우, 필요에 따라 설정
 				
 		
 		return http.build(); // 새로운 방식으로 SecurityFilterChain을 빌드하여 반환

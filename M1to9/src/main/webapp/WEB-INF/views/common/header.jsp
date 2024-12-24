@@ -12,7 +12,8 @@
 
 <script>
 
-	//로그아웃 = 시큐리티: post -> SecurityConfig.java와 매핑 
+	//로그아웃 = 시큐리티: post -> SecurityConfig.java와 매핑. 
+	//이런식으로 토큰을 사용자가 볼수 있게되는 코드는 보안상 매우 위험하다.
 	let csrfHeaderName = "${_csrf.headerName}";
 	let csrfTokenValue = "${_csrf.token}";
 	let name = "${mvo.member.memName}";
