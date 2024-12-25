@@ -25,7 +25,7 @@
             <section class="suggestions">
                 <h2>어떻게 해야 하나요?</h2>
                 <ul>
-                    <li><a href="/">홈페이지로 돌아가기</a></li>
+                    <li><a href="/boot">홈페이지로 돌아가기</a></li>
                     <li><a href="/member/login">로그인 페이지로 이동</a></li>
                     <li><a href="/board/list">게시판 목록으로 이동</a></li>
                 </ul>

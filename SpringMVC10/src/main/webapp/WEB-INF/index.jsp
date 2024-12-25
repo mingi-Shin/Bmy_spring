@@ -39,6 +39,16 @@
       			<p class="card-text"><a href="${cpath}/member/login">로그인</a></p>
       		</div>
       	</div>
+      	<div class="card bg-info">
+      		<div class="card-body text-center">
+      			<p class="card-text"><a href="${cpath}/yummi/main">유미의 security</a></p>
+      		</div>
+      	</div>
+      	<div class="card bg-Secondary">
+      		<div class="card-body text-center">
+      			<p class="card-text"><a href="${cpath}/admin/main">관리자페이지</a></p>
+      		</div>
+      	</div>
     </div>
   </div>
 </div>
