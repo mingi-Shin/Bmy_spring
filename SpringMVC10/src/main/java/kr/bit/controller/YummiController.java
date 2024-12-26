@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * 유미의 Security 강의를 토대로 코딩 
  * 
  * */
-@RequestMapping("/yummi/*")
+@RequestMapping("/yummi")
 @Controller
 public class YummiController {
 

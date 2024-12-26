@@ -30,7 +30,8 @@
                 </div>
               </div>
             </div>
-            <form action="${cpath }/member/login" method="post"> <!-- security에 의해 UserDetailsServiceImpl로 ㄱ -->
+            
+            <form action="${cpath }/member/loginProc" method="post"> <!-- security에 의해 UserDetailsServiceImpl로 ㄱ -->
               <div class="row gy-3 overflow-hidden">
                 <div class="col-12">
                   <div class="form-floating mb-3">
@@ -59,6 +60,7 @@
                 </div>
               </div>
             </form>
+            
             <div class="row">
               <div class="col-12">
                 <hr class="mt-5 mb-4 border-secondary-subtle">

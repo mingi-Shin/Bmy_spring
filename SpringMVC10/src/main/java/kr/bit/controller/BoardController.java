@@ -16,7 +16,7 @@ import kr.bit.service.BoardService;
 import lombok.extern.log4j.Log4j;
 
 @Controller
-@RequestMapping("/board/*")
+@RequestMapping("/board")
 public class BoardController {
 	
 	@Autowired

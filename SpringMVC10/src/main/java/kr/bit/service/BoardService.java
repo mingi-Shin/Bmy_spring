@@ -11,4 +11,6 @@ public interface BoardService {
 	public Board get(Long boardIdx);
 	public void delete(Long boardIdx);
 	public void update(Board vo);
+	public List<Board> getList(String writer);
+	
 }

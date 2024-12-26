@@ -157,10 +157,10 @@
     				<div class="card-body">
     					<h4 class="card-title"><sec:authentication property="principal.Member.name"></sec:authentication></h4>
     					<p class="card-text">회원님 방문을 환영합니다.</p>
-    					<form action="${cpath }/member/logout" method="post">
+    					<br>
+    					<form action="${cpath}/member/logoutProc" method="post">
     						<button type="submit" class="btn btn-sm btn-primary form-control mt-3">로그아웃</button>
     					</form>
-    					<br>
     					<sec:authorize access="hasRole('ROLE_ADMIN')">
     					<div>등급: <sec:authentication property="principal.Member.role"/> MENU</div>
     					<p>관리자</p>
