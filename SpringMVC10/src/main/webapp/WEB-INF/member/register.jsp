@@ -11,6 +11,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+대충 해
 <form action="${ cpath}/member/register" method="post">
 	<input type="text" name="username" placeholder="Email">
 	<input type="password" name="password" placeholder="password">
