@@ -17,7 +17,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	
 	@Autowired
-	private MemberRepository memberRepository; // 메서드 모음집 
+	private MemberRepository memberRepository; // 회원 메서드 모음
 	
 	
 	// 아래 메서드는 http.userDetailService함수의 매개변수로 가게 될것이다. 왜? 인증을 위해서 
@@ -42,6 +42,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 /**
  *	loadUserByUsername 메서드가 UserDetails에 있는 이유는
- *	 = Spring Security에서 인증(authentication)을 처리하기 위해 존재
+ *	 = Spring Security에서 인증(authentication), 권한을 처리하기 위해 존재.. 
+ *	사용자 정보를 UserDetails 객체로 변환하여 Security가 이해할 수 있는 형식으로 제공하기 위함. 
  * 
  * */

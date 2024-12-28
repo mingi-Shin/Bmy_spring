@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kr.bit.entity.Member;
@@ -19,19 +20,38 @@ public class MemberServiceImpl implements MemberService {
 	private MemberRepository memberRepository; // 실무에서는 생성자 주입방식으로 사용함  
 	
 	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	private PasswordEncoder encoder; // 실무에서는 생성자 주입방식으로 사용함
 	
 	@Override
 	public void register(Member member, String role) {
+		/** 정규식 표현 추가 필요.
+		  	아이디의 자리수
+			아이디의 특수문자 포함 불가
+			admin과 같은 아이디 사용 불가
+			비밀번호 자리수
+			비밀번호 특수문자 포함 필수
+		 **/
 		
-		String encodedPassword = bCryptPasswordEncoder.encode(member.getPassword());
-		member.setPassword(encodedPassword);
+		// 1. 아이디 중복 백엔드 검사
+		boolean isUser = memberRepository.existsByUsername(member.getUsername());
+		if (isUser) {
+			
+			return;
+		} else {
+			
+			// 2. 비밀번호 인코드 
+			String encodedPassword = encoder.encode(member.getPassword());
+			member.setPassword(encodedPassword);
+			
+			// 3. 건네받은 String타입의 role값을 enum클래스 값으로 변환: Role.valueOf()
+			Role roleEnum = Role.valueOf(role);
+			member.setRole(roleEnum);
+			
+			
+			// 4. 저장 
+			memberRepository.save(member);
+		}
 		
-		//건네받은 String타입 role값을 enum클래스 값으로 변환하는 코드: Role.valueOf()
-		Role roleEnum = Role.valueOf(role);
-		member.setRole(roleEnum);
-		
-		memberRepository.save(member);
 	}
 
 	@Override

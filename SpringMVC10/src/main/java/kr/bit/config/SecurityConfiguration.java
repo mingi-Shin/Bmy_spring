@@ -20,11 +20,12 @@ public class SecurityConfiguration {
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder(); 
 	}
     
+/** 더 진보된 DelegatingPasswordEncoder 암호화를 사용하자.
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
     	return new BCryptPasswordEncoder();
     }
-
+*/
 	@Bean
     public SecurityFilterChain filterChain01(HttpSecurity http) throws Exception {
 
@@ -49,6 +50,12 @@ public class SecurityConfiguration {
 			.logout((auth) -> auth
 					.logoutUrl("/member/logoutProc") //혹은 logoutRequestMatcher()로 더 복잡한 사용 
 					.logoutSuccessUrl("/") // = 리디렉션, 이거아니면 logoutSuccessHandler()로 더 복잡한 사용 
+					);
+		
+		http
+			.sessionManagement((auth) -> auth
+					.maximumSessions(1)
+					.maxSessionsPreventsLogin(true)// true : 초과시 새로운 로그인 차단,  false : 초과시 기존 세션 하나 삭제
 					);
 		
 		http

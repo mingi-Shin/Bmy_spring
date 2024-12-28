@@ -22,7 +22,7 @@ class SpringMvc10ApplicationTests {
 	void createMember() {
 		Member vo = new Member();
 		vo.setUsername("shinmingi@gmail.com");
-		vo.setPassword(encoder.encode("ssy4260")); //암호화
+		vo.setPassword(encoder.encode("ssy917")); //암호화
 		vo.setName("신민기");
 		vo.setRole(Role.ADMIN);
 		memberRepository.save(vo);
