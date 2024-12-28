@@ -15,7 +15,7 @@ import lombok.Data;
 @Data
 public class Member {
 	
-	@GeneratedValue(strategy = GenerationType.IDENTITY) //자동증가
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //자동증가..
 
 	
 	@Id
