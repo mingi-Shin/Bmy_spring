@@ -31,7 +31,7 @@ public class SecurityConfiguration {
 
     	// 경로별 접근 권한 설정
 		http.authorizeHttpRequests((auth) -> auth
-				.requestMatchers("/", "/member/**", "/yummi/**", "/WEB-INF/**").permitAll()
+				.requestMatchers("/", "/error", "/member/**", "/yummi/**", "/WEB-INF/**").permitAll()
 				.requestMatchers("/resources/**", "/css/**", "/js/**", "/images/**").permitAll()  // 정적 리소스 경로 추가
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				.requestMatchers("/my/**").hasAnyRole("ADMIN", "MANAGER")
@@ -43,7 +43,7 @@ public class SecurityConfiguration {
 			.formLogin((auth) -> auth
 					.loginPage("/member/login")
 					.loginProcessingUrl("/member/loginProc")
-					.defaultSuccessUrl("/") //로그인 성공시 해당 페이지로 가겠다는 의미 
+					.defaultSuccessUrl("/", true) //로그인 성공시 해당 페이지로 가겠다는 의미 
 			);
 		
 		http
@@ -54,9 +54,15 @@ public class SecurityConfiguration {
 		
 		http
 			.sessionManagement((auth) -> auth
-					.maximumSessions(1)
+					.invalidSessionUrl("/member/login?timeout=true") // 세션 만료 시 이동할 페이지
+					.maximumSessions(1) //다중로그인 허용 갯수 
 					.maxSessionsPreventsLogin(true)// true : 초과시 새로운 로그인 차단,  false : 초과시 기존 세션 하나 삭제
 					);
+		
+		http
+			.sessionManagement((auth) -> auth
+					.sessionFixation().changeSessionId() //로그인 시 동일한 세션에 대한 id변경
+			);
 		
 		http
 			.csrf((auth) -> auth.disable()); //CSRF토큰 검사 비활용 
@@ -74,6 +80,9 @@ public class SecurityConfiguration {
 
 
 /**
+ *		Security 기본방식은 세션 -> 세션기반 코드인 csrf, 로그인, 로그아웃이 활성화
+ *		JWT는 토근방식 -> csrf, 로그인, 로그아웃 모두 off, 커스텀화  
+ *
  * 		람다식 표현 해석:
  * 		http.csrf()가 호출되면서 CSRF 설정 객체(CsrfConfigurer)가 반환됨. 
  * 		반환된 CsrfConfigurer 객체를 람다식의 매개변수로 전달하며, 그 이름을 csrf라고 지정.

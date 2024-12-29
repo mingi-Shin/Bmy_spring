@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 public class HelloController {
 	
-	@RequestMapping("/")
+	@GetMapping("/")
 	public String hello() {
 		return "index";
 	}

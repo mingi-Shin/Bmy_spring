@@ -39,7 +39,7 @@
       			<p class="card-text"><a href="${cpath}/member/login">로그인</a></p>
       		</div>
       	</div>
-      	<div class="card bg-danger">
+      	<div class="card bg-secondary">
       		<div class="card-body text-center">
       			<p class="card-text"><a href="${cpath}/member/register">회원가입</a></p>
       		</div>

@@ -17,11 +17,35 @@
 
 </head>
 <body>
+<h4>유미의 Security</h4>
 
-유미의 Security
-<h3>userInfo</h3>
-${userInfo } 
-
-저장혀 
+<table border="1">
+	<thead>
+		<tr>
+			<th>userInfo</th>		
+			<td>${userInfo }</td>
+		</tr>
+		<tr>
+			<th>role</th>		
+			<td>${role }</td>
+		</tr>
+		<tr>
+			<th>Credentials</th>		
+			<td>${Credentials }</td>
+		</tr>
+		<tr>
+			<th>details</th>		
+			<td>${details }</td>
+		</tr>
+		<tr>
+			<th>name</th>		
+			<td>${name }</td>
+		</tr>
+		<tr>
+			<th>principal</th>		
+			<td>${principal }</td>
+		</tr>
+	</thead>
+</table>
 </body>
 </html>

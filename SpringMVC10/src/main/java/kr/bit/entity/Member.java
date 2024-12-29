@@ -15,9 +15,6 @@ import lombok.Data;
 @Data
 public class Member {
 	
-	@GeneratedValue(strategy = GenerationType.IDENTITY) //자동증가..
-
-	
 	@Id
 	@Column(unique = true)
 	private String username; 
