@@ -59,6 +59,7 @@ public class SecurityConfiguration {
 					.maxSessionsPreventsLogin(true)// true : 초과시 새로운 로그인 차단,  false : 초과시 기존 세션 하나 삭제
 					);
 		
+		//세션 고정 공격 방어코드 
 		http
 			.sessionManagement((auth) -> auth
 					.sessionFixation().changeSessionId() //로그인 시 동일한 세션에 대한 id변경

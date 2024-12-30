@@ -17,8 +17,8 @@
 	</licenses>
 
 	<properties>
-	    <spring.maven.artifact.version>5.3.27</spring.maven.artifact.version>
-	    <spring.springsecurity.version>5.7.5</spring.springsecurity.version>
+  	<spring.maven.artifact.version>5.3.27</spring.maven.artifact.version>
+    <spring.springsecurity.version>5.7.5</spring.springsecurity.version>
 		<org.egovframe.rte.version>4.2.0</org.egovframe.rte.version>
 	</properties>
 
