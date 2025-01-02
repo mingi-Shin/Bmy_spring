@@ -4,7 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kr.yummi.dto.joinDTO;
-import kr.yummi.entity.UserEntity;
+import kr.yummi.entity.Member;
 import kr.yummi.repository.UserRepository;
 
 
@@ -33,7 +33,7 @@ public class JoinService {
 		}
 		
 		//가입 실행
-		UserEntity data = new UserEntity();
+		Member data = new Member();
 		data.setUsername(username);
 		data.setPassword(bCryptPasswordEncoder.encode(password));
 		data.setRole("ROLE_TEST_USER"); //임시저장 
