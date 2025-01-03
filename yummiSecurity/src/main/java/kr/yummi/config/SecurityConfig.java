@@ -44,15 +44,6 @@ public class SecurityConfig {
     	//csrf disable
         http
             .csrf((auth) -> auth.disable());
-        
-        //경로별 인가 작업
-        http
-        .authorizeHttpRequests((auth) -> auth
-        		.requestMatchers("/", "/login", "/join", "/error").permitAll()
-        		.requestMatchers("/", "/index.html", "/static/**", "/css/**", "/js/**").permitAll()
-        		.requestMatchers("/admin").hasRole("ROLE_ADMIN")
-        		.anyRequest().authenticated()
-        		);
 
 		//From 로그인 방식 disable : 해당필터 비활성 
         http
@@ -61,6 +52,15 @@ public class SecurityConfig {
 		//http basic 인증 방식 disable
         http
         	.httpBasic((auth) -> auth.disable());
+        
+        //경로별 인가 작업
+        http
+        .authorizeHttpRequests((auth) -> auth
+        		.requestMatchers("/", "/login", "/join", "/error").permitAll()
+        		.requestMatchers("/", "/index.html", "/static/**", "/css/**", "/js/**").permitAll()
+        		.requestMatchers("/admin").hasRole("ADMIN")
+        		.anyRequest().authenticated()
+        		);
         
         //..대신에 커스텀 login 필터 등록
         //필터 대체: CustomLoginFilter()는 매개변수로 AuthenticationManager 객체를 받음 -> authenticationConfiguration 객체를 넣어야 함.

@@ -1,0 +1,10 @@
+SELECT * FROM MEMBER;
+
+CREATE TABLE member (
+	idx int PRIMARY KEY,
+	name VARCHAR UNIQUE,
+	password VARCHAR
+);
+
+
+DROP TABLE member;
