@@ -17,7 +17,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	
 	@Autowired
-	private MemberRepository memberRepository; // 회원 메서드 모음
+	private MemberRepository memberRepository; // 회원 메서드 모음: 생성자 주입으로 바꿔 
 	
 	
 	// 아래 메서드는 http.userDetailService함수의 매개변수로 가게 될것이다. 왜? 인증을 위해서 

@@ -38,13 +38,17 @@ public class SecurityConfiguration {
 				.anyRequest().authenticated()
 				);
 		
-
+/**
 		http
 			.formLogin((auth) -> auth
 					.loginPage("/member/login")
 					.loginProcessingUrl("/member/loginProc")
 					.defaultSuccessUrl("/", true) //로그인 성공시 해당 페이지로 가겠다는 의미 
 			);
+*/
+		
+		http.formLogin((auth) -> auth.disable());
+		http.httpBasic();
 		
 		http
 			.logout((auth) -> auth
