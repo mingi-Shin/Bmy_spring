@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 
 import kr.mingi.filter.CustomLoginFilter;
+import kr.mingi.jwt.JWTUtil;
 import kr.mingi.service.CustomUserDetailsService;
 
 @Configuration
@@ -28,10 +29,12 @@ public class SecurityConfiguration {
 
 	//AuthenticationManager가 인자로 받을 AuthenticationConfiguraion 객체를 생성자 주입
 	private final AuthenticationConfiguration authenticationConfiguration;
+	private final JWTUtil jwtUtil;
 	
-	public SecurityConfiguration(AuthenticationConfiguration authenticationConfiguration) {
+	public SecurityConfiguration(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
 		
 		this.authenticationConfiguration = authenticationConfiguration;
+		this.jwtUtil = jwtUtil;
 	}
 	
     //AuthenticationManager Bean 등록
@@ -64,7 +67,7 @@ public class SecurityConfiguration {
         //CustomLoginFilter 로 UsernamePasswordAuthenticationFilter를 대체한다.
         //	: CustomLoginFilter()는 매개변수로 AuthenticationManager 객체를 받음 -> Manager는 authenticationConfiguration 을 인자로 받음
         http
-    		.addFilterAt(new CustomLoginFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class);
+    		.addFilterAt(new CustomLoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
         
         //세션 설정: JWT를 통한 인증/인가를 위해서 세션을 STATELESS 상태로 설정하는 것
         http

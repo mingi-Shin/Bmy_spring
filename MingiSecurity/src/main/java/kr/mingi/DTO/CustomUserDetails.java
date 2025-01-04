@@ -17,8 +17,8 @@ public class CustomUserDetails implements UserDetails {
     private final Member member;
 
     public CustomUserDetails(Member member) {
-    	System.out.println("1. CustomUserDetails 객체 생성");
         this.member = member;
+        System.out.println("1. CustomUserDetails 객체 생성");
         System.out.println("2. 로그인 처리할 member: " + member);
         
     }
@@ -35,7 +35,7 @@ public class CustomUserDetails implements UserDetails {
             @Override
             public String getAuthority() {
             	
-            	System.out.println("getAuthority() 실행: member.getRole()를 retur함 ");
+            	System.out.println("getAuthority() 실행: member.getRole()를 return ");
                 return member.getRole();
             }
         });
@@ -45,7 +45,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-    	System.out.println("CustomUserDetails 비밀번호: " + member.getPassword());
+    	System.out.println("CustomUserDetails 비밀번호 비교: " + member.getPassword()); //로그인 과정에서 비번 대조 
         return member.getPassword();
     }
 

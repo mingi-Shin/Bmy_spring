@@ -1,12 +1,16 @@
 package kr.mingi.filter;
 
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.hibernate.annotations.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,14 +19,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import kr.mingi.DTO.CustomUserDetails;
+import kr.mingi.jwt.JWTUtil;
 import kr.mingi.service.CustomUserDetailsService;
 
 public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 
 	private final AuthenticationManager authenticationManager;
 	
-	public CustomLoginFilter(AuthenticationManager authenticationManager) {
+	private final JWTUtil jwtUtil;
+	
+	public CustomLoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
 		this.authenticationManager = authenticationManager;
+		this.jwtUtil = jwtUtil;
 		
 	}
 	
@@ -33,16 +42,13 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		String username = obtainUsername(req);
 		String password = obtainPassword(req);
 		System.out.println("로그인 시도 username : " + username);
-		System.out.println("로그인 시도 password : " + password);
-		
-		// 스프링시큐리티에서 username과 password를 검증하기 위해서는 Token에 담아줘야 합니다 ->
-		// 	UsernamePasswordAuthenticationToken 객체는 Authentication 인터페이스를 구현한 클래스
+
+		// 2. 스프링시큐리티에서 username과 password를 검증하기 위해서는 Token에 담아줘야 합니다 ->
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password, null);
 		System.out.println("토큰생성(username, password): " + authenticationToken);
-		// 토큰생성 후에는 UserDetailsService의 loadUserByUsername() 실행 
 		
-		// 예외 핸들링을 추가
 		try {
+			// 3. 토큰생성 후에는 UserDetailsService의 loadUserByUsername() 실행 
 			// token에 담긴 정보를 검증하기 위해 AuthenticationManager의 authenticate()에게 token 전달
 		    Authentication authentication = authenticationManager.authenticate(authenticationToken);
 		    System.out.println("인증 성공: " + authentication);
@@ -59,14 +65,25 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 	@Override
 	protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, 
 			FilterChain filterChain, Authentication authentication) {
-		//JWT발급
-		System.out.println("successfulAuthentication 실행: 로그인 성공 ");
 		
-		if (authentication.getAuthorities().isEmpty()) {
-	        // 예: 권한이 비어 있을 경우 추가적으로 설정하거나 로그를 남길 수 있습니다.
-	        System.out.println("No authorities assigned to the authenticated user");
-	    }
+		System.out.println("로그인 성공 -> authentication값: " + authentication);
 		
+		CustomUserDetails customUserDetails = (CustomUserDetails)authentication.getPrincipal();
+		System.out.println(customUserDetails); // kr.mingi.DTO.CustomUserDetails@2ed127f1
+		
+		String username = customUserDetails.getUsername();
+		// 아래 3개 코드 = 권한 빼내기. (코드 왜케 김??)
+		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+		Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
+		GrantedAuthority auth = iterator.next();
+		// -> auth = authentication.getAuthorities().iterator().next();
+		
+		
+		String role = auth.getAuthority();
+		String jwtToken = jwtUtil.createJwt(username, role, 60*60*10L); // Long이라서 L접두사 첨부 
+		System.out.println();
+		
+		res.addHeader("Authorization", "Bearer " + jwtToken); // HTTP 응답 헤더에 Authorization이라는 키와 값으로 Bearer <token> 형식을 설정
 	}
 	
 	// 로그인 실패시 실행되는 메소드
@@ -75,6 +92,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 			AuthenticationException failed){
 		
 	    System.out.println("로그인 실패 : " + failed.getMessage());  // 실패 이유 출력
+	    
 		response.setStatus(401);
 	}
 	
@@ -86,4 +104,10 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
  * 	필드 주입 (책 빌려서 수정 가능): 책을 수정해서 누군가 다른 곳에서 그 책을 빌리면, 수정된 내용을 다시 보게됨.
  *
  *	생성자 주입 (책 고정): 책을 빌려서 수정할 수 없고, 고정된 내용대로 동작을 보장합니다.
+ *
+ * -------------------------------------------------------------------
+ * 
+ * 	Authorization =  HTTP 요청이나 응답에서 인증 관련 정보를 전달하는데 사용하는 표준 헤더 키
+ *	Bearer는 인증 유형을 나타내며, 뒤에 오는 <token>은 실제 인증에 사용되는 토큰 값입니다.
+ *
  * */
