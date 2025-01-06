@@ -19,7 +19,7 @@ public class CustomUserDetails implements UserDetails {
     public CustomUserDetails(Member member) {
         this.member = member;
         System.out.println("1. CustomUserDetails 객체 생성");
-        System.out.println("2. 로그인 처리할 member: " + member);
+        System.out.println("2. 처리할 member: " + member);
         
     }
 

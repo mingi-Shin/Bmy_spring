@@ -26,10 +26,10 @@ class MingiSecurityApplicationTests {
 	void contextLoads() {
 		
 		Member vo = new Member();
-		vo.setUsername("shinmingi");
+		vo.setUsername("winter");
 		vo.setPassword(bCryptPasswordEncoder.encode("ssy917"));
-		vo.setName("신민기");
-		vo.setRole("GOD");
+		vo.setName("윈터");
+		vo.setRole("ROLE_ADMIN");
 		repository.save(vo);
 
 	}

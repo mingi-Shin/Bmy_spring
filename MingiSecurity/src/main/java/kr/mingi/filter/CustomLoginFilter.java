@@ -1,6 +1,7 @@
 package kr.mingi.filter;
 
 
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -15,33 +16,57 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.util.StreamUtils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.mingi.DTO.CustomUserDetails;
+import kr.mingi.DTO.LoginDTO;
 import kr.mingi.jwt.JWTUtil;
 import kr.mingi.service.CustomUserDetailsService;
 
 public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 
 	private final AuthenticationManager authenticationManager;
-	
 	private final JWTUtil jwtUtil;
 	
 	public CustomLoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+		
 		this.authenticationManager = authenticationManager;
 		this.jwtUtil = jwtUtil;
-		
 	}
 	
 	// 1. 인증시도 메서드
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException {
 		
+/**
+		// 로그인 JSON요청으로 받기 : fetch, axios
+		LoginDTO loginDTO = new LoginDTO();
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			ServletInputStream inputStream = req.getInputStream(); // HTTP 요청 본문의 내용을 바이트 단위로 읽어와 (JSON등)
+			String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
+			loginDTO = objectMapper.readValue(messageBody, LoginDTO.class);
+			
+		} catch (IOException | java.io.IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		System.out.println("JSON 로그인 : " + loginDTO.getUsername());
+		
+		String username = loginDTO.getUsername();
+		String password = loginDTO.getPassword();
+*/
+		 
 		String username = obtainUsername(req);
 		String password = obtainPassword(req);
-		System.out.println("로그인 시도 username : " + username);
+		System.out.println("form 로그인 : " + username);
 
 		// 2. 스프링시큐리티에서 username과 password를 검증하기 위해서는 Token에 담아줘야 합니다 ->
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password, null);
@@ -72,18 +97,22 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		System.out.println(customUserDetails); // kr.mingi.DTO.CustomUserDetails@2ed127f1
 		
 		String username = customUserDetails.getUsername();
+		
 		// 아래 3개 코드 = 권한 빼내기. (코드 왜케 김??)
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
 		GrantedAuthority auth = iterator.next();
 		// -> auth = authentication.getAuthorities().iterator().next();
-		
-		
 		String role = auth.getAuthority();
-		String jwtToken = jwtUtil.createJwt(username, role, 60*60*10L); // Long이라서 L접두사 첨부 
-		System.out.println();
 		
-		res.addHeader("Authorization", "Bearer " + jwtToken); // HTTP 응답 헤더에 Authorization이라는 키와 값으로 Bearer <token> 형식을 설정
+		
+		// JWT토큰 생성
+		String jwtToken = jwtUtil.createJwt(username, role, 60*60*10000L); // Long이라서 L접두사 첨부 
+		System.out.println("생성된 JWT 토큰: " + jwtToken);
+		
+		
+		// HTTP 응답 헤더에 Authorization이라는 키와 값으로 Bearer <token> 형식을 설정
+		res.addHeader("Authorization", "Bearer " + jwtToken); 
 	}
 	
 	// 로그인 실패시 실행되는 메소드

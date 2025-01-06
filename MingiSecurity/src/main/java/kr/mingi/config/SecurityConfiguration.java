@@ -1,5 +1,7 @@
 package kr.mingi.config;
 
+import java.util.Collections;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,9 +14,12 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
-
+import jakarta.servlet.http.HttpServletRequest;
 import kr.mingi.filter.CustomLoginFilter;
+import kr.mingi.jwt.JWTFilter;
 import kr.mingi.jwt.JWTUtil;
 import kr.mingi.service.CustomUserDetailsService;
 
@@ -64,6 +69,11 @@ public class SecurityConfiguration {
         		.anyRequest().authenticated()
         		);
         
+        
+        //JWTFilter 등록 : login 앞에 실행
+        http
+        	.addFilterBefore(new JWTFilter(jwtUtil), CustomLoginFilter.class);
+        
         //CustomLoginFilter 로 UsernamePasswordAuthenticationFilter를 대체한다.
         //	: CustomLoginFilter()는 매개변수로 AuthenticationManager 객체를 받음 -> Manager는 authenticationConfiguration 을 인자로 받음
         http
@@ -74,6 +84,26 @@ public class SecurityConfiguration {
     		.sessionManagement((session) -> session
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // 세션 정책 확인
 		
+        //CORS = ??
+        http
+        	.cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+				
+				@Override
+				public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+
+					CorsConfiguration configuration = new CorsConfiguration();
+					configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000")); //허용할 프론트엔드 포트 
+					configuration.setAllowedMethods(Collections.singletonList("*")); 			// 모든 메서드 허용
+                    configuration.setAllowCredentials(true);									// 쿠키, 인증 관련 정보 허용
+                    configuration.setAllowedHeaders(Collections.singletonList("*"));			// 모든 요청 헤더 허용
+                    configuration.setExposedHeaders(Collections.singletonList("Authorization"));// 클라이언트에 노출할 응답 헤더 설정
+                    configuration.setMaxAge(3600L);												// 1시간 동안 Preflight 요청 결과 캐싱
+					
+                    
+                    return configuration;
+				}
+			})));
+        
 		return http.build();
 	}
 	

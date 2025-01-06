@@ -21,7 +21,7 @@ public class JWTUtil {
 	// properties에서 가져온 내 암호화 문장: mysecret 
 	public JWTUtil(@Value("${spring.jwt.mysecret}")String mysecret) {
 		
-		System.out.println("내 암호화 문장: " + mysecret);
+		System.out.println("나만의 시크릿 주주: " + mysecret);
 		this.secretKey = new SecretKeySpec(
 				mysecret.getBytes(StandardCharsets.UTF_8) 		// UTF-8 형식의 바이트 배열로 변환
 				, Jwts.SIG.HS256.key().build().getAlgorithm()	// Jwts의 SIG 객체에서, 서명 알고리즘으로 HS256을 지정
