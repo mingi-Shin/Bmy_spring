@@ -86,8 +86,8 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		}
 	}
 	
-	//로그인 성공시 실행 메서드
-	@Override
+	//로그인 성공시 실행 메서드 
+	@Override 
 	protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, 
 			FilterChain filterChain, Authentication authentication) {
 		
