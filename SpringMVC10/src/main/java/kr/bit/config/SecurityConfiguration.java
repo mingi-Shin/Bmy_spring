@@ -4,28 +4,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import kr.bit.service.CustomOAuth2UserService;
+
 @Configuration
 public class SecurityConfiguration {
-
-	@Autowired
-	private UserDetailsServiceImpl userDetailServiceImpl;
-
+	
     @Bean
     public PasswordEncoder passwordEncoder() {
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder(); 
 	}
-    
-/** 더 진보된 DelegatingPasswordEncoder 암호화를 사용하자.
+/** 더 진보된 BCryptPasswordEncoder 암호화를 사용하자.
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
     	return new BCryptPasswordEncoder();
     }
 */
+    
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final UserDetailsServiceImpl userDetailServiceImpl;
+    
+    public SecurityConfiguration(CustomOAuth2UserService customOAuth2UserService, UserDetailsServiceImpl userDetailServiceImpl) {
+    	this.customOAuth2UserService = customOAuth2UserService;
+    	this.userDetailServiceImpl = userDetailServiceImpl;
+    }
+    
 	@Bean
     public SecurityFilterChain filterChain01(HttpSecurity http) throws Exception {
 
@@ -38,17 +44,27 @@ public class SecurityConfiguration {
 				.anyRequest().authenticated()
 				);
 		
-/**
+		http
+			.oauth2Login((oauth2) -> oauth2
+					.loginPage("/member/login")
+					.defaultSuccessUrl("/", true) // 로그인 성공 후 항상 루트 경로로 리디렉션
+					.failureUrl("/login?error=true") // 로그인 실패 시 이동 경로
+					.userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+							.userService(customOAuth2UserService))); // OAuth2 사용자 정보 서비스 설정
+		
+
 		http
 			.formLogin((auth) -> auth
 					.loginPage("/member/login")
 					.loginProcessingUrl("/member/loginProc")
 					.defaultSuccessUrl("/", true) //로그인 성공시 해당 페이지로 가겠다는 의미 
 			);
-*/
+
 		
-		http.formLogin((auth) -> auth.disable());
-		http.httpBasic();
+		//http.formLogin((auth) -> auth.disable());
+		//http.httpBasic();
+		//http
+		//	.oauth2Login(Customizer.withDefaults()); //로그인에 기본설정을 쓰겠다. properties에서 변수 가져다 쓰는 메서드 
 		
 		http
 			.logout((auth) -> auth

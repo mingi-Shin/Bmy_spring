@@ -94,7 +94,6 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		System.out.println("로그인 성공 -> authentication값: " + authentication);
 		
 		CustomUserDetails customUserDetails = (CustomUserDetails)authentication.getPrincipal();
-		System.out.println(customUserDetails); // kr.mingi.DTO.CustomUserDetails@2ed127f1
 		
 		String username = customUserDetails.getUsername();
 		

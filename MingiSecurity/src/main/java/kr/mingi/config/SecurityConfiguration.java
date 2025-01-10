@@ -84,7 +84,7 @@ public class SecurityConfiguration {
     		.sessionManagement((session) -> session
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // 세션 정책 확인
 		
-        //CORS = ??
+        //CORS = 프론트엔드 도메인과 통신 
         http
         	.cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
 				

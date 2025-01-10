@@ -1,3 +1,6 @@
  1. 커스텀 로그인 필터를 등록 - CustomUserDetails, CustomLoginFilter, CustomUserDetailsService
  
  2. JWT 토큰 생성 등록 - JWTUtil, 
+ 
+ MingiSecurity = JWT 기반 구성
+ 

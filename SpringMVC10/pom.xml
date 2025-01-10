@@ -110,6 +110,12 @@
 			<artifactId>spring-security-taglibs</artifactId> <!-- JSP 태그에서 security사용 도구 -->
 		</dependency>
 		
+		<!-- OAuth2.0 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+		</dependency>
+		
 	</dependencies> 
 
 	<build>
