@@ -1,6 +1,12 @@
  1. 커스텀 로그인 필터를 등록 - CustomUserDetails, CustomLoginFilter, CustomUserDetailsService
  
+<<<<<<< HEAD
  2. JWT 토큰 생성 등록 - JWTUtil, 
  
  MingiSecurity = JWT 기반 구성
  
+=======
+ 2. JWT 토큰 생성 등록 - JWTUtil, JWTFilter
+ 
+ 본 프로젝트는 스프링 시큐리티에서 세션과 JWT를 다루었음.
+>>>>>>> branch 'main' of https://github.com/mingi-Shin/Bmy_spring.git

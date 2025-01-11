@@ -47,6 +47,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		
 /**
 		// 로그인 JSON요청으로 받기 : fetch, axios
+		
 		LoginDTO loginDTO = new LoginDTO();
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
@@ -93,6 +94,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		
 		System.out.println("로그인 성공 -> authentication값: " + authentication);
 		
+		// 아래부터는 JWT 인증 코드 
 		CustomUserDetails customUserDetails = (CustomUserDetails)authentication.getPrincipal();
 		
 		String username = customUserDetails.getUsername();
