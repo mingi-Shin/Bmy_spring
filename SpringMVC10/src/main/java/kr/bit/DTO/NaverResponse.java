@@ -4,6 +4,7 @@ import java.util.Map;
 
 public class NaverResponse implements OAuth2Response {
 
+	// 매개변수로 받은 데이터를 "NaverResponse" 클래스 내에서만 고정시켜서 사용하려고 클래스 내에 매개변수와 같은 변수를 선언
 	private final Map<String, Object> attribute;
 	
 	public NaverResponse(Map<String, Object> attribute) {

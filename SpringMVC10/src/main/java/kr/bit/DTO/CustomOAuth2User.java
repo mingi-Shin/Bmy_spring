@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 public class CustomOAuth2User implements OAuth2User{
 	
+	// 매개변수로 받을 값을 고정시키기 위해 final선언
 	private final OAuth2Response oAuth2Response;
 	private final String role;
 	
@@ -52,7 +53,7 @@ public class CustomOAuth2User implements OAuth2User{
 	//내가 보고싶어서 만든 메서드 
 	public String getUsername() {
 		
-		return oAuth2Response.getProvider()+ " " + oAuth2Response.getProviderId();
+		return oAuth2Response.getEmail(); // ID
 		
 	}
 

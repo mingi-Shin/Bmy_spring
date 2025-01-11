@@ -16,5 +16,7 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 	//아이디 중복 로직
 	public boolean existsByUsername(String username);
 	
+	public Member findByUsername(String username);
+	
 	
 }

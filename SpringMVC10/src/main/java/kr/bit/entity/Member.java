@@ -22,6 +22,10 @@ public class Member {
 	private String password;
 	private String name;
 	
+	private String phone;
+	
+	//private Farm myFarm; Farm클래스에 위도,경도 변수 추가 -> 개인프로젝트에 적용할 아이디어
+	
 	@Enumerated(EnumType.STRING) // EnumType.ORDINAL : 0 1 2 ..
 	private Role role;
 	

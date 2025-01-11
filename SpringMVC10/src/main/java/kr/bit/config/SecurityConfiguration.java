@@ -8,6 +8,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import kr.bit.oauth2.CustomClientRegistrationRepo;
 import kr.bit.service.CustomOAuth2UserService;
 
 @Configuration
@@ -26,10 +27,12 @@ public class SecurityConfiguration {
     
     private final CustomOAuth2UserService customOAuth2UserService;
     private final UserDetailsServiceImpl userDetailServiceImpl;
+    private final CustomClientRegistrationRepo customClientRegistrationRepo;
     
-    public SecurityConfiguration(CustomOAuth2UserService customOAuth2UserService, UserDetailsServiceImpl userDetailServiceImpl) {
+    public SecurityConfiguration(CustomOAuth2UserService customOAuth2UserService, UserDetailsServiceImpl userDetailServiceImpl, CustomClientRegistrationRepo clientRegistrationRepo) {
     	this.customOAuth2UserService = customOAuth2UserService;
     	this.userDetailServiceImpl = userDetailServiceImpl;
+    	this.customClientRegistrationRepo = clientRegistrationRepo;
     }
     
 	@Bean
@@ -47,10 +50,11 @@ public class SecurityConfiguration {
 		http
 			.oauth2Login((oauth2) -> oauth2
 					.loginPage("/member/login")
+					.clientRegistrationRepository(customClientRegistrationRepo.clientRegistrationRepository())
 					.defaultSuccessUrl("/", true) // 로그인 성공 후 항상 루트 경로로 리디렉션
 					.failureUrl("/login?error=true") // 로그인 실패 시 이동 경로
 					.userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
-							.userService(customOAuth2UserService))); // OAuth2 사용자 정보 서비스 설정
+							.userService(customOAuth2UserService))); //= OAuth2인증 후 Security말고 내 커스텀 서비스로 처리하겠다.
 		
 
 		http
@@ -123,6 +127,10 @@ public class SecurityConfiguration {
  * 		"/member" 는 해당하는 단일 페이지만
  * 		"/member/*"는 하위의 페이지만
  * 		"/member/**"는 하위 모든 페이지에 적용 한다는 의미.
+ * 
+ * 
+ * 		userInfoEndpoint()부분에 대한 설명링크: https://www.notion.so/OAuth2_SecurityConfig-java-175e2244683d80099bb6f78c155112d7?pvs=4
+ * 
  * 
  * 
  * */
