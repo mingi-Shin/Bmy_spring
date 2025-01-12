@@ -116,6 +116,11 @@
 			<artifactId>spring-boot-starter-oauth2-client</artifactId>
 		</dependency>
 		
+		<!-- OAuth2AuthorizedClientService 를 사용하기 위해서 등록 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jdbc</artifactId>
+		</dependency>
 	</dependencies> 
 
 	<build>

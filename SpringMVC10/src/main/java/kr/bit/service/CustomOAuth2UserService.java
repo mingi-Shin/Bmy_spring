@@ -44,7 +44,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		};
 		
 		
-		// DB 확인
+		// DB 확인 
 		String username = oAuth2Response.getEmail(); //ID를 Email로 할꺼니까.
 		String role = null;
 		Member existMemberData = memberRepository.findByUsername(username);
