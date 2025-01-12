@@ -1,2 +1,3 @@
 # pmy_spring
-집중해라 마
+mingiSecurity - only JWT, CORS
+SpringMVC10 - OAuth2 Session (END: 01.12)
