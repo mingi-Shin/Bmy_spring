@@ -29,7 +29,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		OAuth2User oAuth2User = super.loadUser(userRequest);
 		System.out.println("OAuth2UserService_loadUser()_oAuth2User : " + oAuth2User);
 		
-		//application.properties 파일에서 설정된 OAuth2 client-name에 해당
+		//OAuth2 client-name에 해당
 		String registrationId = userRequest.getClientRegistration().getRegistrationId();
 		System.out.println("OAuth2UserService_loadUser()_registrationId : " + registrationId);
 		
@@ -47,8 +47,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		// DB 확인 
 		String username = oAuth2Response.getEmail(); //ID를 Email로 할꺼니까.
 		String role = null;
+		
 		Member existMemberData = memberRepository.findByUsername(username);
 		if(existMemberData == null) {
+			
 			System.out.println("DB에 회원 존재하지 않음. 가입을 진행함. 상세정보 기입 페이지 리다이렉트는 생략함. ");
 			// 추가 가입 정보 기재 페이지로 리다이렉트해서, 핸드폰 인증(API) 같은 걸로 소셜 중복가입을 방지하는 로직도 필요할 듯
 			Member memberVO = new Member();
