@@ -29,9 +29,9 @@
   
   
  	<script type="text/javascript">
-		$(document).ready(function(){
-			
-			const kakaoRestApiKey = "${kakaoRestApiKey}";
+		$(function(){ // == $(document).ready(function() { });
+		
+			const kakaoRestApiKey = "${kakaoRestApiKey}"; //보안위험 요소 존재. AWS-SDK 사용
 			const kakaoJsApiKey = "${kakaoJsApiKey}";
 			
 			//로그인 오류시 실패 모달창 오픈 

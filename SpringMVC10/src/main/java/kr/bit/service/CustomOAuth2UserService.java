@@ -54,7 +54,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			Member memberVO = new Member();
 			memberVO.setUsername(username);
 			memberVO.setName(oAuth2Response.getName());
-			memberVO.setRole(Role.MEMBER_READ_ONLY); //나중에 등급업 시스템도입할거야 
+			memberVO.setRole(Role.MEMBER_READ_ONLY); //ROLE_TEMP_USER -> 추가정보 기입 페이지로 redirect 
 			
 			role = memberVO.getRole().toString(); //return 값에 매개변수로 
 			

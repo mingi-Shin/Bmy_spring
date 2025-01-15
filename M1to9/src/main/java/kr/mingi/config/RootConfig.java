@@ -16,14 +16,17 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @MapperScan({"kr.mingi.mapper"})
-@PropertySource({"classpath:persistence-postgresql.properties", "classpath:application-API-KEY.properties"}) //@PropertySource는 주로 Spring Legacy 프로젝트에서 추가 프로퍼티 파일을 로드하기 위해 사용됩니다.
+@PropertySource({"classpath:persistence-postgresql.properties", "classpath:application-API-KEY.properties"}) 
+//@PropertySource는 주로 Spring Legacy 프로젝트에서 추가 프로퍼티 파일을 로드하기 위해 사용됩니다.
 public class RootConfig {
 
 	@Autowired
-	private Environment env; // 설정값을 동적으로 가져오기 위한: 환경변수나 프로퍼티 파일 값을 접근할수 있게 해주는 기능을 제공해주는 인터페이스 
+	private Environment env; 
+	// 설정값을 동적으로 가져오기 위한: 환경변수나 프로퍼티 파일 값을 접근할수 있게 해주는 기능을 제공해주는 인터페이스 
 	
 	@Bean
 	public DataSource myDataSource() {
+		
 		HikariConfig hikariConfig = new HikariConfig();
 		
 		hikariConfig.setDriverClassName(env.getProperty("jdbc.driver"));

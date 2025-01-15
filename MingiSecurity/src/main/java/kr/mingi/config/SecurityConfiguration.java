@@ -84,7 +84,7 @@ public class SecurityConfiguration {
     		.sessionManagement((session) -> session
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // 세션 정책 확인
 		
-        //CORS = 프론트엔드 도메인과 통신 
+        //CORS = 프론트엔드 도메인과 통신  할 때 사용. (React 등 port가 다를떄 )
         http
         	.cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
 				

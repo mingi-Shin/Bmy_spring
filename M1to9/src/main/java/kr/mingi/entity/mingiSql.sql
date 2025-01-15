@@ -8,7 +8,7 @@ CREATE TABLE smgBoard(
 	indate TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, -- 작성 시각 (타임존 포함) --TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW(),
 	count INT DEFAULT 0,
 	boardAvailable BOOLEAN DEFAULT TRUE, --원글이 삭제되었는지 여부 
-	CONSTRAINT fk_member_board FOREIGN KEY (memID) REFERENCES smgMember(memID) ON DELETE CASCADE
+	CONSTRAINT fk_member_board FOREIGN KEY (memID) REFERENCES smgMember(memID) ON DELETE CASCADE --
 );
 -- 최적화: 그룹과 시퀀스를 기준으로 정렬하는 인덱스
 CREATE INDEX idx_board_group_seq ON smgBoard (boardGroup, boardSequence);
@@ -50,8 +50,11 @@ CREATE TABLE smgMember(
 	memID VARCHAR(50) DEFAULT 'deleted' NOT NULL UNIQUE,
 	memPwd VARCHAR(200) NOT NULL,
 	memName VARCHAR(50) NOT NULL,
+	memNickname VARCHAR(50) NOT NULL,
 	memEmail VARCHAR(50) DEFAULT NULL,
 	memProfile VARCHAR(300) DEFAULT 'defaultProfile.jpg' NOT NULL,
+	createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updatedAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
 	is_active BOOLEAN DEFAULT TRUE,
 	memAddr VARCHAR(100) DEFAULT NULL,
 	latitude DECIMAL (13,10), --위도 

@@ -48,7 +48,7 @@
 			<!-- Tab panes -->
 			<div class="tab-content">
 			  <div class="tab-pane container active" id="home">
-			  	<h3>HOME입니다.</h3>
+			  	<img alt="고용량이미지 테스트 " src="${contextPath }/resources/images/HighLevelPic.jpg" loading="lazy">
 			  	
 			  </div>
 			  <div class="tab-pane container fade" id="menu1">

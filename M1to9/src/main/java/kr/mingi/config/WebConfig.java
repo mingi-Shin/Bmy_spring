@@ -19,19 +19,19 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() { //가장 먼저 호출되어야 하는 설정 클래스 
-		// TODO Auto-generated method stub
+
 		return new Class[] {RootConfig.class,  SecurityConfig.class}; //여기 SecurityConfig.class 도 넣어야됨 
 	}
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		// TODO Auto-generated method stub
+
 		return new Class[] {ServletConfig.class}; //java파일은 런타임시 .class로 바뀐다는 기초는 당연히 알고있겠지?? 
 	}
 
 	@Override
 	protected String[] getServletMappings() {
-		// TODO Auto-generated method stub
+		
 		return new String[] {"/"};
 	}
 	

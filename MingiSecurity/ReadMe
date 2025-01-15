@@ -1,3 +1,5 @@
+ MingiSecurity프로젝트 = JWT테스트 프로젝트 
+  
  1. 커스텀 로그인 필터를 등록 - CustomUserDetails, CustomLoginFilter, CustomUserDetailsService
  
 <<<<<<< HEAD

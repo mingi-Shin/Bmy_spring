@@ -26,12 +26,12 @@ public class ServletConfig implements WebMvcConfigurer {
 	}
 	
 	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+	public void addResourceHandlers(ResourceHandlerRegistry handlerRegistry) {
+		handlerRegistry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	}
-	// Handler는 클라이언트가 정적자료를 요청하는 URL 경로 설정, 
-	// Locations는 정적 리소스가 실존하는 경로는 기입하여 둘을 매칭설정
-	
+	// ResourceHandler는 클라이언트가 정적자료를 요청하는 URL 경로 설정, 
+	// ResourceLocations는 정적 리소스가 실존하는 경로는 기입하여 둘을 매칭설정
+	// 리소스 URL("/resources/**")은 일반적으로 permitAll() 해줘야 한다. 
 	
 	
 

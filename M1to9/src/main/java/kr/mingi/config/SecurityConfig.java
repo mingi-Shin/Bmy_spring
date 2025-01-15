@@ -20,11 +20,11 @@ import kr.mingi.security.MemberUserDetailsService;
 // Spring Security : WebSecurityConfigurerAdapter를 확장하여 Spring Security의 기본 보안 기능을 커스터마이즈 
 @Configuration
 @EnableWebSecurity(debug = true) //시큐리티 필터 추가할거야 선언  (debug는 서비스할 땐 삭제해)
-@EnableGlobalMethodSecurity(prePostEnabled = true) // 메소드 수준의 보안 활성화
+@EnableGlobalMethodSecurity(prePostEnabled = true) // 메소드에 보안을 활성화.
 public class SecurityConfig {
 	
 	@Bean
-	public UserDetailsService memberUserDetailsService() {
+	public UserDetailsService memberUserDetailsService() { //AuthenticationManager에서 사용
 		return new MemberUserDetailsService();
 	}
 	
@@ -37,10 +37,8 @@ public class SecurityConfig {
 	// AuthenticationManager 설정
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = 
-            http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(memberUserDetailsService())
-            .passwordEncoder(passwordEncoder());
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(memberUserDetailsService()).passwordEncoder(passwordEncoder());
         return authenticationManagerBuilder.build();
     }
     
@@ -50,10 +48,10 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		
 		// CSRF필터보다 먼저 문자인코딩을 강제(항상)처리 
-		CharacterEncodingFilter filter = new CharacterEncodingFilter();
-		filter.setEncoding("UTF-8");
-		filter.setForceEncoding(true);
-		http.addFilterBefore(filter, CsrfFilter.class); // CsrfFilter 이전에 CharacterEncodingFilter 추가
+		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+		characterEncodingFilter.setEncoding("UTF-8");
+		characterEncodingFilter.setForceEncoding(true);
+		http.addFilterBefore(characterEncodingFilter, CsrfFilter.class); // CsrfFilter 이전에 CharacterEncodingFilter 추가
 		
 		//요청에 따른 권한을 확인하여 서비스 호출||제한 
 		http
@@ -114,4 +112,21 @@ public class SecurityConfig {
   	mapper까지 기입 안해도 된다. 
   	mapper에 기입할땐 커스텀인증을 내가 직접 만들때이다. 
 */
+/**
+	@EnableGlobalMethodSecurity(prePostEnabled = true)
+	Controller의 메서드에 보안을 설정할 수 있게된다.
+	예)
+	@PreAuthorize("hasRole('ADMIN')")
+	public void someAdminMethod() {
+	    // 관리자만 접근할 수 있는 메소드
+	}
+	
+    @PreAuthorize("hasRole('USER') and #userId == authentication.name")
+    @GetMapping("/user/{userId}")
+    public String getUserData(@PathVariable String userId) {
+        return "User data for " + userId;
+    }
+    
+*/
+
 
