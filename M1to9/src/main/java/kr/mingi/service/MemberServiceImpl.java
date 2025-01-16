@@ -31,6 +31,7 @@ import kr.mingi.entity.MemberUsers;
 import kr.mingi.mapper.MemberMapper;
 import kr.mingi.security.MemberUserDetailsService;
 import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 기존의 방법 (= controller에서 mapper를 Autowired하여 로직을 구성했단 방법)
@@ -39,7 +40,7 @@ import lombok.extern.log4j.Log4j;
  *	
  *	보통 구현 순서: DB-> Mapper, XML -> Service, SErviceImpl -> Controller -> jsp 
  * */
-@Log4j
+@Slf4j
 @Service
 public class MemberServiceImpl implements MemberService {
 

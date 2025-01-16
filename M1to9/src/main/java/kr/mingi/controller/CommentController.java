@@ -19,8 +19,9 @@ import kr.mingi.entity.Comment;
 import kr.mingi.service.CommentService;
 import kr.mingi.service.MemberService;
 import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 
-@Log4j
+@Slf4j
 @RequestMapping("/comment")
 @RestController
 public class CommentController {

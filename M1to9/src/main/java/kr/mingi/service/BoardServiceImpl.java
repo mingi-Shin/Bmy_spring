@@ -15,8 +15,9 @@ import kr.mingi.entity.Member;
 import kr.mingi.mapper.BoardMapper;
 import kr.mingi.mapper.MemberMapper;
 import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 
-@Log4j
+@Slf4j
 @Service
 public class BoardServiceImpl implements BoardService {
 	

@@ -31,6 +31,10 @@ public class Member {
 	
 	@Column(insertable = false, columnDefinition = "boolean DEFAULT true")
 	private boolean isEnabled;
+	
+	//@Column(nullable = false) 
+	@Enumerated(EnumType.STRING) 
+	private Status status;
 	private Date deleted_at;
 
 }

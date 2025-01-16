@@ -45,7 +45,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		
 		
 		// DB 확인 
-		String username = oAuth2Response.getEmail(); //ID를 Email로 할꺼니까.
+		//String username = oAuth2Response.getEmail(); //ID를 Email로 할꺼니까.
+		
+		// 고유 아이디 생성: 확장 가능성과 안전성을 고려.. 다수의 OAuth2 계정 등록 가능. 이러면 username을 고유 계정으로 만들어야..
+		String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId(); 
+		
 		String role = null;
 		
 		Member existMemberData = memberRepository.findByUsername(username);

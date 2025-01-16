@@ -10,8 +10,9 @@ import kr.mingi.common.BusinessException;
 import kr.mingi.entity.Comment;
 import kr.mingi.mapper.CommentMapper;
 import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 
-@Log4j
+@Slf4j
 @Service
 public class CommentServiceImpl implements CommentService {
 	

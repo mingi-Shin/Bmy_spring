@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  글로벌 예외 처리기(@ControllerAdvice)에서 BusinessException을 잡으면, 그 메시지를 클라이언트에게 전달할 수 있습니다.
  */
 
-@Log4j
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 

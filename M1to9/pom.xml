@@ -202,22 +202,20 @@
     	<scope>test</scope>
 		</dependency>
 		
-		<!-- Log4j 2.x 의존성 -->
-		<dependency>
-	    <groupId>org.apache.logging.log4j</groupId>
-	    <artifactId>log4j-core</artifactId>
-	    <version>2.23.1</version>
-		</dependency>
-		<dependency>
-	    <groupId>org.apache.logging.log4j</groupId>
-	    <artifactId>log4j-api</artifactId>
-	    <version>2.23.1</version>
-		</dependency>
-		<dependency>
-	    <groupId>org.apache.logging.log4j</groupId>
-	    <artifactId>log4j-slf4j-impl</artifactId>
-	    <version>2.23.1</version>
-		</dependency>
+		<!-- SLF4J 의존성 (Spring Boot에서는 기본적으로 포함되어 있음) -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>2.0.0</version> <!-- 최신 버전 확인 -->
+    </dependency>
+
+    <!-- Logback 의존성 (Spring Boot에서는 기본적으로 포함되어 있음) -->
+    <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>1.5.9</version> <!-- 최신 버전 확인 -->
+    </dependency>
+
 
 		<dependency>
 	    <groupId>org.springframework</groupId>
