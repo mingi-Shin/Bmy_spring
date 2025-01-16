@@ -79,6 +79,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		//받은 정보 넘김 
 		return new CustomOAuth2User(oAuth2Response, role);
 		
+		
 	}
 
 }

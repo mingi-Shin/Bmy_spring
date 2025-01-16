@@ -108,7 +108,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		
 		
 		// JWT토큰 생성
-		String jwtToken = jwtUtil.createJwt(username, role, 60*60*10000L); // Long이라서 L접두사 첨부 
+		String jwtToken = jwtUtil.createJwt(username, role, 60*60*1000L); // Long이라서 L접두사 첨부, 1시간짜리 
 		System.out.println("생성된 JWT 토큰: " + jwtToken);
 		
 		

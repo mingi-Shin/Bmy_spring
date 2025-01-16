@@ -60,7 +60,7 @@ public class JWTUtil {
 		
 	}
 	
-    public Boolean isExpired(String token) {
+    public Boolean isExpired(String token) { //JWT 토큰 만료 여부 
 		
     	try {
 			return Jwts.parser()
