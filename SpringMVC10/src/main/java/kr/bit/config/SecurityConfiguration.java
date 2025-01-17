@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -12,6 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import kr.bit.oauth2.CustomClientRegistrationRepo;
 import kr.bit.oauth2.CustomOAuth2AuthorizedClientService;
+import kr.bit.oauth2.CustomSuccessHandler;
 import kr.bit.service.CustomOAuth2UserService;
 
 @Configuration
@@ -28,24 +30,36 @@ public class SecurityConfiguration {
     }
 */
     
+    private final CustomSuccessHandler customSuccessHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
     private final UserDetailsServiceImpl userDetailServiceImpl;
     private final CustomClientRegistrationRepo customClientRegistrationRepo;
 	private final CustomOAuth2AuthorizedClientService customOAuth2AuthorizedClientService;
 	private final JdbcTemplate jdbcTemplate;
     
-    public SecurityConfiguration(CustomOAuth2UserService customOAuth2UserService, UserDetailsServiceImpl userDetailServiceImpl, CustomClientRegistrationRepo clientRegistrationRepo, CustomOAuth2AuthorizedClientService customOAuth2AuthorizedClientService, JdbcTemplate jdbcTemplate) {
+    public SecurityConfiguration(CustomOAuth2UserService customOAuth2UserService, UserDetailsServiceImpl userDetailServiceImpl, CustomClientRegistrationRepo clientRegistrationRepo, CustomOAuth2AuthorizedClientService customOAuth2AuthorizedClientService, JdbcTemplate jdbcTemplate, CustomSuccessHandler customSuccessHandler) {
     	this.customOAuth2UserService = customOAuth2UserService;
     	this.userDetailServiceImpl = userDetailServiceImpl;
     	this.customClientRegistrationRepo = clientRegistrationRepo;
     	this.customOAuth2AuthorizedClientService = customOAuth2AuthorizedClientService;
     	this.jdbcTemplate = jdbcTemplate;
+    	this.customSuccessHandler = customSuccessHandler;
     	
     }
     
 	@Bean
     public SecurityFilterChain filterChain01(HttpSecurity http) throws Exception {
 
+		//csrf disable
+		http
+			.csrf((auth) -> auth.disable()); //CSRF토큰 검사 비활용 
+        //From 로그인 방식 disable
+        http
+                .formLogin((auth) -> auth.disable());
+        //HTTP Basic 인증 방식 disable
+        http
+                .httpBasic((auth) -> auth.disable());
+        
     	// 경로별 접근 권한 설정
 		http.authorizeHttpRequests((auth) -> auth
 				.requestMatchers("/", "/error", "/member/**", "/yummi/**", "/WEB-INF/**").permitAll()
@@ -53,24 +67,27 @@ public class SecurityConfiguration {
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				.requestMatchers("/my/**").hasAnyRole("ADMIN", "MANAGER")
 				.anyRequest().authenticated()
-				);
+			);
 		
 		http
 			.oauth2Login((oauth2) -> oauth2
-					.loginPage("/member/login")
-					.clientRegistrationRepository(customClientRegistrationRepo.clientRegistrationRepository())
-					.authorizedClientService(customOAuth2AuthorizedClientService.oAuth2AuthorizedClientService(jdbcTemplate, customClientRegistrationRepo.clientRegistrationRepository() )) //Access토큰 정보등을 DB에 담기위해 
-					.defaultSuccessUrl("/", true) // 로그인 성공 후 항상 루트 경로로 리디렉션, ROLE체크해서 비회원이면 추가 기입 페이지로 리다이렉트.
-					.failureUrl("/login?error=true") // 로그인 실패 시 이동 경로
-					.userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
-							.userService(customOAuth2UserService))); //= OAuth2인증 후 Security말고 내 커스텀 서비스로 처리하겠다.
-		
+				.loginPage("/member/login")
+				.clientRegistrationRepository(customClientRegistrationRepo.clientRegistrationRepository())
+				.authorizedClientService(customOAuth2AuthorizedClientService.oAuth2AuthorizedClientService(jdbcTemplate, customClientRegistrationRepo.clientRegistrationRepository() )) //Access토큰 정보등을 DB에 담기위해 
+				.defaultSuccessUrl("/", true) // 로그인 성공 후 항상 루트 경로로 리디렉션, ROLE체크해서 비회원이면 추가 기입 페이지로 리다이렉트.
+				.failureUrl("/login?error=true") // 로그인 실패 시 이동 경로
+				.userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+					.userService(customOAuth2UserService))
+				.successHandler(customSuccessHandler)
+				
+			); //= OAuth2인증 후 Security말고 내 커스텀 서비스로 처리하겠다.
+	
 
 		http
 			.formLogin((auth) -> auth
-					.loginPage("/member/login")
-					.loginProcessingUrl("/member/loginProc")
-					.defaultSuccessUrl("/", true) //로그인 성공시 해당 페이지로 가겠다는 의미 
+				.loginPage("/member/login")
+				.loginProcessingUrl("/member/loginProc")
+				.defaultSuccessUrl("/", true) //로그인 성공시 해당 페이지로 가겠다는 의미 
 			);
 
 		
@@ -81,26 +98,25 @@ public class SecurityConfiguration {
 		
 		http
 			.logout((auth) -> auth
-					.logoutUrl("/member/logoutProc") //혹은 logoutRequestMatcher()로 더 복잡한 사용 
-					.logoutSuccessUrl("/") // = 리디렉션, 이거아니면 logoutSuccessHandler()로 더 복잡한 사용 
-					);
-		
-		http
-			.sessionManagement((auth) -> auth
-					.invalidSessionUrl("/member/login?timeout=true") // 세션 만료 시 이동할 페이지
-					.maximumSessions(1) //다중로그인 허용 갯수 
-					.maxSessionsPreventsLogin(true)// true : 초과시 새로운 로그인 차단,  false : 초과시 기존 세션 하나 삭제
-					);
-		
-		//세션 고정 공격 방어코드 
-		http
-			.sessionManagement((auth) -> auth
-					.sessionFixation().changeSessionId() //로그인 시 동일한 세션에 대한 id변경
+				.logoutUrl("/member/logoutProc") //혹은 logoutRequestMatcher()로 더 복잡한 사용 
+				.logoutSuccessUrl("/") // = 리디렉션, 이거아니면 logoutSuccessHandler()로 더 복잡한 사용 
 			);
 		
 		http
-			.csrf((auth) -> auth.disable()); //CSRF토큰 검사 비활용 
+			.sessionManagement((auth) -> auth
+				.invalidSessionUrl("/member/login?timeout=true") // 세션 만료 시 이동할 페이지
+				.maximumSessions(1) //다중로그인 허용 갯수 
+				.maxSessionsPreventsLogin(true)// true : 초과시 새로운 로그인 차단,  false : 초과시 기존 세션 하나 삭제
+			);
 		
+		//세션 고정 공격 방어코드 
+		http
+			.sessionManagement((session) -> session
+				.sessionFixation().changeSessionId() //로그인 시 동일한 세션에 대한 id변경
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			);
+		
+
         // 사용자 세부 정보 서비스 설정 (사용자 인증 정보를 제공하는 서비스)
         http.userDetailsService(userDetailServiceImpl);
 
