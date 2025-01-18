@@ -19,6 +19,8 @@ public class JWTFilter extends OncePerRequestFilter{
 		this.jwtUtil = jwtUtil;
 	}
 	
+	// 왜 쿠키를 가져오는걸 doFilterInternal 클래스에서 하는거지? 
+	// ->
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -48,3 +50,7 @@ public class JWTFilter extends OncePerRequestFilter{
 	}
 
 }
+
+/**
+ * JWTFilter 클래스에서 Authorization 값의 쿠키를 찾아 처리한 뒤 filterChain에 넘기는 이유는 사용자의 권한과 인증 상태를 확인하여 요청을 처리할 수 있도록 하기 위해서
+ * */

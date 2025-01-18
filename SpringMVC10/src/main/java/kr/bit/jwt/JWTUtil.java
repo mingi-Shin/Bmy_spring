@@ -69,7 +69,10 @@ public class JWTUtil {
 		}
     }
     
+    //JWT생성: 더 많은 정보를 담고싶다면 매개변수에 포함. 
     public String createJwt(String username, String role, Long expiredMs) {
+    	
+    	System.out.println("createJwt() Operate - ");
         
     	try {
             return Jwts.builder()  // 빌더를 통해 JWT의 클레임(Claims), 헤더(Header), 서명(Signature)을 구성

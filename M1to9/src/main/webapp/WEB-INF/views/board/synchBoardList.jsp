@@ -31,8 +31,8 @@
  	<script type="text/javascript">
 		$(function(){ // == $(document).ready(function() { });
 		
-			const kakaoRestApiKey = "${kakaoRestApiKey}"; //보안위험 요소 존재. AWS-SDK 사용
-			const kakaoJsApiKey = "${kakaoJsApiKey}";
+			const kakaoRestApiKey = "${kakaoRestApiKey}"; //보안상 위험 -> KEY값은 클라이언트에서 관리되면 절대 안되며, 서버에서 불러와 검증&실행 해야 
+			const kakaoJsApiKey = "${kakaoJsApiKey}"; // https://www.notion.so/API-155e2244683d80f6b8a5faebe16edc93?pvs=4
 			
 			//로그인 오류시 실패 모달창 오픈 
 		  if(${!empty msgBody}){
