@@ -10,13 +10,14 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 public class CustomOAuth2User implements OAuth2User{
 	
 	// 매개변수로 받을 값을 고정시키기 위해 final선언
-	private final OAuth2Response oAuth2Response;
-	private final String role;
+	//private final OAuth2Response oAuth2Response;
+	//private final String role;
 	
-	public CustomOAuth2User(OAuth2Response oAuth2Response, String role) {
+	private final MemberDTO memberDTO;
+	
+	public CustomOAuth2User(MemberDTO memberDTO) {
 		
-		this.oAuth2Response = oAuth2Response;
-		this.role = role;
+		this.memberDTO = memberDTO;
 	}
 	
 
@@ -37,7 +38,7 @@ public class CustomOAuth2User implements OAuth2User{
 			@Override
 			public String getAuthority() { //GrantedAuthority 인터페이스에 정의된 추상 메서드
 				
-				return role;
+				return memberDTO.getRole();
 			}
 		});
 		
@@ -47,13 +48,13 @@ public class CustomOAuth2User implements OAuth2User{
 	@Override
 	public String getName() {
 		
-		return oAuth2Response.getName();
+		return memberDTO.getName();
 	}
 	
 	//내가 보고싶어서 만든 메서드 
 	public String getUsername() {
 		
-		return oAuth2Response.getEmail(); // ID
+		return memberDTO.getUsername(); // ID
 		
 	}
 

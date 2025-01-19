@@ -69,8 +69,23 @@ public class JWTUtil {
 		}
     }
     
+    public String getName(String token) {
+    	
+    	try {
+			return Jwts.parser()
+					.verifyWith(secretKey)
+					.build()
+					.parseSignedClaims(token)
+					.getPayload()
+					.get("name", String.class);
+		} catch (JwtException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Invalid JWT token", e);
+		}
+    }
+    
     //JWT생성: 더 많은 정보를 담고싶다면 매개변수에 포함. 
-    public String createJwt(String username, String role, Long expiredMs) {
+    public String createJwt(String username, String role, String name, Long expiredMs) {
     	
     	System.out.println("createJwt() Operate - ");
         
@@ -78,6 +93,7 @@ public class JWTUtil {
             return Jwts.builder()  // 빌더를 통해 JWT의 클레임(Claims), 헤더(Header), 서명(Signature)을 구성
                     .claim("username", username)  // JWT의 Custom Claim(사용자 정의 클레임)을 추가 (키 : 값)
                     .claim("role", role)         
+                    .claim("name", name)
                     .issuedAt(new Date(System.currentTimeMillis()))  // 토큰의 발급 시간(iat, issued at) 설정
                     .expiration(new Date(System.currentTimeMillis() + expiredMs))  // JWT의 만료 시간(exp, expiration) 설정
                     .signWith(secretKey)  // 입력된 암호화 키(secretKey)를 사용해 JWT의 서명을 생성

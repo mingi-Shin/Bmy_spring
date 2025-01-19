@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import kr.bit.DTO.CustomOAuth2User;
 import kr.bit.DTO.GoogleResponse;
+import kr.bit.DTO.MemberDTO;
 import kr.bit.DTO.NaverResponse;
 import kr.bit.DTO.OAuth2Response;
 import kr.bit.entity.Member;
@@ -43,42 +44,21 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	    default -> throw new IllegalArgumentException("지원하지 않는 OAuth2 provider: " + registrationId);
 		};
 		
-		
-		// DB 확인 
-		//String username = oAuth2Response.getEmail(); //ID를 Email로 할꺼니까.
-		
 		// 고유 아이디 생성: 확장 가능성과 안전성을 고려.. 다수의 OAuth2 계정 등록 가능. 이러면 username을 고유 계정으로 만들어야..
 		String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId(); 
 		
-		String role = null;
 		
-		Member existMemberData = memberRepository.findByUsername(username);
-		if(existMemberData == null) {
-			
-			System.out.println("DB에 회원 존재하지 않음. 가입을 진행함. 상세정보 기입 페이지 리다이렉트는 생략함. ");
-			// 추가 가입 정보 기재 페이지로 리다이렉트해서, 핸드폰 인증(API) 같은 걸로 소셜 중복가입을 방지하는 로직도 필요할 듯
-			Member memberVO = new Member();
-			memberVO.setUsername(username);
-			memberVO.setName(oAuth2Response.getName());
-			memberVO.setRole(Role.MEMBER_READ_ONLY); //ROLE_TEMP_USER -> 추가정보 기입 페이지로 redirect 
-			
-			role = memberVO.getRole().toString(); //return 값에 매개변수로 
-			
-			memberRepository.save(memberVO);
-		} else {
-			//이미 DB에 회원 존재
-			System.out.println("회원 정보 존재");
-			existMemberData.setName(oAuth2Response.getName()); //구글, 네이버에서 개명했을 수도 있으니까 
-			
-			role = existMemberData.getRole().toString(); //return 값에 매개변수로 
-					
-			memberRepository.save(existMemberData);
-		}
+		MemberDTO memberDTO = new MemberDTO();
+		memberDTO.setUsername(username);
+		memberDTO.setName(oAuth2Response.getName());
+		memberDTO.setRole((Role.MEMBER_TEMP_USER).toString());
 		
 		
 		//받은 정보 넘김 
-		return new CustomOAuth2User(oAuth2Response, role);
+		return new CustomOAuth2User(memberDTO);
 		
+		// 추가 가입 정보 기재 페이지로 리다이렉트해서, 핸드폰 인증(API) 같은 걸로 소셜 중복가입을 방지하는 로직도 필요할 듯
+		// memberRepository.save(memberVO);회원가입 로직은 해당 메서드 목적과 어긋남. 
 		
 	}
 
@@ -89,5 +69,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
  * 			NaverResponse vo1 = new NaverResponse(oAuth2User.getAttributes());
 			String role = "ROLE_USER";
 			return new CustomOAuth2User(vo1, role);
+			
+			해당 로직에서 가입 로직을 추가하는 것은 책임분리원칙에서 어긋남 
  * 
  * */

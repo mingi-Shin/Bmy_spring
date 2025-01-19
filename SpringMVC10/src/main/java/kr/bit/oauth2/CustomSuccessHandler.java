@@ -33,6 +33,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		//OAuth2 User
 		CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal(); //getUsername()은 CustomOAuth2User클래스에만 있기에 형변환 
 		String username = customUserDetails.getUsername();
+		String name = customUserDetails.getName();
 		
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
@@ -40,7 +41,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		String role = auth.getAuthority();
 		
 		//더 많은 정보를 담고싶다면 principal에서 더 가져와 
-		String token = jwtUtil.createJwt(username, role, 60*60*1000L);
+		String token = jwtUtil.createJwt(username, role, name, 60*60*1000L);
 		
 		response.addCookie(createCookie("Authorization", token));
 		response.sendRedirect("http://localhost:8082/");

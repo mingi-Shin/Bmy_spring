@@ -1,5 +1,7 @@
 package kr.bit.config;
 
+import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,8 +11,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
+import jakarta.servlet.http.HttpServletRequest;
+import kr.bit.jwt.JWTFilter;
+import kr.bit.jwt.JWTUtil;
 import kr.bit.oauth2.CustomClientRegistrationRepo;
 import kr.bit.oauth2.CustomOAuth2AuthorizedClientService;
 import kr.bit.oauth2.CustomSuccessHandler;
@@ -36,14 +45,16 @@ public class SecurityConfiguration {
     private final CustomClientRegistrationRepo customClientRegistrationRepo;
 	private final CustomOAuth2AuthorizedClientService customOAuth2AuthorizedClientService;
 	private final JdbcTemplate jdbcTemplate;
+	private final JWTUtil jwtUtil;
     
-    public SecurityConfiguration(CustomOAuth2UserService customOAuth2UserService, UserDetailsServiceImpl userDetailServiceImpl, CustomClientRegistrationRepo clientRegistrationRepo, CustomOAuth2AuthorizedClientService customOAuth2AuthorizedClientService, JdbcTemplate jdbcTemplate, CustomSuccessHandler customSuccessHandler) {
+    public SecurityConfiguration(CustomOAuth2UserService customOAuth2UserService, UserDetailsServiceImpl userDetailServiceImpl, CustomClientRegistrationRepo clientRegistrationRepo, CustomOAuth2AuthorizedClientService customOAuth2AuthorizedClientService, JdbcTemplate jdbcTemplate, CustomSuccessHandler customSuccessHandler, JWTUtil jwtUtil) {
     	this.customOAuth2UserService = customOAuth2UserService;
     	this.userDetailServiceImpl = userDetailServiceImpl;
     	this.customClientRegistrationRepo = clientRegistrationRepo;
     	this.customOAuth2AuthorizedClientService = customOAuth2AuthorizedClientService;
     	this.jdbcTemplate = jdbcTemplate;
     	this.customSuccessHandler = customSuccessHandler;
+    	this.jwtUtil = jwtUtil;
     	
     }
     
@@ -55,10 +66,18 @@ public class SecurityConfiguration {
 			.csrf((auth) -> auth.disable()); //CSRF토큰 검사 비활용 
         //From 로그인 방식 disable
         http
-                .formLogin((auth) -> auth.disable());
+            .formLogin((auth) -> auth.disable());
         //HTTP Basic 인증 방식 disable
         http
-                .httpBasic((auth) -> auth.disable());
+            .httpBasic((auth) -> auth.disable());
+        
+        //JWTFilter 추가
+        http
+        	.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        
+        //JWTFilter 추가 : 무한 루프 방지 -> https://www.devyummi.com/page?id=6693762f034f9479696f1e45
+        http
+            .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
         
     	// 경로별 접근 권한 설정
 		http.authorizeHttpRequests((auth) -> auth
@@ -118,8 +137,33 @@ public class SecurityConfiguration {
 		
 
         // 사용자 세부 정보 서비스 설정 (사용자 인증 정보를 제공하는 서비스)
-        http.userDetailsService(userDetailServiceImpl);
-
+        http
+        	.userDetailsService(userDetailServiceImpl);
+        
+/** 리액트 사용시 오픈 
+ 
+        //Cors 설정 : https://www.devyummi.com/page?id=669370b17bfb6833e187f285 
+        http
+        	.cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+				
+				@Override
+				public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+					
+					CorsConfiguration configuration = new CorsConfiguration();
+					
+					configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+					configuration.setAllowedMethods(Collections.singletonList("*"));
+					configuration.setAllowCredentials(true);
+					configuration.setAllowedHeaders(Collections.singletonList("*"));
+					configuration.setMaxAge(3600L);
+					
+					configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
+					configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+				
+					return configuration;
+				}
+		}));
+*/
 
         return http.build(); //build()를 호출해 설정이 완료된 후에는 변경할 수 없도록 객체를 불변으로 만듦.
     }
