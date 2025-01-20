@@ -28,9 +28,30 @@ public class JWTFilter extends OncePerRequestFilter{
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
+		//무한루프 방지: 토큰만료 -> login?error
+		String requestUri = request.getRequestURI();
+		
+		if (requestUri.matches("^\\/login(?:\\/.*)?$")) {
+			
+			filterChain.doFilter(request, response);
+			return;
+		}
+		if (requestUri.matches("^\\/oauth2(?:\\/.*)?$")) {
+			
+			filterChain.doFilter(request, response);
+			return;
+		}
+		
         //cookie들을 불러온 뒤 Authorization Key에 담긴 쿠키를 찾음
 		String authorization = null;
 		Cookie[] cookies = request.getCookies();
+		if (cookies == null || cookies.length == 0) {
+		    System.out.println("No cookies found in the request");
+		    filterChain.doFilter(request, response);
+		    return;
+		}
+		
+		
 		for(Cookie cookie : cookies) {
 			
 			System.out.println(cookie.getName());
@@ -56,10 +77,10 @@ public class JWTFilter extends OncePerRequestFilter{
 		//토큰 소멸시간 검증
 		if(jwtUtil.isExpired(token)) {
 			
-			System.out.println("token is Expired");
+			System.out.println("token is Expired: 토큰 만료 됐어요");
 			filterChain.doFilter(request, response);
-			
-            //조건이 해당되면 메소드 종료 (필수)
+            
+			//조건이 해당되면 필터체인 종료 (필수)
 			return;
 		}
 		

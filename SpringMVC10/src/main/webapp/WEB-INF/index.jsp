@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<div class="container mt-3 >
+<div class="container mt-3" >
   <div class="card" style="width: 600px; text-align: center;">
   	
   	<div class="mt-4 p-5 bg-primary text-white rounded">
@@ -31,7 +31,7 @@
       <div class="card-group"></div>
       	<div class="card bg-warning">
       		<div class="card-body text-center">
-      			<p class="card-text"><a href="${cpath}/board/list">글목록 보기<a></p>
+      			<p class="card-text"><a href="${cpath}/board/list">글목록 보기</a></p>
       		</div>
       	</div>
       	<div class="card bg-danger">
@@ -49,7 +49,7 @@
       			<p class="card-text"><a href="${cpath}/yummi/main">유미의 security</a></p>
       		</div>
       	</div>
-      	<div class="card bg-Secondary">
+      	<div class="card bg-secondary">
       		<div class="card-body text-center">
       			<p class="card-text"><a href="${cpath}/admin/main">관리자페이지</a></p>
       		</div>
