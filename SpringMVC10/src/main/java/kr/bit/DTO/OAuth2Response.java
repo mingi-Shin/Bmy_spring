@@ -15,3 +15,6 @@ public interface OAuth2Response {
 
 
 //이 공통 인터페이스를 활용해 도메인별로 클래스 생성 
+/**
+ *	 
+ * */

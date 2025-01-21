@@ -67,7 +67,7 @@ public class SecurityConfiguration {
         //From 로그인 방식 disable
         http
             .formLogin((auth) -> auth.disable());
-        //HTTP Basic 인증 방식 disable
+        //HTTP Basic 인증 방식 disable (= url쿼리 로그인 x)
         http
             .httpBasic((auth) -> auth.disable());
         
