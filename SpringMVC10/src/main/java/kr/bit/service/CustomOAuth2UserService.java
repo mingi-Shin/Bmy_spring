@@ -63,16 +63,35 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	    default -> throw new IllegalArgumentException("지원하지 않는 OAuth2 provider: " + registrationId);
 		};
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		// if문으로.. 회원 정보 불러와서, 있으면 DTO만들어서 return, 없으면 throw new UsernameNotFoundException("User not found");
+		memberRepository.findByUsername(registrationId);
+		// 만들어 !
+		
+		
+		
+		
+		
+		
+		
+		
 		//리소스 서버에서 발급 받은 정보로 사용자를 특정할 아이디값을 만듬
 		String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId(); 
 		
 		MemberDTO memberDTO = new MemberDTO();
 		memberDTO.setUsername(username);
 		memberDTO.setName(oAuth2Response.getName());
-		memberDTO.setRole((Role.MEMBER_TEMP_USER).toString());
+		//memberDTO.setRole((Role.MEMBER_TEMP_USER).toString());
 		
 		//받은 정보 넘김 
-		return new CustomOAuth2User(memberDTO);
+		return new CustomOAuth2User(memberDTO); //-> SecurityContextHolder에 임시저장된다. 
 		
 		// 추가 가입 정보 기재 페이지로 리다이렉트해서, 핸드폰 인증(API) 같은 걸로 소셜 중복가입을 방지하는 로직도 필요할 듯
 		// memberRepository.save(memberVO);회원가입 로직은 해당 메서드 목적과 어긋남. 
@@ -96,7 +115,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	요청에의해 반환된 JSON응답에는 사용자 프로필 정보(이름, 이메일, 아이디 등)이 포함되어있다.
 	이를 자바 객체로 매핑, OAuth2User 클래스로 변환하여 인증에 활용해요.
 	
-	리턴된 OAuth2User 객체는 SecurityContextHolder에 저장이 됩니다.
+	리턴된 OAuth2User 객체는 Authentication 객체를 생성하는데 사용되고,  
+	최종적으로 Authentication 객체가 SecurityContextHolder에 저장이 됩니다.
 	참고로, 요청 단위로만 인증 정보를 유지하고, 글로벌 상태나 세션 기반 상태를 유지하지 않기 때문에 stateless 입니다!
 	
 	

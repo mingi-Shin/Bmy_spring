@@ -29,13 +29,13 @@ public class Member {
 	@Enumerated(EnumType.STRING) // EnumType.ORDINAL : 0 1 2 ..
 	private Role role;
 	
-	@Column(insertable = false, columnDefinition = "boolean DEFAULT true")
-	private boolean isEnabled;
-	
 	//@Column(nullable = false) 
 	@Enumerated(EnumType.STRING) 
 	private Status status;
 	private Date deleted_at;
+	
+//	@Column(insertable = false, columnDefinition = "boolean DEFAULT true")
+//	private boolean isEnabled;
 
 }
 

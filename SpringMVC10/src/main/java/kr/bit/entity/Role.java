@@ -4,8 +4,8 @@ public enum Role {
 	ADMIN(true, true), // ADMIN 상수를 선언하면서, true, true 값을 생성자에 전달
 	MANAGER(true, true), // MANAGER 상수도 동일
 	MEMBER_READ_ONLY(true, false), // MEMBER_READ_ONLY 상수
-	MEMBER_READ_WRITE(true, true), // MEMBER_READ_WRITE 상수
-	MEMBER_TEMP_USER(false, false); // 정식회원가입 직전 임시 권한 
+	MEMBER_READ_WRITE(true, true); // MEMBER_READ_WRITE 상수
+	//MEMBER_TEMP_USER(false, false); // 정식회원가입 직전 임시 권한 
 	
 	private boolean readable; // 읽기 권한
 	private boolean writable; // 쓰기 권한
