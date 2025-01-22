@@ -2,6 +2,7 @@ package kr.bit.DTO;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -24,7 +25,13 @@ public class CustomOAuth2User implements OAuth2User{
 	@Override
 	public Map<String, Object> getAttributes() { //로그인하면 리소스서버로부터 넘어오는 모든 데이터 
 
-		return null;
+	    // MemberDTO의 데이터를 Map으로 변환하여 반환
+		Map<String, Object> attributes = new HashMap<>();
+		attributes.put("username", memberDTO.getUsername());
+		attributes.put("name", memberDTO.getName());
+		attributes.put("role", memberDTO.getRole());
+		
+		return attributes;
 	}
 
 	@Override
@@ -60,3 +67,12 @@ public class CustomOAuth2User implements OAuth2User{
 
 
 }
+
+/*
+ * 		AuthenticatedPrincipal 인터페이스 {getName()} ->
+ * 		OAuth2AuthenticatedPrincipal 인터페이스 {getAttribute(), getAuthorities()}->
+ * 		OAuth2User 인터페이스 { x } ->
+ * 		CustomOAuth2User 클래스 구현 (Override Method + @@)
+ * 
+ * */
+

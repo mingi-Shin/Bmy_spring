@@ -109,12 +109,6 @@ public class SecurityConfiguration {
 				.defaultSuccessUrl("/", true) //로그인 성공시 해당 페이지로 가겠다는 의미 
 			);
 
-		
-		//http.formLogin((auth) -> auth.disable());
-		//http.httpBasic();
-		//http
-		//	.oauth2Login(Customizer.withDefaults()); //로그인에 기본설정을 쓰겠다. properties에서 변수 가져다 쓰는 메서드 
-		
 		http
 			.logout((auth) -> auth
 				.logoutUrl("/member/logoutProc") //혹은 logoutRequestMatcher()로 더 복잡한 사용 
@@ -200,7 +194,9 @@ public class SecurityConfiguration {
  * 
  * 		userInfoEndpoint()부분에 대한 설명링크: https://www.notion.so/OAuth2_SecurityConfig-java-175e2244683d80099bb6f78c155112d7?pvs=4
  * 
- * 
+ * 		
+ *
+ *		
  * 
  * */
 

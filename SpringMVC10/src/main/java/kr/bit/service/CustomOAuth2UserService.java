@@ -2,6 +2,7 @@ package kr.bit.service;
 
 import java.util.Map;
 
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
@@ -14,7 +15,6 @@ import kr.bit.DTO.GoogleResponse;
 import kr.bit.DTO.MemberDTO;
 import kr.bit.DTO.NaverResponse;
 import kr.bit.DTO.OAuth2Response;
-import kr.bit.entity.Member;
 import kr.bit.entity.Role;
 import kr.bit.repository.MemberRepository;
 
@@ -33,8 +33,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		
 		OAuth2User oAuth2User = super.loadUser(userRequest);
 		System.out.println("OAuth2UserService_loadUser()_oAuth2User(사용자정보,역할/권한) : " + oAuth2User);
-		
-		
+
+//-----------------------------------------------------------------------------------------------------------------------------------
+		//클라이언트 등록 정보 접근해보기, 궁금해
+		ClientRegistration clientRegistration =  userRequest.getClientRegistration();
+		System.out.println("clientRegistration 궁금해 : " + clientRegistration);
 		//userRequest에서 AccessToken 가져와봐, 함 보고싶네
 		OAuth2AccessToken accessToken = userRequest.getAccessToken();
 		System.out.println("accessToken궁금해 : " + accessToken);
@@ -44,6 +47,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		//OAuth2Reponse객체 생성에 뭐가 쓰일지 보고싶네.
 		Map<String, Object> attributes =  oAuth2User.getAttributes();
 		System.out.println("oAuth2User.getAttributes() 궁금해 : " + attributes);
+//-----------------------------------------------------------------------------------------------------------------------------------
 		
 		//OAuth2 client-name에 해당
 		String registrationId = userRequest.getClientRegistration().getRegistrationId();
@@ -59,14 +63,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	    default -> throw new IllegalArgumentException("지원하지 않는 OAuth2 provider: " + registrationId);
 		};
 		
-		// 고유 아이디 생성: 확장 가능성과 안전성을 고려.. 다수의 OAuth2 계정 등록 가능. 이러면 username을 고유 계정으로 만들어야..
+		//리소스 서버에서 발급 받은 정보로 사용자를 특정할 아이디값을 만듬
 		String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId(); 
 		
 		MemberDTO memberDTO = new MemberDTO();
 		memberDTO.setUsername(username);
 		memberDTO.setName(oAuth2Response.getName());
 		memberDTO.setRole((Role.MEMBER_TEMP_USER).toString());
-		
 		
 		//받은 정보 넘김 
 		return new CustomOAuth2User(memberDTO);
@@ -78,16 +81,24 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 }
 
-/*			OAuth2Response 인터페이스를 도입함으로써 코드 중복 제거, 확장성 확보, 가독성 향상
- * 			-> 안그러면 아래처럼 하나하나 작성해야 함 
- * 			NaverResponse vo1 = new NaverResponse(oAuth2User.getAttributes());
-			String role = "ROLE_USER";
-			return new CustomOAuth2User(vo1, role);
-			
-			해당 로직에서 가입 로직을 추가하는 것은 책임분리원칙에서 어긋남 
-			
-			loadUser() 에서 받는 OAuth2UserRequest객체는 OAuth2 인증과정을 통해 클라이언트가 
-			리소스 서버로부터 받는 액세스 토큰과, 클라이언트 등록 정보 등의 내용이 캡슐화 된 객체임 
-			사용자 정보 엔드포인트를 호출하여 JSON 형태의 데이터를 가져오고, 이를 내부적으로 OAuth2User 타입의 객체로 변환
+/**
  * 
- * */
+ * 	OAuth2Response 인터페이스를 도입함으로써 코드 중복 제거, 확장성 확보, 가독성 향상
+	-> 안그러면 아래처럼 하나하나 작성해야 함 
+	NaverResponse vo1 = new NaverResponse(oAuth2User.getAttributes());
+	String role = "ROLE_USER";
+	return new CustomOAuth2User(vo1, role);
+	
+	해당 로직에서 가입 로직을 추가하는 것은 책임분리원칙에서 어긋남 
+	
+	loadUser( OAuth2UserRequest ) :
+	OAuth2UserRequest 객체로부터 액세스 토큰을 가져와 인증서버의 사용자 정보 엔드포인트에 요청,
+	요청에의해 반환된 JSON응답에는 사용자 프로필 정보(이름, 이메일, 아이디 등)이 포함되어있다.
+	이를 자바 객체로 매핑, OAuth2User 클래스로 변환하여 인증에 활용해요.
+	
+	리턴된 OAuth2User 객체는 SecurityContextHolder에 저장이 됩니다.
+	참고로, 요청 단위로만 인증 정보를 유지하고, 글로벌 상태나 세션 기반 상태를 유지하지 않기 때문에 stateless 입니다!
+	
+	
+ */
+	
