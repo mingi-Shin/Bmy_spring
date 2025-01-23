@@ -16,8 +16,11 @@ import lombok.Data;
 public class Member {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private Long memberIdx;
+	
 	@Column(unique = true)
-	private String username; 
+	private String username;  // 계정 아이디 
 	
 	private String password;
 	private String name;

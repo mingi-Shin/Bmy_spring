@@ -32,7 +32,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		//OAuth2UserRequest 객체 = 액세스 토큰과, 클라이언트 등록 정보 등의 내용이 캡슐화 된 객체
 		
 		OAuth2User oAuth2User = super.loadUser(userRequest);
-		System.out.println("OAuth2UserService_loadUser()_oAuth2User(사용자정보,역할/권한) : " + oAuth2User);
+		System.out.println("loadUser()_oAuth2User(사용자정보,역할/권한JSON->JAVA) : " + oAuth2User);
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 		//클라이언트 등록 정보 접근해보기, 궁금해
@@ -64,15 +64,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		};
 		
 		
+		// if문으로.. 회원 정보 불러와서, 있으면 DTO만들어서 return, 없으면 throw new UsernameNotFoundException("User not found"); -> 필터나 핸들러에서 가입 페이지 리다이렉트 처리 
+		String provider = oAuth2Response.getProvider();
+		String providerId = oAuth2Response.getProviderId();
 		
 		
-		
-		
-		
-		
-		
-		// if문으로.. 회원 정보 불러와서, 있으면 DTO만들어서 return, 없으면 throw new UsernameNotFoundException("User not found");
-		memberRepository.findByUsername(registrationId);
 		// 만들어 !
 		
 		
