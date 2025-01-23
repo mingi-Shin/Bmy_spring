@@ -67,7 +67,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		// if문으로.. 회원 정보 불러와서, 있으면 DTO만들어서 return, 없으면 throw new UsernameNotFoundException("User not found"); -> 필터나 핸들러에서 가입 페이지 리다이렉트 처리 
 		String provider = oAuth2Response.getProvider();
 		String providerId = oAuth2Response.getProviderId();
-		
+		// 어떻게 if문을 해서 로그인, 연동, 가입을 할까?
 		
 		// 만들어 !
 		
