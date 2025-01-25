@@ -20,18 +20,18 @@ import kr.bit.repository.MemberRepository;
 
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
+	// 인증 및 사용자 정보를 반환하는 역할에 집중하도록 로직 설계하세요. 
 	
 	private final MemberRepository memberRepository;
 	public CustomOAuth2UserService(MemberRepository memberRepository) {
 		this.memberRepository = memberRepository;
 	}
-	
-	
+
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		//OAuth2UserRequest 객체 = 액세스 토큰과, 클라이언트 등록 정보 등의 내용이 캡슐화 된 객체
 		
-		OAuth2User oAuth2User = super.loadUser(userRequest);
+		OAuth2User oAuth2User = super.loadUser(userRequest); // .getAttributes()를 하면 Map으로 가져와야 햄 
 		System.out.println("loadUser()_oAuth2User(사용자정보,역할/권한JSON->JAVA) : " + oAuth2User);
 
 //-----------------------------------------------------------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		System.out.println("oAuth2User.getAttributes() 궁금해 : " + attributes);
 //-----------------------------------------------------------------------------------------------------------------------------------
 		
-		//OAuth2 client-name에 해당
+		//resistrationId 가져오기 (third-party id)
 		String registrationId = userRequest.getClientRegistration().getRegistrationId();
 		
 		OAuth2Response oAuth2Response = null;
@@ -68,8 +68,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		String provider = oAuth2Response.getProvider();
 		String providerId = oAuth2Response.getProviderId();
 		// 어떻게 if문을 해서 로그인, 연동, 가입을 할까?
+		// GPT : 예외처리 던지고, 리다이렉션은 필터 계층에서 처리하는 것이 적합(인증,권한 흐름의 책임이므로 )
 		
-		// 만들어 !
+		/**
+		 * 로그인 상황 분류: 0. 기존 회원 조회 
+		 * 	1. 기존회원 = 정상 로그인 -> DTO 생성하여 return
+		 * 	2. 기존회원 = 새로운 외부 계정 연동 -> OAuth2Entity에 계정 추가 
+		 * 	3. 비회원 = 예외를 던짐 -> filter에서 .AuthenticationFailureHandler 로 AuthenticationFailureHandler 구현하여 예외 발생시 회원가입 페이지로 리다이렉트 
+		 */
 		
 		
 		

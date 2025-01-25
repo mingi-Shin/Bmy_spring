@@ -90,6 +90,7 @@ public class SecurityConfiguration {
 		
 		http
 			.oauth2Login((oauth2) -> oauth2
+				// OAuth2 로그인 성공 이후 사용자 정보를 가져올 때의 설정을 담당
 				.loginPage("/member/login")
 				.clientRegistrationRepository(customClientRegistrationRepo.clientRegistrationRepository())
 				.authorizedClientService(customOAuth2AuthorizedClientService.oAuth2AuthorizedClientService(jdbcTemplate, customClientRegistrationRepo.clientRegistrationRepository() )) //Access토큰 정보등을 DB에 담기위해 
@@ -97,6 +98,7 @@ public class SecurityConfiguration {
 				.failureUrl("/login?error=true") // 로그인 실패 시 이동 경로
 				.userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
 					.userService(customOAuth2UserService))
+				// 로그인 성공 시 핸들러
 				.successHandler(customSuccessHandler)
 				
 			); //= OAuth2인증 후 Security말고 내 커스텀 서비스로 처리하겠다.
