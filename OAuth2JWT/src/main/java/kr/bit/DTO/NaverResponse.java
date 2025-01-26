@@ -16,7 +16,7 @@ public class NaverResponse implements OAuth2Response {
 	public NaverResponse(Map<String, Object> attributes) {
 		
 		this.attributes = (Map<String, Object>) attributes.get("response"); 
-		// stack에있는 attributes를 heap에있는 attributes에 할당
+		// stack에 있는 attributes 참조값을 heap에 있는 attributes 필드에 저장
 		System.out.println("NaverResponse생성자_attribute.get('response') : " + this.attributes);
 	}
 	

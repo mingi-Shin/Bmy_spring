@@ -20,3 +20,4 @@ public interface OAuth2Response {
 
 
 //이 공통 인터페이스를 활용해 도메인별로 클래스 생성 
+// 멤버엔터티를 어떻게 짜느냐에 따라 get항목이 달라진다. 
