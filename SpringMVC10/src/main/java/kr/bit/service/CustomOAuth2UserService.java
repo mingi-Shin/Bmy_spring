@@ -53,15 +53,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		String registrationId = userRequest.getClientRegistration().getRegistrationId();
 		
 		OAuth2Response oAuth2Response = null;
-		
 		// 제공자에 맞는 각 하위 구현 객체를 상위 인터페이스 객체에 할당, get메서드로 값 가져오면 됨 
 		// java17이상에서 if대신 switch문
 		oAuth2Response = switch (registrationId) {
 		//사용자 정보에서 
-	    case "naver" ->  new NaverResponse(oAuth2User.getAttributes());
+	    case "naver" ->  new NaverResponse(oAuth2User.getAttributes()); 
 	    case "google" -> new GoogleResponse(oAuth2User.getAttributes());
 	    default -> throw new IllegalArgumentException("지원하지 않는 OAuth2 provider: " + registrationId);
 		};
+		//oAuth2User.getAttributes()는 Map형식이라 oAuth2Response에 대입이 될수있다.
 		
 		
 		// if문으로.. 회원 정보 불러와서, 있으면 DTO만들어서 return, 없으면 throw new UsernameNotFoundException("User not found"); -> 필터나 핸들러에서 가입 페이지 리다이렉트 처리 
