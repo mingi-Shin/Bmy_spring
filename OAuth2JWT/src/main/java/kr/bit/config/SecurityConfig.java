@@ -8,7 +8,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer.UserInfoEndpointConfig;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import kr.bit.jwt.JWTFilter;
+import kr.bit.jwt.JWTUtil;
 import kr.bit.oauth2.CustomSuccessHandler;
 import kr.bit.service.CustomOAuth2UserService;
 
@@ -18,11 +21,13 @@ public class SecurityConfig {
 
 	private final CustomOAuth2UserService customOAuth2UserService;
 	private final CustomSuccessHandler customSuccessHandler;
+	private final JWTUtil jwtUtil;
 	
-	public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, CustomSuccessHandler customSuccessHandler) {
+	public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, CustomSuccessHandler customSuccessHandler, JWTUtil jwtUtil) {
 		
 		this.customOAuth2UserService = customOAuth2UserService;
 		this.customSuccessHandler = customSuccessHandler;
+		this.jwtUtil = jwtUtil;
 	}
 	
 	
@@ -41,6 +46,15 @@ public class SecurityConfig {
         http
             .httpBasic((auth) -> auth.disable());
 
+        //JWTFilter 추가
+        http
+        .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        
+        
+        //https://www.youtube.com/watch?v=9g_iN6rLQcQ&t=1s&ab_channel=%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9C%A0%EB%AF%B8 
+        // 댓글 보고 추가 수정 
+        
+        
         //oauth2
         http
             //.oauth2Login(Customizer.withDefaults());
