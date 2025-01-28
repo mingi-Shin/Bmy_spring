@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.cli
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
+import kr.bit.oauth2.CustomSuccessHandler;
 import kr.bit.service.CustomOAuth2UserService;
 
 @Configuration
@@ -16,10 +17,12 @@ import kr.bit.service.CustomOAuth2UserService;
 public class SecurityConfig {
 
 	private final CustomOAuth2UserService customOAuth2UserService;
+	private final CustomSuccessHandler customSuccessHandler;
 	
-	public SecurityConfig(CustomOAuth2UserService customOAuth2UserService) {
+	public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, CustomSuccessHandler customSuccessHandler) {
 		
 		this.customOAuth2UserService = customOAuth2UserService;
+		this.customSuccessHandler = customSuccessHandler;
 	}
 	
 	
@@ -45,6 +48,7 @@ public class SecurityConfig {
         		.userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
     				.userService(customOAuth2UserService)
 				)
+        		.successHandler(customSuccessHandler)
         		
     		);
 

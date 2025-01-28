@@ -91,7 +91,7 @@ public class JWTUtil {
         
     	try {
             return Jwts.builder()  // 빌더를 통해 JWT의 클레임(Claims), 헤더(Header), 서명(Signature)을 구성
-                    .claim("username", username)  // JWT의 Custom Claim(사용자 정의 클레임)을 추가 (키 : 값)
+                    .claim("username", username)  // JWT의 Custom Claim(사용자 정의 클레임)을 추가 (키 : 값) -> Payload 에 저장 
                     .claim("role", role)         
                     .claim("name", name)
                     .issuedAt(new Date(System.currentTimeMillis()))  // 토큰의 발급 시간(iat, issued at) 설정

@@ -64,7 +64,7 @@ public class JWTUtil {
 						.getExpiration().before(new Date());
 		} catch (JwtException e) {
 			//e.printStackTrace();
-			throw new IllegalArgumentException("Invalid JWT token:만료됨", e);
+			throw new IllegalArgumentException("Invalid JWT token : 기간 만료됨", e);
 		}
     }
     

@@ -55,7 +55,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		
 		cookie.setMaxAge(60*60*60); // 60시간짜리  
 		//cookie.setSecure(true); //HTTPS 에서만 쿠키가 전송
-		cookie.setPath("/");
+		cookie.setPath("/"); //쿠키가 보일 위치: 모든 전역 
 		cookie.setHttpOnly(true); // 스크립트로 접근 불가 
 		
 		return cookie;

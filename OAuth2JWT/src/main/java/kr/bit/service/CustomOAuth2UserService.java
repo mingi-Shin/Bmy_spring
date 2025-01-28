@@ -99,8 +99,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService{
 	}
 }
 /**
-	Spring Security는 반환된 CustomOAuth2User 객체를 기반으로 Authentication 객체(OAuth2AuthenticationToken)를 생성합니다.
-	이 객체는 내부적으로 관리되며, 이후 인증 성공 핸들러에게 전달됩니다.
-	이후 핸들러에서 
-	이 Authentication 객체는 CustomOAuth2UserService에서 반환한 CustomOAuth2User를 principal로 포함합니다.
+	Spring Security는 반환된 CustomOAuth2User 객체를 내부적으로 Authentication 객체(OAuth2AuthenticationToken)를 생성할 때 포함시킵니다. 
+	이 객체는 SecurityContext에 저장되고, 인증 성공 핸들러에게 전달됩니다.
 */
