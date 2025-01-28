@@ -14,7 +14,7 @@ public interface OAuth2Response {
     //nickName과 Name중 하나만 선택해야 하는 도메인도 있음. 
     public String getNickname();
     
-    public String profile_image();
+    public String getProfile_image();
     
 }
 
