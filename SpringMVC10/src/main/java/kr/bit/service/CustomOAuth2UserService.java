@@ -15,24 +15,32 @@ import kr.bit.DTO.GoogleResponse;
 import kr.bit.DTO.MemberDTO;
 import kr.bit.DTO.NaverResponse;
 import kr.bit.DTO.OAuth2Response;
+import kr.bit.entity.Member;
+import kr.bit.entity.OAuth2Entity;
 import kr.bit.entity.Role;
 import kr.bit.repository.MemberRepository;
+import kr.bit.repository.OAuth2Repository;
 
+/*
+ *  	소셜 로그인 처리
+ * */
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	// 인증 및 사용자 정보를 반환하는 역할에 집중하도록 로직 설계하세요. 
-	
+	private final OAuth2Repository oAuth2Repository;
 	private final MemberRepository memberRepository;
-	public CustomOAuth2UserService(MemberRepository memberRepository) {
+	
+	public CustomOAuth2UserService(OAuth2Repository oAuth2Repository, MemberRepository memberRepository) {
+		
+		this.oAuth2Repository = oAuth2Repository;
 		this.memberRepository = memberRepository;
 	}
 
 	@Override
-	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-		//OAuth2UserRequest 객체 = 액세스 토큰과, 클라이언트 등록 정보 등의 내용이 캡슐화 된 객체
+	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException { //OAuth2UserRequest 객체 = 액세스 토큰과, 클라이언트 등록 정보 등의 내용이 캡슐화 된 객체
 		
-		OAuth2User oAuth2User = super.loadUser(userRequest); // .getAttributes()를 하면 Map으로 가져와야 햄 
-		System.out.println("loadUser()_oAuth2User(사용자정보,역할/권한JSON->JAVA) : " + oAuth2User);
+		OAuth2User oAuth2User = super.loadUser(userRequest); // oAuth2User.getAttributes()를 하면 Map으로 가져와야 햄 
+		System.out.println("loadUser() : 사용자정보,역할/권한 JSON -> JAVA) : " + oAuth2User);
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 		//클라이언트 등록 정보 접근해보기, 궁금해
@@ -63,13 +71,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		};
 		//oAuth2User.getAttributes()는 Map형식이라 oAuth2Response에 대입이 될수있다.
 		
-		
-		// if문으로.. 회원 정보 불러와서, 있으면 DTO만들어서 return, 없으면 throw new UsernameNotFoundException("User not found"); -> 필터나 핸들러에서 가입 페이지 리다이렉트 처리 
-		String provider = oAuth2Response.getProvider();
-		String providerId = oAuth2Response.getProviderId();
-		// 어떻게 if문을 해서 로그인, 연동, 가입을 할까?
-		// GPT : 예외처리 던지고, 리다이렉션은 필터 계층에서 처리하는 것이 적합(인증,권한 흐름의 책임이므로 )
-		
 		/**
 		 * 로그인 상황 분류: 0. 기존 회원 조회 
 		 * 	1. 기존회원 = 정상 로그인 -> DTO 생성하여 return
@@ -77,27 +78,59 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		 * 	3. 비회원 = 예외를 던짐 -> filter에서 .AuthenticationFailureHandler 로 AuthenticationFailureHandler 구현하여 예외 발생시 회원가입 페이지로 리다이렉트 
 		 */
 		
+		//받아온 정보가 겹칠 수 있으므로, 우리서비스에서 이용할 수 있도록 고유한 아이디가 필요
+		String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId();
 		
+		// OAuth2Entity 테이블에서 회원 조회
+		OAuth2Entity existData = oAuth2Repository.findByUsername(username);	
 		
-		
-		
-		
-		
-		
-		//리소스 서버에서 발급 받은 정보로 사용자를 특정할 아이디값을 만듬
-		String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId(); 
-		
-		MemberDTO memberDTO = new MemberDTO();
-		memberDTO.setUsername(username);
-		memberDTO.setName(oAuth2Response.getName());
-		//memberDTO.setRole((Role.MEMBER_TEMP_USER).toString());
-		
-		//받은 정보 넘김 
-		return new CustomOAuth2User(memberDTO); //-> SecurityContextHolder에 임시저장된다. 
-		
+		//-비회원
+		if(existData == null) {
+			
+			//DB저장 
+			OAuth2Entity userEntity = new OAuth2Entity();
+			userEntity.setUsername(username);
+			userEntity.setName(oAuth2Response.getName());
+			userEntity.setProfile(oAuth2Response.getProfile_image());
+			userEntity.setProvider(oAuth2Response.getProvider());
+			userEntity.setProviderId(oAuth2Response.getProviderId());
+			System.out.println("비회원-DB저장 : " + userEntity);
+			
+			// SecurityContextHolder에 임시저장 하기위한 MemberDTO 클래스
+			MemberDTO memberDTO = new MemberDTO();
+			memberDTO.setUsername(username); //새로 만든 username 저장 
+			memberDTO.setRole(Role.MEMBER_READ_ONLY.toString()); //처음가입시 주는 Role값 부여 
+			memberDTO.setName(userEntity.getName());
+			memberDTO.setEmail(userEntity.getEmail());
+			memberDTO.setProfile(userEntity.getProfile());
+			System.out.println("비회원-memberDTO : " + memberDTO);
+			
+			return new CustomOAuth2User(memberDTO); 
+		}
+		//-회원(새로 응답받은 수정을 포함)
+		else {
+			
+			existData.setName(oAuth2Response.getName());
+			existData.setEmail(oAuth2Response.getEmail());
+			existData.setProfile(oAuth2Response.getProfile_image());
+			
+			oAuth2Repository.save(existData); // OAuth2 데이터 최신정보 업데이트 
+			
+			//existData는 예전 데이터, oAuth2Response는 응답받은 최신 데이터이므로 set할때 구분해서 사용 
+			MemberDTO memberDTO = new MemberDTO();
+			memberDTO.setUsername(existData.getUsername()); //기존의 username 호출 
+			memberDTO.setName(oAuth2Response.getName());
+			memberDTO.setEmail(oAuth2Response.getEmail());
+			memberDTO.setProfile(oAuth2Response.getProfile_image());
+			
+			Member member = existData.getMemberIdx(); //OAuth2Entity의 memIdx가 Member자료형으로 되어있어서 가능 
+			memberDTO.setRole(member.getRole().toString());
+			System.out.println("회원-memberDTO : " + memberDTO);
+			
+			return new CustomOAuth2User(memberDTO);
+			// 반환된 CustomOAuth2User 객체는 OAuth2AuthenticationToken의 principal로 설정됩니다. (SuccessHandler에서!)
+		}
 		// 추가 가입 정보 기재 페이지로 리다이렉트해서, 핸드폰 인증(API) 같은 걸로 소셜 중복가입을 방지하는 로직도 필요할 듯
-		// memberRepository.save(memberVO);회원가입 로직은 해당 메서드 목적과 어긋남. 
-		
 	}
 
 }
@@ -120,6 +153,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	리턴된 OAuth2User 객체는 Authentication 객체를 생성하는데 사용되고,  
 	최종적으로 Authentication 객체가 SecurityContextHolder에 저장이 됩니다.
 	참고로, 요청 단위로만 인증 정보를 유지하고, 글로벌 상태나 세션 기반 상태를 유지하지 않기 때문에 stateless 입니다!
+	
+	Spring Security는 반환된 CustomOAuth2User 객체를 내부적으로 Authentication 객체(OAuth2AuthenticationToken)를 생성할 때 포함시킵니다. 
+	이 객체는 SecurityContext에 저장되고, 인증 성공 핸들러에게 전달됩니다.
 	
 	
  */

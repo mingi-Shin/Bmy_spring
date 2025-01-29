@@ -10,6 +10,7 @@ public class GoogleResponse implements OAuth2Response {
 	public GoogleResponse(Map<String, Object> attribute) {
 		
 		this.attribute = attribute; // 네이버와 달리 response로 안쌓여있음 
+		// heap에 있는 GoogleResponse 객체의 필드가 heap에 있는 Map 객체를 참조하도록 설정
 		System.out.println("GoogleResponse attribute: " + attribute);
 	}
 
@@ -31,6 +32,21 @@ public class GoogleResponse implements OAuth2Response {
 	@Override
 	public String getName() {
 		return attribute.get("name").toString();
+	}
+
+	@Override
+	public String getNickname() {
+		return attribute.get("nickname").toString();
+	}
+
+	@Override
+	public String getProfile_image() {
+		return attribute.get("profile_image").toString();
+	}
+
+	@Override
+	public String username() {
+		return getProvider()+ " " + getProviderId();
 	}
 
 }

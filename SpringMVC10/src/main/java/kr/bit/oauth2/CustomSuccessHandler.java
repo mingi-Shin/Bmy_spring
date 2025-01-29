@@ -25,13 +25,14 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		this.jwtUtil = jwtUtil;
 	}
 	
+	//로그인 성공시 아래 메서드 동작 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 		
-		System.out.println("CustomSuccessHandler_onAuthenticationSuccess()_authentication : " + authentication);
-				
-		//OAuth2 User
-		CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal(); //getUsername()은 CustomOAuth2User클래스에만 있기에 형변환 
+		//OAuth2User (Service에서 return한 사용자 정보. authentication의 principal로 저장되어 있음)
+		//getUsername()은 CustomOAuth2User클래스에만 있기에 형변환
+		CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal(); 
+	    System.out.println("핸들러: authentication.getPrincipal(): " + customUserDetails);
 		String username = customUserDetails.getUsername();
 		String name = customUserDetails.getName();
 		
@@ -40,12 +41,15 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		GrantedAuthority auth = iterator.next();
 		String role = auth.getAuthority();
 		
-		//더 많은 정보를 담고싶다면 principal에서 더 가져와 
-		String token = jwtUtil.createJwt(username, role, name, 60*60*1000L);
+		//위에서 가져온 정보들로 JWT 생성 
+		String JWToken = jwtUtil.createJwt(username, role, name, 60*60*1000L); // JWT는 1시간짜리 
+		System.out.println("핸들러에서 쿠키 생성: " + JWToken);
 		
-		response.addCookie(createCookie("Authorization", token));
-		response.sendRedirect("http://localhost:8082/");
-				
+		response.addCookie(createCookie("Authorization", JWToken));
+		
+		response.sendRedirect("/"); // mapping("/")으로 ㄱㄱ
+		// react사용시 3000포트로 보내기
+		// response.sendRedirect("http://localhost:3000/");
 	}
 	
 	//내부에서 쓸 쿠키생성 메서드
@@ -53,9 +57,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		
 		Cookie cookie = new Cookie(key, value);
 		
-		cookie.setMaxAge(60*60*60); // 60시간짜리  
-		//cookie.setSecure(true); //HTTPS 에서만 쿠키가 전송
-		cookie.setPath("/"); //쿠키가 보일 위치: 모든 전역 
+		cookie.setMaxAge(60*60*2); // 쿠키 2시간짜리  
+		cookie.setSecure(false); //HTTPS 에서만 쿠키가 전송 : 개발환경에서는 false 
+		cookie.setPath("/"); //모든 경로에서 쿠키를 전송 
 		cookie.setHttpOnly(true); // 스크립트로 접근 불가 
 		
 		return cookie;
@@ -72,5 +76,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
  * 	클라이언트가 쿠키 값을 가져와 자바스크립트에서 실행시키기 때문에
  * 	HttpOnly설정을 하면 동작하지 않음에 주의하자. 
  * 	(개발자도구 console.log(document.cookie); 로 읽을 수 있게된다. 
+ * 
+ * 	쿠키시간을 JWT보다 길게 가져가 리프레시 토큰을 활용하기!
+ * 
  * 
  * */

@@ -104,12 +104,23 @@ public class JWTUtil {
             throw new RuntimeException("JWT 생성 실패", e);  // 예외 발생 시 RuntimeException 던짐
         }
     }
-
-	
-	
-	
-	
-	
-
 }
+/*
+* 	토큰 Payload에 저장될 정보
+	
+		username
+		role
+		생성일
+		만료일
+	
+	JWTUtil 구현 메소드
+	
+		JWTUtil 생성자
+		username 확인 메소드
+		role 확인 메소드
+		만료일 확인 메소드
+ * 
+ * 
+ * */
+
 

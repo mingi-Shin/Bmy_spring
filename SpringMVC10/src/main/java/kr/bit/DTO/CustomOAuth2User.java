@@ -24,19 +24,13 @@ public class CustomOAuth2User implements OAuth2User{
 
 	@Override
 	public Map<String, Object> getAttributes() { //로그인하면 리소스서버로부터 넘어오는 모든 데이터 
-
-	    // MemberDTO의 데이터를 Map으로 변환하여 반환
-		Map<String, Object> attributes = new HashMap<>();
-		attributes.put("username", memberDTO.getUsername());
-		attributes.put("name", memberDTO.getName());
-		attributes.put("role", memberDTO.getRole());
-		
-		return attributes;
+		// 구글, 네이버의 response구성이 서로 달라 attributes가져오는 메서드는 짜기 힘들어 
+		return null;
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		
+		// 🔥 반드시 Role을 포함하여 반환해야 Spring Security에서 정상적인 인가 처리 가능!
 		Collection<GrantedAuthority> collection = new ArrayList<>();
 		
 		// GrantedAuthority는 인터페이스이므로 직접 인스턴스화 X. 그래서 익명클래스 사용하여 일회성 구현. 

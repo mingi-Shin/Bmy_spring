@@ -28,6 +28,11 @@ public class OAuth2Entity {
 	
 	//name으로 하면 갖고오기 허용해야 되고, 해도 이름이 다르게 중복가입이 될수도 있으니까 핸드폰 인증까지 해야되네?
 	
+	private String username;
+	private String name;
+	private String email;
+	private String profile;
+	
 	@Column(nullable = false)
     private String provider;
 
@@ -47,5 +52,7 @@ public class OAuth2Entity {
  *
  * 	memberIdx와 providerId의 조합이 유니크해야 하므로, 같은 값의 조합이 두 개 이상 존재할 수 없도록 합니다.
  * 
+ * 	OAuth2Entity에서는 Role, email등 공통사항은 필요 없다구 
+ * 	
  * */
 

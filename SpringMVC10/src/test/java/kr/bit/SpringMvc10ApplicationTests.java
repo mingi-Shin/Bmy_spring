@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import kr.bit.entity.Member;
 import kr.bit.entity.Role;
 import kr.bit.repository.MemberRepository;
+import kr.bit.repository.OAuth2Repository;
 
 @SpringBootTest
 class SpringMvc10ApplicationTests {

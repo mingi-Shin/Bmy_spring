@@ -11,6 +11,10 @@ import kr.bit.entity.Member;
 import kr.bit.repository.MemberRepository;
 import lombok.extern.log4j.Log4j2;
 
+/*
+ *  	아이디/비밀번호 폼 로그인 처리
+ * */
+
 @Log4j2
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -24,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// username정보를 이용해서 상세조회 시도(회원이 존해하는지 체크)
-		Member member = memberRepository.findById(username).get();
+		Member member = memberRepository.findByUsername(username);
 		log.info(member);
 		
 		if(member == null) {

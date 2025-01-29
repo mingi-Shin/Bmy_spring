@@ -10,6 +10,8 @@ public class NaverResponse implements OAuth2Response {
 	public NaverResponse(Map<String, Object> attributes) {
 		
 		this.attributes = (Map<String, Object>) attributes.get("response");
+		// stack에 있는 attributes 참조값을 heap에 있는 attributes 필드에 저장
+		// stack에서 heap으로 객체 자체가 이동하는 것이 아니라 참조값만 복사되는 것
 		System.out.println("NaverResponse생성자_attribute.get('response') : " + this.attributes);
 	}
 	
@@ -31,6 +33,23 @@ public class NaverResponse implements OAuth2Response {
 	@Override
 	public String getName() {
 		return attributes.get("name").toString();
+	}
+
+	@Override
+	public String getNickname() {
+		return attributes.get("nickname").toString();
+
+	}
+
+	@Override
+	public String getProfile_image() {
+		return attributes.get("profile_image").toString();
+
+	}
+
+	@Override
+	public String username() {
+		return getProvider()+ " " + getProviderId();
 	}
 
 }

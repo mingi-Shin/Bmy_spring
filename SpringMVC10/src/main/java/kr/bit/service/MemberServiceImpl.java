@@ -5,13 +5,17 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kr.bit.entity.Member;
 import kr.bit.entity.Role;
 import kr.bit.repository.MemberRepository;
+
+/*
+ * 해당 클래스는 OAuth2와 관계없이 내 서비스 자체의 회원관리 로직 클래스입니다. 
+ * 
+ * */
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -63,9 +67,8 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public Member get(Member member) {
-		Optional<Member> memberOptional = memberRepository.findById(member.getUsername());
-		if(memberOptional.isPresent()) {
-			Member vo = memberOptional.get();
+		Member vo = memberRepository.findByUsername(member.getUsername());
+		if(vo != null) {
 			return vo;
 		} else {
 			// vo가 존재하지 않을 경우 처리 : 난 예외 던지기 할거임  

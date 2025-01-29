@@ -39,13 +39,14 @@ public class SecurityConfiguration {
     }
 */
     
-    private final CustomSuccessHandler customSuccessHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomSuccessHandler customSuccessHandler;
+    private final JWTUtil jwtUtil;
+    
     private final UserDetailsServiceImpl userDetailServiceImpl;
     private final CustomClientRegistrationRepo customClientRegistrationRepo;
 	private final CustomOAuth2AuthorizedClientService customOAuth2AuthorizedClientService;
 	private final JdbcTemplate jdbcTemplate;
-	private final JWTUtil jwtUtil;
     
     public SecurityConfiguration(CustomOAuth2UserService customOAuth2UserService, UserDetailsServiceImpl userDetailServiceImpl, CustomClientRegistrationRepo clientRegistrationRepo, CustomOAuth2AuthorizedClientService customOAuth2AuthorizedClientService, JdbcTemplate jdbcTemplate, CustomSuccessHandler customSuccessHandler, JWTUtil jwtUtil) {
     	this.customOAuth2UserService = customOAuth2UserService;
@@ -64,21 +65,22 @@ public class SecurityConfiguration {
 		//csrf disable
 		http
 			.csrf((auth) -> auth.disable()); //CSRF토큰 검사 비활용 
-        //From 로그인 방식 disable
+/**
+ * 아래에서 formLogin 로직 작동중      
+		//Form 로그인 방식 disable
         http
             .formLogin((auth) -> auth.disable());
+*/        
         //HTTP Basic 인증 방식 disable (= url쿼리 로그인 x)
         http
             .httpBasic((auth) -> auth.disable());
         
-        //JWTFilter 추가
+        //JWTFilter 는 로그인 성공 후에 JWT를 발급해야 하므로 "뒤에서"실행되어야 함 
         http
-        	.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
-        
-        //JWTFilter 추가 : 무한 루프 방지 -> https://www.devyummi.com/page?id=6693762f034f9479696f1e45
-        http
-            .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
-        
+            .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class) //OAuth2로그인 성공 후 JWT발급 
+        	.addFilterAfter(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class); //Form로그인 성공 후 JWT발급
+        	//이후 모든 요청에서 JWT 검증 → (JWTFilter가 실행)	
+        	
     	// 경로별 접근 권한 설정
 		http.authorizeHttpRequests((auth) -> auth
 				.requestMatchers("/", "/error", "/member/**", "/yummi/**", "/WEB-INF/**").permitAll()
@@ -116,18 +118,19 @@ public class SecurityConfiguration {
 				.logoutUrl("/member/logoutProc") //혹은 logoutRequestMatcher()로 더 복잡한 사용 
 				.logoutSuccessUrl("/") // = 리디렉션, 이거아니면 logoutSuccessHandler()로 더 복잡한 사용 
 			);
-		
+
+/** 세션을 STATELESS 하고 있으므로 불필요 
 		http
 			.sessionManagement((auth) -> auth
 				.invalidSessionUrl("/member/login?timeout=true") // 세션 만료 시 이동할 페이지
 				.maximumSessions(1) //다중로그인 허용 갯수 
 				.maxSessionsPreventsLogin(true)// true : 초과시 새로운 로그인 차단,  false : 초과시 기존 세션 하나 삭제
 			);
-		
+*/		
 		//세션 고정 공격 방어코드 
 		http
 			.sessionManagement((session) -> session
-				.sessionFixation().changeSessionId() //로그인 시 동일한 세션에 대한 id변경
+				//.sessionFixation().changeSessionId() //로그인 시 동일한 세션에 대한 id변경 : STATELESS 불필요 
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			);
 		
@@ -196,7 +199,7 @@ public class SecurityConfiguration {
  * 
  * 		userInfoEndpoint()부분에 대한 설명링크: https://www.notion.so/OAuth2_SecurityConfig-java-175e2244683d80099bb6f78c155112d7?pvs=4
  * 
- * 		
+ *		소셜로그인은 formLogin()이 필요치 않으므로, 로그인 구성에 따라 활성화/비활성화 검토  		
  *
  *		
  * 
