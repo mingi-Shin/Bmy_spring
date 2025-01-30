@@ -22,7 +22,7 @@ public class NaverResponse implements OAuth2Response {
 
 	@Override
 	public String getProviderId() {
-		return attributes.get("Id").toString();
+		return attributes.get("id").toString();
 	}
 
 	@Override

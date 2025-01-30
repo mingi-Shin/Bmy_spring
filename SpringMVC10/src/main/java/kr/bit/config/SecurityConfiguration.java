@@ -48,10 +48,10 @@ public class SecurityConfiguration {
 	private final CustomOAuth2AuthorizedClientService customOAuth2AuthorizedClientService;
 	private final JdbcTemplate jdbcTemplate;
     
-    public SecurityConfiguration(CustomOAuth2UserService customOAuth2UserService, UserDetailsServiceImpl userDetailServiceImpl, CustomClientRegistrationRepo clientRegistrationRepo, CustomOAuth2AuthorizedClientService customOAuth2AuthorizedClientService, JdbcTemplate jdbcTemplate, CustomSuccessHandler customSuccessHandler, JWTUtil jwtUtil) {
+    public SecurityConfiguration(CustomOAuth2UserService customOAuth2UserService, UserDetailsServiceImpl userDetailServiceImpl,  JdbcTemplate jdbcTemplate, CustomClientRegistrationRepo customClientRegistrationRepo, CustomOAuth2AuthorizedClientService customOAuth2AuthorizedClientService,  CustomSuccessHandler customSuccessHandler, JWTUtil jwtUtil) {
     	this.customOAuth2UserService = customOAuth2UserService;
     	this.userDetailServiceImpl = userDetailServiceImpl;
-    	this.customClientRegistrationRepo = clientRegistrationRepo;
+    	this.customClientRegistrationRepo = customClientRegistrationRepo;
     	this.customOAuth2AuthorizedClientService = customOAuth2AuthorizedClientService;
     	this.jdbcTemplate = jdbcTemplate;
     	this.customSuccessHandler = customSuccessHandler;

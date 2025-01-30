@@ -39,8 +39,8 @@ public class OAuth2Entity {
     @Column(nullable = false)
     private String providerId;
 
-    @Column(nullable = false)
-    private String accessToken;
+    //@Column(nullable = false)
+    //private String accessToken;
 
     //@Column
     //private String refreshToken; //리프레시 기능 도입 후 생성 

@@ -94,6 +94,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			userEntity.setProfile(oAuth2Response.getProfile_image());
 			userEntity.setProvider(oAuth2Response.getProvider());
 			userEntity.setProviderId(oAuth2Response.getProviderId());
+			oAuth2Repository.save(userEntity);
 			System.out.println("비회원-DB저장 : " + userEntity);
 			
 			// SecurityContextHolder에 임시저장 하기위한 MemberDTO 클래스
