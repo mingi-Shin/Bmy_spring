@@ -25,7 +25,7 @@ class SpringMvc10ApplicationTests {
 		vo.setUsername("winter@naver.com");
 		vo.setPassword(encoder.encode("ssy917")); //암호화
 		vo.setName("윈터");
-		vo.setRole(Role.ADMIN);
+		vo.setRole(Role.ADMIN); 
 		memberRepository.save(vo);
 	}
 
