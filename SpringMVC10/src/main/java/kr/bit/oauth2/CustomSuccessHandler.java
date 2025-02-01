@@ -47,7 +47,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		
 		response.addCookie(createCookie("Authorization", JWToken));
 		
-		response.sendRedirect("/"); // mapping("/")으로 ㄱㄱ
+		response.sendRedirect("/boot"); // mapping("/")으로 ㄱㄱ
 		// react사용시 3000포트로 보내기
 		// response.sendRedirect("http://localhost:3000/");
 	}
@@ -68,7 +68,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 	
 }
 /**
- * 	OAuth2 로그인 성공시 JWT발급하는 클래스
+ * 	이것은 OAuth2 로그인 성공시 JWT발급하는 클래스
  * 
  * 	GrantedAuthority 는 ROLE(권한)을 담당하는 인터페이스
  * 
@@ -78,6 +78,17 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
  * 	(개발자도구 console.log(document.cookie); 로 읽을 수 있게된다. 
  * 
  * 	쿠키시간을 JWT보다 길게 가져가 리프레시 토큰을 활용하기!
+ * 	
+ *	-- 토큰 저장 위치( https://www.devyummi.com/page?id=669514be59f57d23e8a0b6a9 ) --
+ * 	Access 토큰  : 로컬 스토리지(localStorage, sessionStorage, Memory ) 	: XSS 공격에 취약 
+ * 	Refresh 토큰 : HttpOnly 쿠키 (or DB, Redis 등) 					: CSRF 공격에 취약 
+ * 	
+ * 	-- Refresh 토큰 탈취에 대비하는 방법: Refresh Rotate
+ * 		발급시 : Refresh 토큰을 서버측 저장소에 저장
+ * 		갱신시 : 기존 Refresh 토큰을 삭제하고, 새로 발급한 Refresh를 저장 
  * 
+ *  -- 로그아웃시 Refresh 토큰을 죽이는데, Access토큰이 만료시간이 남은 시점에서 탈취당하면 방법이 없으므로.. 최대한 만료시간을 짧게 주는 수밖에 없다.
+ *  	Access토큰을 서버에 저장하면 관리는 가능하지만 stateless 한 정책에 어긋나고, 서버에 부담이 가므로 추천하지는 않는다..? 
+ *  
  * 
  * */

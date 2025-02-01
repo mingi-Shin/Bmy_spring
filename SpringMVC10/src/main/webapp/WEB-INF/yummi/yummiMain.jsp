@@ -15,6 +15,16 @@
 <title>Insert title here</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+	<script type="text/javascript">
+	$(document).ready(function(){
+		
+		console.log('${user}');
+
+		
+	});
+	
+	
+	</script>
 </head>
 <body>
 <h4>유미의 Security</h4>

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.bit.entity.Member;
@@ -41,15 +42,14 @@ public class MemberController {
 		return "redirect:/member/login";
 	}
 	
-/** 커스텀 로그아웃(Get)
 	@GetMapping("/logoutProc")
 	public String logout(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if(authentication != null) {
 			new SecurityContextLogoutHandler().logout(req, res, authentication);
 		}
+		
 		return "rediret:/";
 	}
-*/	
 	
 }

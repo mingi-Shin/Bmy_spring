@@ -84,10 +84,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		// OAuth2Entity 테이블에서 회원 조회
 		OAuth2Entity existData = oAuth2Repository.findByUsername(username);	
 		
-		//-비회원
+		// 소셜 비회원(처음 로그인)
 		if(existData == null) {
 			
-			//DB저장 
+			//OAuth2계정 DB저장 
 			OAuth2Entity userEntity = new OAuth2Entity();
 			userEntity.setUsername(username);
 			userEntity.setName(oAuth2Response.getName());
@@ -100,7 +100,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			// SecurityContextHolder에 임시저장 하기위한 MemberDTO 클래스
 			MemberDTO memberDTO = new MemberDTO();
 			memberDTO.setUsername(username); //새로 만든 username 저장 
-			memberDTO.setRole(Role.MEMBER_READ_ONLY.toString()); //처음가입시 주는 Role값 부여 
+			memberDTO.setRole(Role.GUEST.toString()); // 미인증 -> GUEST 직접부여 
 			memberDTO.setName(userEntity.getName());
 			memberDTO.setEmail(userEntity.getEmail());
 			memberDTO.setProfile(userEntity.getProfile());
@@ -108,32 +108,45 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			
 			return new CustomOAuth2User(memberDTO); 
 		}
-		//-회원(새로 응답받은 수정을 포함)
+		// 기존 소셜 회원(새로 응답받은 수정을 포함)
 		else {
 			
+			// OAuth2 데이터 최신정보로 업데이트 
 			existData.setName(oAuth2Response.getName());
 			existData.setEmail(oAuth2Response.getEmail());
 			existData.setProfile(oAuth2Response.getProfile_image());
+			oAuth2Repository.save(existData); 
 			
-			oAuth2Repository.save(existData); // OAuth2 데이터 최신정보 업데이트 
-			
-			//existData는 예전 데이터, oAuth2Response는 응답받은 최신 데이터이므로 set할때 구분해서 사용 
-			MemberDTO memberDTO = new MemberDTO();
-			memberDTO.setUsername(existData.getUsername()); //기존의 username 호출 
-			memberDTO.setName(oAuth2Response.getName());
-			memberDTO.setEmail(oAuth2Response.getEmail());
-			memberDTO.setProfile(oAuth2Response.getProfile_image());
-			
-			Member member = existData.getMemberIdx(); //OAuth2Entity의 memIdx가 Member자료형으로 되어있어서 가능 
-			memberDTO.setRole(member.getRole().toString());
-			System.out.println("회원-memberDTO : " + memberDTO);
-			
-			return new CustomOAuth2User(memberDTO);
+			//본인인증 or 미인증 회원
+			if(existData.getMemberIdx() == null ) { 
+				
+				//existData는 예전 데이터, oAuth2Response는 응답받은 최신 데이터이므로 set할때 구분해서 사용 
+				MemberDTO memberDTO = new MemberDTO();
+				memberDTO.setUsername(existData.getUsername()); //기존의 username 호출 
+				memberDTO.setName(oAuth2Response.getName());
+				memberDTO.setEmail(oAuth2Response.getEmail());
+				memberDTO.setProfile(oAuth2Response.getProfile_image());
+				memberDTO.setRole(Role.GUEST.toString()); //미인증 -> ROLE_GUEST 수동부여 
+				
+				System.out.println("기존회원 + 미인증 : " + memberDTO.getRole());
+				return new CustomOAuth2User(memberDTO);
+				
+			} else {
+				
+				MemberDTO memberDTO = new MemberDTO();
+				memberDTO.setUsername(existData.getUsername()); //기존의 username 호출 
+				memberDTO.setName(oAuth2Response.getName());
+				memberDTO.setEmail(oAuth2Response.getEmail());
+				memberDTO.setProfile(oAuth2Response.getProfile_image());
+				Member member = existData.getMemberIdx();
+				memberDTO.setRole(member.getRole().toString());
+				
+				System.out.println("기존회원 + 인증 : " + memberDTO.getRole());
+				return new CustomOAuth2User(memberDTO);
+			}
 			// 반환된 CustomOAuth2User 객체는 OAuth2AuthenticationToken의 principal로 설정됩니다. (SuccessHandler에서!)
 		}
-		// 추가 가입 정보 기재 페이지로 리다이렉트해서, 핸드폰 인증(API) 같은 걸로 소셜 중복가입을 방지하는 로직도 필요할 듯
 	}
-
 }
 
 /**
@@ -144,8 +157,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	String role = "ROLE_USER";
 	return new CustomOAuth2User(vo1, role);
 	
-	해당 로직에서 가입 로직을 추가하는 것은 책임분리원칙에서 어긋남 
-	
+	처음 소셜 로그인시, OAuth2테이블에만 계정생성하고, 수동으로 ROLE 부여 
+	Authenticated 된 URL에는 접근이 가능하지만, 글쓰기등은 제한할 수 있음 
+	이 때, 핸드폰인증? 이메일인증? 등으로 Member테이블에 추가하고, 소셜계정을 연동.
+	ROLE_USER로 승격.
+	    
 	loadUser( OAuth2UserRequest ) :
 	OAuth2UserRequest 객체로부터 액세스 토큰을 가져와 인증서버의 사용자 정보 엔드포인트에 요청,
 	요청에의해 반환된 JSON응답에는 사용자 프로필 정보(이름, 이메일, 아이디 등)이 포함되어있다.

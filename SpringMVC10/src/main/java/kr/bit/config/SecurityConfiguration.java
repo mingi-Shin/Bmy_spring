@@ -1,27 +1,18 @@
 package kr.bit.config;
 
-import java.util.Collections;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 
-import jakarta.servlet.http.HttpServletRequest;
 import kr.bit.jwt.JWTFilter;
 import kr.bit.jwt.JWTUtil;
-import kr.bit.oauth2.CustomClientRegistrationRepo;
-import kr.bit.oauth2.CustomOAuth2AuthorizedClientService;
 import kr.bit.oauth2.CustomSuccessHandler;
 import kr.bit.service.CustomOAuth2UserService;
 
@@ -44,19 +35,13 @@ public class SecurityConfiguration {
     private final JWTUtil jwtUtil;
     
     private final UserDetailsServiceImpl userDetailServiceImpl;
-    private final CustomClientRegistrationRepo customClientRegistrationRepo;
-	private final CustomOAuth2AuthorizedClientService customOAuth2AuthorizedClientService;
-	private final JdbcTemplate jdbcTemplate;
     
-    public SecurityConfiguration(CustomOAuth2UserService customOAuth2UserService, UserDetailsServiceImpl userDetailServiceImpl,  JdbcTemplate jdbcTemplate, CustomClientRegistrationRepo customClientRegistrationRepo, CustomOAuth2AuthorizedClientService customOAuth2AuthorizedClientService,  CustomSuccessHandler customSuccessHandler, JWTUtil jwtUtil) {
+    public SecurityConfiguration(CustomOAuth2UserService customOAuth2UserService, UserDetailsServiceImpl userDetailServiceImpl, CustomSuccessHandler customSuccessHandler, JWTUtil jwtUtil) {
+    	
     	this.customOAuth2UserService = customOAuth2UserService;
-    	this.userDetailServiceImpl = userDetailServiceImpl;
-    	this.customClientRegistrationRepo = customClientRegistrationRepo;
-    	this.customOAuth2AuthorizedClientService = customOAuth2AuthorizedClientService;
-    	this.jdbcTemplate = jdbcTemplate;
     	this.customSuccessHandler = customSuccessHandler;
     	this.jwtUtil = jwtUtil;
-    	
+    	this.userDetailServiceImpl = userDetailServiceImpl;
     }
     
 	@Bean
@@ -94,8 +79,6 @@ public class SecurityConfiguration {
 			.oauth2Login((oauth2) -> oauth2
 				// OAuth2 로그인 성공 이후 사용자 정보를 가져올 때의 설정을 담당
 				.loginPage("/member/login")
-				.clientRegistrationRepository(customClientRegistrationRepo.clientRegistrationRepository())
-				.authorizedClientService(customOAuth2AuthorizedClientService.oAuth2AuthorizedClientService(jdbcTemplate, customClientRegistrationRepo.clientRegistrationRepository() )) //Access토큰 정보등을 DB에 담기위해 
 				.defaultSuccessUrl("/", true) // 로그인 성공 후 항상 루트 경로로 리디렉션, ROLE체크해서 비회원이면 추가 기입 페이지로 리다이렉트.
 				.failureUrl("/login?error=true") // 로그인 실패 시 이동 경로
 				.userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig

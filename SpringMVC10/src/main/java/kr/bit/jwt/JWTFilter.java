@@ -35,9 +35,9 @@ public class JWTFilter extends OncePerRequestFilter{
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
-		System.out.println("JWTFilter 동작함");
+		System.out.println("JWTFilter 동과, request : " + request);
 		
-        //cookie들을 불러온 뒤 Authorization Key에 담긴 쿠키를 찾음
+        //cookie들을 불러온 뒤 Authorization Key에 담긴 쿠키를 찾기 
 		String authorization = null;
 		Cookie[] cookies = request.getCookies();
 		if (cookies == null || cookies.length == 0) {
@@ -51,7 +51,6 @@ public class JWTFilter extends OncePerRequestFilter{
 			
 			System.out.println(cookie.getName());
 			if(cookie.getName().equals("Authorization")) {
-				
 				authorization = cookie.getValue();
 			}
 		} 
@@ -61,7 +60,7 @@ public class JWTFilter extends OncePerRequestFilter{
 		//	1. 쿠키 Authorization의 값이 null인지 검증
 		if(token == null) {
 			
-			System.out.println("token is Null");
+			System.out.println("Authorization Token is Null");
 			filterChain.doFilter(request, response);
 			
 			//조건이 해당되면 메소드 종료(필수)
@@ -71,7 +70,7 @@ public class JWTFilter extends OncePerRequestFilter{
 		//	2. 일단 Authorization 값이 null은 아님 -> 토큰의 소멸시간 검증
 		if(jwtUtil.isExpired(token)) {
 			
-			System.out.println("token is Expired: 토큰 만료 됐어요");
+			System.out.println("token is Expired: 토큰 만료");
 			filterChain.doFilter(request, response);
             
 			//조건이 해당되면 필터체인 종료 (필수)
@@ -81,7 +80,7 @@ public class JWTFilter extends OncePerRequestFilter{
 		//3. 쿠키는 정상임 -> 세션에 저장할거임 
 
 		
-		//쿠키를 사용해서 정보빼기 -> UserDTO생성 -> OAuth2User객체 생성 -> 시큐리티 인증토큰 생성 -> 세션에 사용자 등록 
+		//쿠키에서 정보빼기 -> UserDTO생성 -> OAuth2User객체 생성 -> 시큐리티 인증토큰 생성 -> 세션에 사용자 등록 
 		String username = jwtUtil.getUsername(token);
 		String role = jwtUtil.getRole(token);
 		String name = jwtUtil.getName(token);
@@ -100,8 +99,8 @@ public class JWTFilter extends OncePerRequestFilter{
 		//세션에 사용자 등록(요청 완료후 삭제될거임 : stateless)
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		
-		Authentication test = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println("세션 임시 저장 Authentication : " + test);
+		Authentication whatHaveYouGot = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println("세션 임시 저장 Authentication 확인용 : " + whatHaveYouGot);
 
 		//다음 필터 ㄱ
         filterChain.doFilter(request, response);
