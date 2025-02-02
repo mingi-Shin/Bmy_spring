@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -32,7 +33,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		//OAuth2User (Service에서 return한 사용자 정보. authentication의 principal로 저장되어 있음)
 		//getUsername()은 CustomOAuth2User클래스에만 있기에 형변환
 		CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal(); 
-	    System.out.println("핸들러: authentication.getPrincipal(): " + customUserDetails);
 		String username = customUserDetails.getUsername();
 		String name = customUserDetails.getName();
 		
@@ -41,25 +41,31 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		GrantedAuthority auth = iterator.next();
 		String role = auth.getAuthority();
 		
-		//위에서 가져온 정보들로 JWT 생성 
-		String JWToken = jwtUtil.createJwt(username, role, name, 60*60*1000L); // JWT는 1시간짜리 
-		System.out.println("핸들러에서 쿠키 생성: " + JWToken);
+		//토큰 생성 
+		String access = jwtUtil.createJwt("access", username, role, name, 1000L*60*15); //access 15분짜리 
+		String refresh = jwtUtil.createJwt("refresh", username, role, name, 1000L*60*60*24*2); //refresh 48시간짜리 
+		System.out.println("setHeader 토큰 access : " + access); 
+		System.out.println("addCookie 토큰 refresh : " + refresh); 
 		
-		response.addCookie(createCookie("Authorization", JWToken));
+		//응답 설정 
+		response.setHeader("Authorization", "Bearer " + access); //Authorization 헤더, Filter에서 검증할 때 이름 주의 
+		response.addCookie(createCookie("refresh", refresh));
+		response.setStatus(HttpStatus.OK.value());
 		
 		response.sendRedirect("/boot"); // mapping("/")으로 ㄱㄱ
-		// react사용시 3000포트로 보내기
+		// react사용시에는 3000포트로 보내기
 		// response.sendRedirect("http://localhost:3000/");
 	}
+	
 	
 	//내부에서 쓸 쿠키생성 메서드
 	private Cookie createCookie(String key, String value) {
 		
 		Cookie cookie = new Cookie(key, value);
 		
-		cookie.setMaxAge(60*60*2); // 쿠키 2시간짜리  
+		cookie.setMaxAge(60*60*24*2); // 쿠키 48시간짜리 (refresh와 같아야 자동로그인 기능이 정상적으로 동작)  
 		cookie.setSecure(false); //HTTPS 에서만 쿠키가 전송 : 개발환경에서는 false 
-		cookie.setPath("/"); //모든 경로에서 쿠키를 전송 
+		//cookie.setPath("/"); //모든 경로에서 쿠키를 전송, 기본 자동설정  
 		cookie.setHttpOnly(true); // 스크립트로 접근 불가 
 		
 		return cookie;

@@ -35,7 +35,7 @@ public class JWTFilter extends OncePerRequestFilter{
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
-		System.out.println("JWTFilter 동과, request : " + request);
+		System.out.println("JWTFilter 통과");
 		
         //cookie들을 불러온 뒤 Authorization Key에 담긴 쿠키를 찾기 
 		String authorization = null;

@@ -84,16 +84,31 @@ public class JWTUtil {
 		}
     }
     
+    public String getCategory(String token) {
+    	try {
+    		return Jwts.parser()
+    				.verifyWith(secretKey)
+    				.build()
+    				.parseSignedClaims(token)
+    				.getPayload()
+    				.get("category", String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Invalid JWT token", e);
+		}
+    }
+    
     //JWT생성: 더 많은 정보를 담고싶다면 매개변수에 포함. 
-    public String createJwt(String username, String role, String name, Long expiredMs) {
+    public String createJwt(String category, String username, String role, String name, Long expiredMs) {
     	
     	System.out.println("createJwt() Operate - ");
         
     	try {
             return Jwts.builder()  // 빌더를 통해 JWT의 클레임(Claims), 헤더(Header), 서명(Signature)을 구성
+            		.claim("category", category)
                     .claim("username", username)  // JWT의 Custom Claim(사용자 정의 클레임)을 추가 (키 : 값) -> Payload 에 저장 
                     .claim("role", role)         
-                    .claim("name", name)
+                    .claim("name", name) //이런건 필수가 아니다. 
                     .issuedAt(new Date(System.currentTimeMillis()))  // 토큰의 발급 시간(iat, issued at) 설정
                     .expiration(new Date(System.currentTimeMillis() + expiredMs))  // JWT의 만료 시간(exp, expiration) 설정
                     .signWith(secretKey)  // 입력된 암호화 키(secretKey)를 사용해 JWT의 서명을 생성
@@ -105,22 +120,15 @@ public class JWTUtil {
         }
     }
 }
-/*
-* 	토큰 Payload에 저장될 정보
-	
-		username
-		role
-		생성일
-		만료일
-	
-	JWTUtil 구현 메소드
-	
-		JWTUtil 생성자
-		username 확인 메소드
-		role 확인 메소드
-		만료일 확인 메소드
+/**
  * 
- * 
- * */
+ * 	📌 정리
+	•	JWT는 기본적으로 stateless 하므로, 프론트에서 사용자 정보를 표시하려면 DB 조회가 필요함.
+	•	하지만 DB 조회가 많아지면 서버에 부담이 되므로, 일부 정보를 JWT에 포함할 수도 있음.
+	•	그러나 닉네임 같은 자주 변경되는 정보는 JWT에 넣으면 불편 (변경될 때마다 토큰 재발급 필요).
+	•	따라서 JWT는 인증(Authentication)과 권한(Authorization) 정보만 최소한으로 포함하는 것이 가장 좋음.
+	•	그 외의 사용자 정보는 DB에서 조회하는 것이 바람직함.
+	🚀 결론: JWT는 인증과 권한 용도로만 사용하고, 자주 바뀌는 데이터는 DB에서 조회하는 것이 좋다!
+ */
 
 

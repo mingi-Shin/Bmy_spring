@@ -8,6 +8,10 @@
 <c:set var="user" value="${SPRING_SECURITY_CONTEXT.authentication.principal }" />
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities }" />
 
+<!-- 위 SPRING_SECURITY_CONTEXT는 Session에서 가져오는 것, JWT의 Stateless방식에서는 사용불가..  
+			따라서 Ajax로 가져오는 것을 추천 
+-->
+	
 <!DOCTYPE html>
 <html>
 <head>
