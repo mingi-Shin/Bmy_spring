@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationF
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import kr.bit.jwt.JWTFilter;
+import kr.bit.jwt.JWTFilter_Old;
 import kr.bit.jwt.JWTUtil;
 import kr.bit.oauth2.CustomSuccessHandler;
 import kr.bit.service.CustomOAuth2UserService;
@@ -62,8 +62,8 @@ public class SecurityConfiguration {
         
         //JWTFilter 는 로그인 성공 후에 JWT를 발급해야 하므로 "뒤에서"실행되어야 함 
         http
-            .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class) //OAuth2로그인 성공 후 JWT발급 
-        	.addFilterAfter(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class); //Form로그인 성공 후 JWT발급
+            .addFilterAfter(new JWTFilter_Old(jwtUtil), OAuth2LoginAuthenticationFilter.class) //OAuth2로그인 성공 후 JWT발급 
+        	.addFilterAfter(new JWTFilter_Old(jwtUtil), UsernamePasswordAuthenticationFilter.class); //Form로그인 성공 후 JWT발급
         	//이후 모든 요청에서 JWT 검증 → (JWTFilter가 실행)	
         	
     	// 경로별 접근 권한 설정
