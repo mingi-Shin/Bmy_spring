@@ -46,7 +46,6 @@ public class JWTFilter_Old extends OncePerRequestFilter{
 		    return;
 		}
 		
-		
 		for(Cookie cookie : cookies) {
 			
 			System.out.println(cookie.getName());
