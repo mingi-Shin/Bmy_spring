@@ -30,7 +30,9 @@ public class ReissueController {
 		this.jwtUtil = jwtUtil;
 		this.tokenService = tokenService;
 	}
-	
+	/**
+	 * 나중에 서비스와 컨트롤 분리해줘요 
+	 */
 	@PostMapping("/reissue")
 	public ResponseEntity<?> reissue (HttpServletRequest request, HttpServletResponse response){
 		
@@ -45,9 +47,8 @@ public class ReissueController {
 			}
 		}
 		/**
-		 * 	JSP: 문자열(refresh token null)이 포함된 HTTP 응답을 받게된다. Ajax로 해결 
-		 * 
-		 * 	React: 똑같다. 해결방법도 똑같다. 
+		 * 	JSP: 문자열(refresh token null)이 포함된 HTTP 응답을 받게된다. Ajax나 Fetch API로 처리해 
+		 * 	CSR에서도 똑같다. 
 		 */
 		if(refresh == null) {
             //response status code
@@ -65,9 +66,6 @@ public class ReissueController {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
-		
-		
-		
 		
 		
 		//토큰이 refresh 인지 확인 (발급시 페이로드에 명시)
