@@ -18,7 +18,7 @@ import kr.bit.DTO.CustomOAuth2User;
 import kr.bit.jwt.JWTUtil;
 
 
-//로그인 성공시 아래 동작하는 클래스  
+//로그인 할 때만(성공시) 동작하는 클래스  
 
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {

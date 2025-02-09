@@ -51,7 +51,7 @@ public class JWTFilter extends OncePerRequestFilter {
 			accessToken = authorizationHeader.substring(7); // "Bearer" 이후의 토큰만 추출 
 		}
 		
-		// 토큰이 없다면 다음 필터로 넘김 
+		// 토큰이 없다면 다음 필터로 넘김 : 권한이 필요없는 요청도 있기때문에  
 		if(accessToken == null) {
 			
 			filterChain.doFilter(request, response);
@@ -62,11 +62,18 @@ public class JWTFilter extends OncePerRequestFilter {
 		// 토큰 만료 여부 확인, 만료시 다음 필터로 넘기지 않음 
 		try {
 			jwtUtil.isExpired(accessToken);
-			
 		} catch (ExpiredJwtException e) {
 			
-			// 직접 리디렉트: SSR (Spring MVC, JSP, Thymeleaf)
-			response.sendRedirect("/member/login"); // 401 에러 -> 로그인페이지 리디렉트 
+			e.printStackTrace();
+			
+			// 혹은 HTTP상태코드, 메시지 반환 : 모든 JSP에서 401감지 후 access재발급 Post요청하는 ajax 작성 
+		    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "access token expired");
+		    
+		    // 혹은 특정 JSP로 리디렉트 : 해당 JSP에서 401감지 후 access재발급 Post요청하는 ajax 작성 
+		    response.sendRedirect("/??");
+
+		    // 혹은 여기서 바로 request.getCookies()로 refresh를 검증하여 access토큰 재발급 
+		    
 /**			
 			//아래 코드는 SPA에서 적절. JSP에 알맞지 않음 
 			//response Body
@@ -83,7 +90,7 @@ public class JWTFilter extends OncePerRequestFilter {
 		    // 2. catch문에서 바로 response.sendRedirct("/login.jsp");를 한다? (JSP에서 추천)
 		}
 		
-		// 토큰이 access인지 확인 (발급시 페이로드에 명시)
+		// 토큰이 access인지, refresh인지 확인 (발급시 페이로드에 명시)
 		String category = jwtUtil.getCategory(accessToken);
 		
 		if(category == null || !category.equals("access")) {
@@ -129,6 +136,12 @@ public class JWTFilter extends OncePerRequestFilter {
  * 
  * 	access토큰은 API서버에서 요청마다 Authorization 헤더에서 토큰을 받아 검증한다.
  * 	refresh토큰은 자동으로 서버에 전송되므로 클라이언트 측에서 명시적으로 추가할 필요는 없다. 
+ * 	
+ * 	SecurityContextHolder는 기본적으로 ThreadLocal기반이므로, 요청처리가 끝나면 컨텍스트가 초기화됨. 
+ * 	JWTFilter는 요청마다 SecurityContextHolder를 설정하지만, 이는 Stateless 방식이므로 유지되지는 않음 
+ * 	세션을 사용하지 않아 서부 부하감소, 보안성이 높지만..
+ * 	요청마다 JWT를 검증해야 하므로 성능 부담이 있음. 
+ * 	Redis같은 캐시 시스템을 활용해 검증 결과를 저장하여 성능을 개선하는 방법도 있음. 
  * 
  * ********* 중 요 ****************
  * 	refresh토큰 검증 및 access 재발급 로직을 JWTFilter 에서 구성하는 것보다, 
