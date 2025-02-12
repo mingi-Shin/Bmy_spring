@@ -68,7 +68,7 @@ public class SecurityConfiguration {
         	
     	// 경로별 접근 권한 설정
 		http.authorizeHttpRequests((auth) -> auth
-				.requestMatchers("/", "/error", "/member/**", "/yummi/**", "/WEB-INF/**", "/reissue").permitAll()
+				.requestMatchers("/", "/error/**", "/member/**", "/yummi/**", "/WEB-INF/**", "/reissue").permitAll()
 				.requestMatchers("/resources/**", "/css/**", "/js/**", "/images/**").permitAll()  // 정적 리소스 경로 추가
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				.requestMatchers("/my/**").hasAnyRole("ADMIN", "MANAGER")

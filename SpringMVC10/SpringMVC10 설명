@@ -3,6 +3,11 @@ SpringMVC10
 스프링부트 세션 기준 코딩 
 OAuth2 추가(완), JWT 추가(중).. 
 
+JWTFilter에서 refresh 토큰 재발급 페이지로 redirect ("/tokenExpired?error=expired") -> error/tokenExpired.jsp
+tokenExpired.jsp에서 ajax로 error값이 expired인지 확인 후, Post 요청으로 "/reissue" 호출 
+
+
+
 소셜 로그인후 별명, 프로필만 수정 가능하게 하고 바로 가입시켜야 함. 추가정보 등록은 naver에서 허락 안해줌 
 OAuth2 스키마를 따로 두어 계정마다 여러개의 소셜 로그인 연동을 가능하게 해놓은걸로 추정. 로그인할때는 아이디 혹은 소설로그인으로 로그인이 진행됨.
 

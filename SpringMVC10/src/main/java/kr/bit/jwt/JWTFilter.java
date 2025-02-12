@@ -48,7 +48,8 @@ public class JWTFilter extends OncePerRequestFilter {
 		
 		//Authorization키의 토큰에서 "Bearer " 문자열을 제거, 서버에서 생성시 부가하고있음(CustomSuccessHandler 클래스에서)
 		if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-			accessToken = authorizationHeader.substring(7); // "Bearer" 이후의 토큰만 추출 
+			//accessToken = authorizationHeader.substring(7); // "Bearer" 이후의 토큰만 추출 
+			accessToken = authorizationHeader.replaceAll("Bearer ", ""); // "Bearer " 제거 
 		}
 		
 		// 토큰이 없다면 다음 필터로 넘김 : 권한이 필요없는 요청도 있기때문에  
@@ -69,9 +70,10 @@ public class JWTFilter extends OncePerRequestFilter {
 			// 혹은 HTTP상태코드, 메시지 반환 : 모든 JSP에서 401감지 후 access재발급 Post요청하는 ajax 작성 
 		    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "access token expired");
 		    
-		    // 혹은 특정 JSP로 리디렉트 : 해당 JSP에서 401감지 후 access재발급 Post요청하는 ajax 작성 
-		    response.sendRedirect("/??");
+		    // 혹은 특정 JSP로 리다이렉트 : 해당 JSP에서 401감지 후 access재발급 Post요청하는 ajax 작성 
+		    response.sendRedirect("/tokenExpired?error=expired");
 
+		    
 		    // 혹은 여기서 바로 request.getCookies()로 refresh를 검증하여 access토큰 재발급 
 		    
 /**			
