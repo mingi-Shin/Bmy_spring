@@ -2,10 +2,12 @@ package kr.bit.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.Cookie;
@@ -20,8 +22,8 @@ import kr.bit.service.TokenService;
  * Access 토큰 재발급을 위한 Refresh을 서버측으로 전송한다.
  * 이때 서버에서는 Refresh 토큰을 받아 새로운 Access 토큰을 응답하는 코드를 작성하면 된다.
  */
-
-@RestController
+@Controller
+@ResponseBody
 public class ReissueController {
 
 	private final JWTUtil jwtUtil;
@@ -33,6 +35,16 @@ public class ReissueController {
 		this.jwtUtil = jwtUtil;
 		this.tokenService = tokenService;
 	}
+	
+	@GetMapping("/tokenExpired")
+	public String getTokenExpired(@RequestParam(value = "error", required = false) String error, Model model ) {
+		model.addAttribute("error", error);
+		
+		return "error/tokenExpired";
+	}
+	
+	//------------------------------------------------------------------------------------------
+
 	/**
 	 * 나중에 서비스와 컨트롤 분리해줘요 
 	 */
@@ -111,14 +123,6 @@ public class ReissueController {
 	}
 	
 	
-	//------------------------------------------------------------------------------------------
-	
-	@GetMapping("/tokenExpired")
-	public String getTokenExpired(@RequestParam(value = "error", required = false) String error, Model model ) {
-		model.addAttribute("error", error);
-		
-		return "error/tokenExpired";
-	}
 	
 }
 
