@@ -22,9 +22,14 @@ import kr.bit.service.TokenService;
  * Access 토큰 재발급을 위한 Refresh을 서버측으로 전송한다.
  * 이때 서버에서는 Refresh 토큰을 받아 새로운 Access 토큰을 응답하는 코드를 작성하면 된다.
  */
+<<<<<<< HEAD
+@Controller
+@ResponseBody
+=======
 
 @Controller
 @ResponseBody  
+>>>>>>> branch 'main' of https://github.com/mingi-Shin/Bmy_spring.git
 public class ReissueController {
 
 	private final JWTUtil jwtUtil;
@@ -36,6 +41,16 @@ public class ReissueController {
 		this.jwtUtil = jwtUtil;
 		this.tokenService = tokenService;
 	}
+	
+	@GetMapping("/tokenExpired")
+	public String getTokenExpired(@RequestParam(value = "error", required = false) String error, Model model ) {
+		model.addAttribute("error", error);
+		
+		return "error/tokenExpired";
+	}
+	
+	//------------------------------------------------------------------------------------------
+
 	/**
 	 * 나중에 서비스와 컨트롤 분리해줘요 
 	 */
@@ -114,14 +129,6 @@ public class ReissueController {
 	}
 	
 	
-	//------------------------------------------------------------------------------------------
-	
-	@GetMapping("/tokenExpired")
-	public String getTokenExpired(@RequestParam(value = "error", required = false) String error, Model model ) {
-		model.addAttribute("error", error);
-		
-		return "error/tokenExpired";
-	}
 	
 }
 
