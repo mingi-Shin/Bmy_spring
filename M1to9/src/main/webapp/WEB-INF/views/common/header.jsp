@@ -3,7 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>   
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>    
-<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="application" /> 
+
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/> 
 <!-- scope: application > page(기본값), 다른 페이지에서 var사용가능 -->
 
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
@@ -49,10 +50,10 @@
           <a class="nav-link" href="${contextPath}/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="${contextPath}/synchBoard/list">동기식 게시판1</a>
+          <a class="nav-link" href="${contextPath}/synchBoard/list">동기식 게시판</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="${contextPath}/asynchBoard/viewPage">비동기식 게시판2</a>
+          <a class="nav-link" href="${contextPath}/asynchBoard/viewPage">비동기식 게시판</a>
         </li>  
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">고객센터</a>
