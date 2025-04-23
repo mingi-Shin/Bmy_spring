@@ -5,7 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>    
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/> 
-<!-- scope: application > page(기본값), 다른 페이지에서 var사용가능 -->
+<!-- scope: request > page(기본값), 다른 페이지에서 ${contextPath} 사용가능 -->
 
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal }" />
@@ -19,21 +19,24 @@
 	let csrfTokenValue = "${_csrf.token}";
 	let name = "${mvo.member.memName}";
 	
-	function logout(){
+	function logout() {
 		$.ajax({
-			url:"${contextPath}/logout",
+			url: "${contextPath}/logout",
 			type: "post",
-			beforeSend: function(xhr){
-				xhr.setRequestHeader(csrfHeaderName, csrfTokenValue)
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+			}, // ← 쉼표 뒤에는 꼭 세미콜론으로 함수 끝내주기!
+			success: function() {
+				location.href = "${contextPath}/";
+				alert(name + "님 로그아웃 하셨습니다.");
 			},
-			success: function(){
-				location.href="${contextPath}/";
-				alert(name+"님 로그아웃 하셨습니다.");
-			},
-			error: function(){ alert("error");}
+			error: function() {
+				alert("error");
+			}
 		});
 	}
 
+	$("#logoutBtn").on("click", logout);
 </script>
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
@@ -105,7 +108,7 @@
 	          <ul class="dropdown-menu dropdown-menu-end">
 	            <li><a class="dropdown-item" href="${contextPath}/member/memUpdateForm.do">회원정보수정</a></li>
 	            <li><a class="dropdown-item" href="${contextPath}/member/memImageForm.do">프로필사진등록</a></li>
-	            <li><a class="dropdown-item" href="javascript:logout()">로그아웃</a></li>
+	            <li><a class="dropdown-item" role="button" id="logoutBtn" style="cursor: pointer;">로그아웃</a></li>
 	          </ul>
 	        </li>
 	      </ul>

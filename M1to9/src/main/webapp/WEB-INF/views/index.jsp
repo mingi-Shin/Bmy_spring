@@ -45,9 +45,9 @@
 				<!-- Tab panes -->
 				<div class="tab-content">
 					<div class="tab-pane container active" id="home">
-						<img alt="고용량이미지 테스트 "
+						<%-- <img alt="고용량이미지 테스트 "
 							src="${contextPath }/resources/images/HighLevelPic.jpg"
-							loading="lazy" style="display: none">
+							loading="lazy" style="display: none"> --%>
 
 					</div>
 					<div class="tab-pane container fade" id="menu1">
@@ -68,7 +68,7 @@
 
 
 
-	<!-- 회원 관련 모달창 -->
+	<!-- 회원 관련 모달창 : window.open과는 다르다. 간단한 UI를 쓸 때 사용함 -->
 	<div class="modal fade" id="myMessage" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
