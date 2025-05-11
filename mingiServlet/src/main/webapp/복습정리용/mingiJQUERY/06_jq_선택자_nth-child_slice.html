@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>nth-child, slice, children</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+  $().ready(function(){
+    // $("ul").css("background-color", "aqua");
+    $("ul>li").css("border" ,"1px solid black");
+
+    // $("ul>li:first").css("background-color", "yellow");
+    // $("ul>li:last").css("background-color", "orange");
+
+    // :even, :odd - 0번 인덱스부터 시작
+    // $("ul>li:even").css("background-color", "yellow");
+    // $("ul>li:odd").css("background-color", "orange");
+
+    // :nth-child : 자녀중에 몇번째(1부터 시작)
+    // $("ul>li:nth-child(1)").css("background-color", "yellow");
+    // $("ul>li:first-child").css("border", "3px dotted red");
+    // $("ul>li:last-child").css("border", "3px solid blue");
+
+    // 자녀 짝수번째, 자녀 홀수번째 
+    // $("ul>li:nth-child(even)").css("background-color", "yellow");
+    // $("ul>li:nth-child(odd)").css("background-color", "aqua");
+
+    // 2n : even과 동일(짝수 -n값은 인덱스 번호) 그리고 2n+1 은 odd:홀수
+    // $("ul>li:nth-child(2n)").css("background-color", "yellow");
+    // $("ul>li:nth-child(2n+1)").css("background-color", "aqua");
+
+    //===============================================================================
+    // .slice(시작인덱스) : 시작위치에서 끝까지 선택(시작 0부터)
+    // .slice(시작인덱스, 끝인덱스) : 시작위치에서 끝 이전까지 선택
+    // .slice(음수) : 뒤에서 부터
+    //---------------------------------------------------------------
+    $("ul>li").css("color", "mediumvioletred");
+    // $("ul>li").slice(1).css("background-color", "azure");
+    // $("ul>li").slice(1, 8).css("background-color", "azure");
+    // 맨뒤에서 3개 중에 한개 빼고
+    $("ul>li").slice(-3, -1).css("background-color", "azure");
+
+
+
+  });
+
+</script>
+<!-- <style>
+  .li3 {
+    color: azure;
+  }
+</style> -->
+</head>
+<body>
+  <h1>제이쿼리</h1>
+  <ul>
+    <li>menu 1</li>
+    <li>menu 2</li>
+    <li class="li3">menu 3
+      <ol>
+        <li>sub 1</li>
+        <li>sub 2</li>
+      </ol>
+    </li>
+    <li>menu 4</li>
+    <li>menu 5</li>
+    <li>menu 6</li>
+  </ul>
+  <hr>
+
+  <ul>
+    <li>menu2 - 1</li>
+    <li>menu2 - 2</li>
+    <li>menu2 - 3</li>
+  </ul>
+  <hr>
+
+
+</body>
+</html>

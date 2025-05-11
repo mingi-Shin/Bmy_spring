@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이벤트 연결</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+  /* 이벤트 연결: on, off, one 메소드
+  on(이벤트명, 콜백함수) : 이벤트 연결 (여러개 이벤트 연결을 한 번에 처리 가능)
+  off(이벤트명) : 이벤트 연결 해제
+  one(이벤트명, 콜백함수) : 한번만 실행(이벤트 연결하고 한 번 실행되면 자동해제) 
+  //bind, unbind : 버전 3.0 deprecated 됨??
+  ***********************************/
+  $(document).ready(function(){
+    $("#btn_one").css("border", "5px solid red");
+
+    //one(이벤트명, 콜백함수) : 한번만 실행
+    $("#btn_one").one("click", function(){
+      alert("한 번의 클릭 이벤트만 처리~~");
+    });
+
+    //이벤트 연결 - 클릭(click) : 마우스 클릭했을 경우
+    let count = 1;
+/*
+    //단축 이벤트 연결방식
+    $("#btn").click(function(){
+      console.log("click 메소드 - 클릭이벤트 처리" + count++);
+    });
+*/
+    $("#btn").on("click", function(){
+      console.log("on 메소드 - 클릭이벤트 처리" + count++);
+    });
+
+    // 더블클릭 이벤트 연결
+    $("#btn").dblclick(function(){
+      console.log("dblclick 메소드 - 클릭이벤트 처리" + count++);
+    });
+
+    // 이벤트 연결을 해제
+    $("#btn").off("click");
+
+    //===============================================================================
+    // mouseenter, mouseover : 해당영역에 마우스가 들어올 때 발생
+    $("#btn").on("mouseenter", function(){
+      console.log("mouseenter 메소드 - 클릭이벤트 처리" + count++);
+      console.log(this); //this : javaScript 객체(이벤트 발생 객체)
+      $(this).css("background-color", "yellow");
+
+    });
+
+    // mouseleave, mouseout : 해당영역에서 마우스가 나갈 때 발생
+    $("#btn").on("mouseleave", function(){
+      console.log("-->> mouseleave 메소드 - 클릭이벤트 처리" + count++);
+    });
+
+    //===============================================================================
+/*
+    // 자동차 이미지 위에 마우스가 올라올 때, 벗어날 때 이벤트 처리
+    $("#img1").mouseenter(function(){
+      $(this).prop("src", "image/미래자동차.avif");
+      console.log("img src속성값 : " + $("#img1").prop("src"));
+    });
+
+    $("#img1").mouseleave(function(){
+      $(this).prop("src", "image/미니쿠퍼.jpg");
+      console.log("img src속성값 : " + $(this).prop("src"));
+    });
+
+    //===============================================================================
+    // on() : 여러 개 이벤트를 한 번에 설정 가능
+    $("#img1").on({
+      mouseenter : function(){
+        $(this).prop("src", "image/미래자동차.avif");
+      },
+      mouseleave : function(){
+        $(this).prop("src", "image/미니쿠퍼.jpg");
+      }
+    });
+*/
+    //hover() : 마우스 이벤트 사용 (들어왔을 때, 벗어났을 때)
+    $("#img1").hover(
+      function(){ //마우스가 in 상태일 때 동작
+        $(this).prop("src", "image/미래자동차.avif");
+      },
+      function(){ //마우스가 out 상태일 때 동작
+        $(this).prop("src", "image/미니쿠퍼.jpg");
+      }
+    );
+
+  });
+  
+</script>
+<style>
+  #divImg {
+    border: 3px solid orange;
+    width: 500px; height: 400px;
+  }
+  #img1 {border: 3px solid gray; width: 400px;}
+  #btn {border: 2px solid blue; width: 100px; height: 100px;}
+  #btn_one {border: 2px solid red; width: 200px; height: 50px;}
+</style>
+</head>
+<body>
+  <div id="btn_one">한 번만 실행</div>
+  <div>
+    <div id="btn">안녕~~~</div>
+  </div>
+  <div id="divImg">
+    <img id="img1" src="image/미니쿠퍼.jpg" alt="자동차">
+  </div>
+
+</body>
+</html>

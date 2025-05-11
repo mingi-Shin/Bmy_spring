@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS : alert, prompt, confirm</title>
+<script>
+  // alert, prompt, confirm : window 객체에 있는 함수(메소드)
+  // alert : 브라우저 창에 메시지 표시
+  window.alert("밥먹을 시간입니다. 일어나세요 용사여.");
+  alert("window를 생략할 수 있습니다.");
+
+  // prompt : 메시지 창으로 부터 값을 입력 받을 때 사용
+  let input = prompt("[prompt] 이름을 입력하세요.", "무명"); //"무명" 은 기본값
+  alert("입력된 값 : - " + input + "-");
+
+  //prompt 통해서 입력되는 값은 모두 string 타입입니다.
+  let num = prompt("[prompt] 숫자를 입력하세요.(반드시 입력하세요)", 100);
+  alert("num 값 : " + num);
+  num = num + 111; // "100" + 111 == 100111
+  alert("num+111 결과 : " + num);
+
+  //문자열 -> 숫자 형변환 후 덧셈 연산처리 해주기
+  num = prompt("[prompt] 숫자를 입력하세요 \n (반드시 입력하셔야해요)", "100");
+  //num = window.Number(num) + 111;  // 100 + 111
+  //alert("window.Number(num) + 111 결과 : " + num);
+  //숫자로 형변환 하는 메서드 .Number
+
+  num = window.parseInt(num) + 111;
+  alert("window.parseInt(num) + 111 결과 : " + num);
+
+  //======================================================================
+  //confirm : 메시지 창을 띄우고, 사용자의 의견 묻기(확인)
+  let answer = confirm("[confirm] 데이터를 삭제 할까요?");
+  console.log("답변결과 : " + answer);
+  if (answer) {
+    alert(">>> 데이터를 삭제 처리합니다");
+  } else {
+    alert(">>> 데이터 사제를 취소합니다.");
+  }
+
+</script>
+</head>
+<body>
+  
+
+</body>
+</html>

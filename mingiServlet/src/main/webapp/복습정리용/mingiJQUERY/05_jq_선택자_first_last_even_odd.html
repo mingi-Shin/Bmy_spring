@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>first, last, even, odd</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+  $(function(){
+/*
+    // :first 첫번째 요소 찾기
+    $("ul>li").css("color", "mediumvioletred");
+    $("ul:first").css("border", "3px solid aqua"); //첫번째 ul에 적용
+
+    $("div").css("color", "brown");
+
+    // :last 마지막 요소 찾기
+    $("div:last").css("color", "green");
+
+    // :first_child 첫번째 자녀 요소 찾기
+    $("li:first").css("border", "2px dotted red");
+    $("li:first-child").css("background-color", "#FFF0F5");
+
+    // :last-child 마지막 자녀 요소 찾기
+    $("li:last").css("border", "2px dotted blue");
+    $("li:last-child").css("background-color", "#F4A460");
+
+    //===========================================================
+    // CSS 다중 설정
+    // 방법1 : 매 번 객체를 찾아서 스타일을 적용한다
+    // 객체를 찾는 행위를 3번 실행
+    $("#txt").css("background-color", "#FFF0F5");
+    $("#txt").css("font-size", "2rem"); //브라우저 기본크기 2배
+    $("#txt").css("border", "3px solid black");
+
+    // 찾는 행위를 1번만 실행
+    let $txt = $("#txt");
+    $txt.css("background-color", "#FFF0F5");
+    $txt.css("font-size", "2rem");
+    $txt.css("border", "3px solid black");
+
+    //===========================================================
+    // 방법2 : 체이닝 기법
+    $("#txt").css("background-color", "#F4A460")
+              .css("font-size", "2rem")
+              .css("border", "3px solid black");
+
+    //===========================================================
+    // 방법3 : CSS 속성을 저장한 객체 전달
+    $("#txt").css({"background-color": "#F4A460", 
+                    "font-size": "2rem",
+                    "border" : "3px solid balck"
+                  });
+*/
+    //==========================================================
+    // 선택요소 인덱스 번호 기준
+    // :even - 짝수요소, :odd - 홀수요소
+    $("div:even").css("border", "4px double black");
+    $("div:odd").css("border", "4px double red");
+
+    $("li:even").css("border", "3px dotted brown");
+    $("li:odd").css("border", "3px solid aqua");
+    $("li:eq(0)").css("background-color", "yellow");
+
+  });
+
+
+  
+</script>
+
+<style>
+  ul {
+    margin: 10px; border: 5px solid green;
+  }
+  li {
+    margin: 10px; border: 1px solid blue;
+  }
+  div {
+    margin: 10px 0; border: 1px solid red;
+  }
+
+</style>
+
+</head>
+<body>
+  <div>
+    <h3>div-h3 영역1</h3>
+  </div>
+  <div>div-영역2</div>
+  <div>div-영역3</div>
+  <div>div-영역4</div>
+
+  <span id="txt">span 텍스트 영역</span>
+
+  <ul>
+    <li>Java</li>
+    <li>Servlet JSP
+      <ul>
+        <li>Serblet</li>
+        <li>JSP
+          <ul>
+            <li>EL</li>
+            <li>JSTL</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>Spring</li>
+  </ul>
+  <hr>
+
+  <ul>
+    <li>Java - 2번째 UL</li>
+    <li>Serblet JSP - 2번째 UL</li>
+    <li>Spring - 2번째 UL</li>
+  </ul>
+
+  <div>/body 직전에 위치한 마지막 div</div>
+</body>
+</html>

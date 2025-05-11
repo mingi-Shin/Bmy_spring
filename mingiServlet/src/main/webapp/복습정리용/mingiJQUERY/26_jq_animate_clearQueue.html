@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>animate, clearQueue</title>
+    <!-- jQuery import 방식2(CDN 방식) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>    
+<script>
+  // stop() : 현재 진행중인 움직임 중지
+  // clearQueue() : 예정된(queue) 작업 삭제(취소)
+  $(function(){
+    $("#run").click(function(){
+      $("#punch").animate({"marginLeft": "1000"}, 3000)
+              .animate({"marginLeft": "0"}, 3000)
+    });
+
+    $("#stop").click(function(){
+      $("#punch").stop();
+    });
+
+    //두번 연속 stop처리
+    $("#stop-stop").click(function(){
+      $("h1").stop().stop();
+    });
+
+    //clearQueue : 큐에 저장된 작업 삭제
+    $("clearQueue").click(function(){
+      // $("h1").stop().clearQueue(); //현재 동작 중단 + 큐내용 삭제
+      $("h1").clearQueue().stop();
+    });
+  });
+
+
+    
+</script>
+<style>
+    h1 { margin-left: 0px; }
+    #run { font-size: large;}
+    #body { width: 350px; height: 450px;}
+    #punch {width: 350px; height: 400px;}
+</style>    
+</head>
+<body>
+  <button id="run">고무고무 총!</button>
+  <button id="stop">어이, 야메로!</button>
+  <button id="stop-stop">어이, 야메로! 야메로!!!</button>
+  <button id="clearQueueStop">clearQueue + stop</button>
+    <hr>
+    <h1>jQuery</h1>
+    <h2>루피</h2>
+    <div>
+      <img src="image/루피할부지.jpeg" alt="준비" id="body">
+      <img src="image/루피 펀치.jpeg" alt="발사" id="punch">
+    </div>
+    
+    
+    
+</body>
+</html>

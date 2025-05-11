@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>키보드: keydown, keypress, keyup</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+  /* 키보드 관련 이벤트
+  발생순서 : keydown -> keypress -> keyup
+  keyup : 한 번만 발생
+  keydown, keypress : 키가 눌린 상태에서 계속 발생
+  
+  *******************************************/
+  $(function(){
+    $("#pwd").keydown(function(){
+      console.log("keydown 이벤트 발생 ~~");
+    });
+    $("#pwd").keypress(function(){
+      console.log("keypress 이벤트 발생 ~~");
+    });
+    $("#pwd").keyup(function(){
+      console.log("keyup 이벤트 발생 ~~");
+    });
+
+    // 비밀번호 확인란에 키가 입력되면 비밀번호 비교후 결과를 출력
+    
+    // 방법1  $("#pwd2")
+    // $("#pwd2").on("keyup", function(){
+    //   if ($("#pwd").val() != $("#pwd2").val()) {
+    //   $("#myDiv").text("비밀번호가 다릅니다. 다시 한번 확인해 주십시오.");
+    //   $("#pwd2").css("background-color", "pink");
+    // } else {
+    //   $("#myDiv").text("비밀번호가 정상입니다.");
+    //   $("#pwd2").css("background-color", "white");
+    // }
+    // });
+
+    // 방법2  $(".pwdtwo")
+    $(".pwdtwo").on("keyup", function(){
+      if ($("#pwd").val() != $("#pwd2").val()) {
+      $("#myDiv").text("비밀번호가 다릅니다. 다시 한번 확인해 주십시오.");
+      $("#pwd2").css("background-color", "pink");
+    } else {
+      $("#myDiv").text("비밀번호가 정상입니다.");
+      $("#pwd2").css("background-color", "white");
+    }
+    });
+
+    
+
+  });
+
+
+  
+</script>
+</head>
+<body>
+  <p>
+    비밀번호 : <input type="password" name="pwd" id="pwd" class="pwdtwo" "비밀번호를 입력해 주세요.">
+  </p>
+  <p>
+    비밀번호 확인 : <input type="password" name="pwd2" id="pwd2" class="pwdtwo">
+  </p>
+  <div id="myDiv">암호를 입력하세요</div>
+
+  
+
+</body>
+</html>

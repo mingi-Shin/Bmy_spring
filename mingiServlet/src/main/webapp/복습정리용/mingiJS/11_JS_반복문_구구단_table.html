@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS 반복문 구구단 table</title>
+<script>
+  let dan = prompt ("출력할 구구단은? ", 9);
+  dan = parseInt(dan);
+  document.write("<table border>");
+  document.write("<tr>");
+  document.write("<th>" + dan + "단</th>");
+  document.write("</tr>");
+
+  for (let i = 1; i <= 9; i++){
+    document.write("<tr>");
+    document.write("<td>");
+    document.write(dan + " * " + i + " = " +  (dan * i));
+    document.write("</td>");
+    document.write("</tr>");
+  }
+  document.write("</tabe>");
+
+  document.write("<hr><hr>");
+//=============================================================================
+  
+let htmlTag = "";
+  htmlTag += "<table border>";
+  htmlTag += "<tr>";
+  htmlTag += "<th>" + dan + "단</th>";
+  htmlTag += "</tr>";
+
+  for (let i = 1; i <= 9; i++){
+    htmlTag += "<tr><td>";
+    htmlTag += dan + " * " + i + " = " +  (dan * i);
+    htmlTag += "</tr></td>";
+  }
+  document.write("</tabe>");
+
+  document.write(htmlTag);
+  document.write("<hr><hr>");
+
+
+
+</script>
+</head>
+<body>
+  <h1>구구단</h1>
+  
+
+
+</body>
+</html>

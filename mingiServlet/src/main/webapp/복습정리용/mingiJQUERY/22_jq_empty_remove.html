@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>empty, remove</title>
+    <!-- jQuery import 방식2(CDN 방식) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>    
+<script>
+    //empty() : 기준(선택) 요소의 자녀태그(내용) 모두 삭제
+    //remove() : 기준(선택) 요소 삭제
+    $().ready(function(){
+        //empty() : 기준(선택) 요소의 자녀태그(내용) 모두 삭제
+        $("#empty").click(function(){
+            $("#myDiv").empty();
+        });
+        
+        //remove() : 기준(선택) 요소 삭제
+        $("#remove").click(function(){
+            $("#myDiv").remove();
+        });
+        
+        //기준(선택)요소 중 일부만 선택해서 삭제
+        $("#removeSelect").click(function(){
+            //$(".remove").remove(); //class="remove" 찾아서 삭제
+            //$("#myDiv > p").remove(); //#myDiv 자녀태그 중 p 태그 삭제
+            //$("#myDiv > .remove").remove();//#myDiv 자녀태그 중 remove 클래스명 삭제
+            //$("#myDiv > p.remove").remove(); 
+            $("#myDiv > p").remove(".remove"); //파라미터 값으로 선택자 사용
+        });
+    });
+</script>
+<style>
+    #myDiv { border: 2px solid blue; height: 200px; }
+    p { background-color: orange; }
+</style>    
+</head>    
+<body>
+    <button id="empty">자녀요소 전체삭제(empty)</button>
+    <button id="remove">선택요소 삭제(remove)</button>
+    <button id="removeSelect">선택해서 삭제</button>
+    <hr>
+    <div id="myDiv">
+        <p>Java</p>
+        <p class="remove">HTML(class="remove")</p>
+        <p class="remove">CSS(class="remove")</p>
+        <div>div 태그1</div>
+        <div class="remove">div 태그2(class="remove")</div>
+    </div>
+    <hr>
+    <h2>div 다음에 있는 h2태그</h2>
+    <p class="remove">CSS(class="remove")</p>
+
+    
+    
+    
+</body>
+</html>
+
+
+
+
+

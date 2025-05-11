@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>선택자 has, not</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+  // :has(선택자) : 선택자에 해당하는 요소 선택
+  // :not(선택자) : 선택자에 해당하는 요소가 아닌 것
+  $(document).ready(function(){
+    // :contains() : 문자열의 존재 여부
+    $("ol>li:contains('menu 3')").css("border", "2px solid red");
+
+    // :has(선택자) : 선택자에 해당하는 요소 선택
+    $("ol>li").has('strong').css("border", "2px solid black"); //has는 태그를 검색
+    $("ol>li:contains('strong')").css("border", "2px dotted blue");
+
+    //-----------------------------------------
+    $("ol>li:not(:eq(1))").css("background-color", "yellow");
+    $("ol>li").not(":eq(1)").css("width", "50%")
+              .css("font-size", "1.5em");
+    
+
+    
+  });
+  
+</script>
+</head>
+<body>
+  <h1>목차</h1>
+  <ol>
+    <li>menu 1 - strong</li>
+    <li>menu <em>2번째</em></li>
+    <li>menu 3</li>
+    <li><strong>menu 4</strong>
+      <ul>
+        <li>menu 4-1</li>
+        <li>menu 4-2 <a href="#">링크연결</a></li>
+      </ul>
+    </li>
+  </ol>
+  
+  <ul>
+    <li>번호 1</li>
+    <li>번호 2</li>
+    <li>번호 3</li>
+  </ul>
+
+</body>
+</html>

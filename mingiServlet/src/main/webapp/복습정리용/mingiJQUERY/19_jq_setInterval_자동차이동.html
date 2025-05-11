@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>자동차이동</title>
+    <!-- jQuery import 방식2(CDN 방식) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>    
+<script>
+    //자동차 이미지를 타이머를 이용해서 우측이로 이동
+    //일정시간마다 좌측여백을 증가시키기
+    $(document).ready(function(){
+        let timer = "없음";
+        let position = 0;
+        $("#moveCar").click(function(){
+            console.log(">> 자동차 이동 버튼 클릭~~~");
+            if (timer == "없음") {
+                timer = setInterval(function(){
+                    position += 10;
+                    $("#car").css("margin-left", position);
+                }, 20);
+            }
+        });
+        
+        $("#car").click(function(){
+            clearInterval(timer);
+            timer = "없음";
+        });
+    });
+</script>
+<style>
+    /* #car { margin-left: 50px; } */
+</style>    
+</head>
+<body>
+    <button id="moveCar">자동차 이동</button>
+    <hr>
+    <img src="images/car.jpg" width="150" id="car" alt="자동차">
+    
+    
+    
+</body>
+</html>

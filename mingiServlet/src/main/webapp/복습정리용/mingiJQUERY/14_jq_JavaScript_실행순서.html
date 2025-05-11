@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>실행순서</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+  //JavaScript 실행 순서
+  let order = 1;
+  console.log(order++ + " : head script 시작 - " + $("#test").text() + "::");
+  
+  $(document).ready(function(){
+    console.log(order++ + " : jQuery ready 시작 - " + $("#test").text() + "::");
+    call();
+      
+    $("#btn").click(function(){
+        console.log(order++ + " : btn click 시작 - " + $("#test").text() + "::");
+        call();
+        console.log(order++ + " : btn click 끝 - " + $("#test").text() + "::");
+    });
+      
+    console.log(order++ + " : jQuery ready 끝 - " + $("#test").text() + "::");
+  });
+  
+  function call() {
+      console.log(order++ + " : function call() 내부 - " + $("#test").text() + "::");
+  }
+  call();
+    
+  console.log(order++ + " : head script 끝 - " + $("#test").text() + "::");
+</script>
+</head>
+<body>
+<script>
+  console.log(order++ + " : body script 시작 : " + $("#test").text());
+
+</script>
+
+
+  <h2>JavaScript 실행 순서</h2>
+  <button onclick="call()">call() function 호출(HTML)</button>
+  <button id="btn">call() function 호출(jQuery 이벤트 연결)</button>
+
+  <p id="test">이게 보이면 DOM 사용 가능::</p>
+
+<script>
+console.log(order++ + " : body script 끝 : " + $("#test").text());  
+</script>
+</body>
+</html>

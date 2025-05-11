@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS : if, switch</title>
+<script>
+  // if (조건식) {} -> 자바와 똑같다
+  if (true) {
+    document.write("if문 조건식 결과가 true인 경우 출력", "<br>");
+  } 
+
+  let bool = confirm("<확인> 선택 - true 출력", "<취소> 선택 = false 출력");
+  if (bool){
+    document.write("<확인> 선택 - true 출력", "<br>");
+  } else {
+    document.write("<취소> 선택 = false 출력", "<br>");
+  }
+  document.write("<hr>");
+
+  //========================================================================
+  /*
+  점수를 입력받고 점수에 따라 평가하고 결과를 화면에 표시해라
+  90 이상 : A
+  80 이상 : B
+  70 이상 : C
+  70 미만 : D
+
+  */
+  
+  let score = prompt("점수를 입력해주세요(0~100)");
+  alert("입력된 값: " + score);
+
+  let result = "평가안됨";
+  if (score == null || score.trim().length == 0 || isNaN(score)) {
+    result = "처리안함 - 숫자가 아님";
+  } else if (score < 0 || score > 100) {
+    result = "정상범위(0~100) 아님";
+  } else if (score >= 90) {
+    result = "A";
+  } else if (score >= 80) {
+    result = "B";
+  } else if (score >= 70) {
+    result = "C";
+  } else {
+    result = "D";
+  }
+
+  document.write("<h3>점수 : " + score + ", 평가결과 : " + result + "</h3>", "<br>");
+
+  //========================================================================
+  // switch ~ case 문
+
+  //방법1 
+  let divScore = Math.trunc(score/10); // 85 / 10 --> 8.5 --> 8
+  //방법2
+  divScore = parseInt(score/10);
+
+  console.log("score : " + score + ", divScore : "+ divScore);
+  document.write("score : " + score + ", divScore : " + divScore);
+
+  switch (divScore){
+    case 10:
+      result = "A";
+      break;
+    case 9: 
+      result = "A";
+      break;
+    case 8:
+      result = "B";
+      break;
+    case 7:
+      result = "C";
+      break;
+    case 6:
+      result = "D";
+      break;
+  }
+  document.write("<h3>점수 : " + score + ", 평가결과 : " + result + "</h3>", "<br>");
+  document.write("<hr>");
+
+//========================================================================
+  //주의! switch case문은 엄격한 비교처리 (타입까지 일치여부 확인)
+  document.write("<h3> (주의) switch case문은 엄격한 비교처리 (타입까지 일치여부 확인) </3>");
+  let data = 100;
+
+  switch (data){
+    case 100:
+      alert("data는 숫자타입 100입니다");
+      break;
+    case "100":
+      alert("data는 문자타입 '100'입니다");
+      break;
+  }
+
+  document.write(">>> head JavaScript 끝 -------", "<br>");
+
+
+  
+</script>
+</head>
+<body>
+  
+
+</body>
+</html>

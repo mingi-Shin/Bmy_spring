@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>text(), html()</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>    
+<script>
+    $(function(){
+        //p 태그 전체 다루기 - each() 메소드 사용
+/*        
+        $("p").each(function(idx, element){
+            console.log("idx: " + idx + ", element: " + element);
+            console.log("this === element : " + (this === element) );
+            console.log("$(this).text() : " + $(this).text());
+            console.log("$(this).html() : " + $(this).html());
+            
+            //id 속성 설정
+            //$(element).prop("id", "para-" + idx);
+            $(this).prop("id", "para-" + idx);
+        }); 
+*/
+        let $ptags = $("p");
+        for (let i = 0; i < $ptags.length; i++) {
+            $($ptags[i]).prop("id", "para-" + i);
+        }
+        
+        $("#para-0").css("background-color", "yellow");
+        
+        //---------------------
+        //text(), html() 메소드 사용 : 데이터 읽기
+        $("#btn1").click(function(){
+            let text = $("#para-0").text();
+            console.log("id가 para-0인 태그의 text() : " + text);
+            
+            let html = $("#para-0").html();
+            console.log("id가 para-0인 태그의 html() : " + html);
+        });
+        
+        //text(), html() 메소드 사용 : 데이터 쓰기(설정)
+        $("#btn2").click(function(){
+            $("#para-1").text("text() : 안녕하세요"); //text 값 설정
+            $("#para-2").html("html() : 안녕하세요"); //html 값 설정
+            
+            $("#para-3").text("<b>text(): 안녕하세요</b>"); //text 값 설정
+            $("#para-4").html("<b>html(): 안녕하세요</b>"); //html 값 설정
+        });
+        
+    });
+</script>
+<style>
+/*    
+    #para-0 { background-color: yellow; }
+    #para-1 { background-color: green; }
+*/
+</style>
+</head>
+<body>
+    <h2>text(), html() 메소드 알아보기</h2>
+    
+    <p><strong>1번째 p태그</strong></p>
+    <p>2번째 p태그</p>
+    <p>3번째 p태그</p>
+    <p>4번째 p태그</p>
+    <p>5번째 p태그</p>
+    
+    <button id="btn1">text(), html() 읽기</button>
+    <button id="btn2">text(), html() 쓰기</button>
+    
+    
+</body>
+</html>

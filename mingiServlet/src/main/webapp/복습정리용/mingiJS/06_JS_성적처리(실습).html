@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>성적처리</title>
+<script>
+  /*
+  한 사람의 성적 데이터를 받아서 결과 출력
+  입력값 : 이름, 국어, 영어, 수학 점수 (화면입력 : prompt)
+  계산처리 : 총점, 평균
+  결과출력 : 브라우저 화면에 결과를 출력해봐요
+  */
+
+  alert("성적처리 프로그램을 실행합니다.");
+  let name = prompt("이름을 입력해 주세요 : ", "아무개");
+  alert("입력된 값 : " + name);
+  let kor = prompt("국어 성적을 입력해 주세요.", "0");
+  alert("입력된 값 : " + kor);
+  let eng = prompt("영어 성적을 입력해 주세요.", "0");
+  alert("입력된 값 : " + eng);
+  let math = prompt("수학 성적을 입력해 주세요.", "0");
+  alert("입력된 값 : " + math);
+  alert("입력된 성적의 총점과 평균을 계산중입니다...");
+  let sum = Number(kor) + Number(eng) + Number(math);
+  let numberAvg = Number(sum)/3;
+  let avg = numberAvg.toFixed(2);
+  alert("총점 : " + sum);
+  alert("평균 : " + avg)
+
+  document.write ("이름 : " + name + "<br>");
+  document.write ("국어점수 : " + kor + "<br>");
+  document.write ("영어점수 : " + eng + "<br>");
+  document.write ("수학점수 : " + math + "<br>");
+  document.write ("총점 : " + sum + "<br>");
+  document.write ("평균 : " + avg + "<br>");
+
+  90.3333333 / 100.0
+  
+</script>
+</head>
+<body>
+  
+
+</body>
+</html>

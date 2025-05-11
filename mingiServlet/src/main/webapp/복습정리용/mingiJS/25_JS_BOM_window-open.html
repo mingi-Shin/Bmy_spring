@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS: BOM window</title>
+<script>
+  /* BOM(Browser Object Model)
+  window 객체의 메소드(function)
+  open() : 새 창을 만들고 열때 사용
+  open(URL, 명칭, 출력형태 옵션)
+  <출력형태 옵션>
+  width, height, top, left : 크기, 위치지정(픽셀)
+  location : 주소입력창 유무 (yes, no, 1, 0)
+  menubar : 메뉴바 유무 (yes, no, 1, 0)
+  resizable : 크기조정 허용 여부 (yes, no, 1, 0)
+  status : 상태표시줄 유무 (yes, no, 1, 0)
+  toolbar : 툴바 유무 (yes, no, 1, 0)
+  scrollbar : 스크롤바 유무(yes, no, 1, 0)
+  *******************************************************/
+
+  function windowOpen(){
+    alert('windowOpen() 실행~~~');
+    let pop = window.open('https://naver.com', 'pop1', 
+                          'width = 400, height = 250, top = 100, left = 150');
+  }
+  function windowOpen(){
+    alert('windowOpen() 실행!!!');
+    let pop = window.open('https://naver.com', 'pop1', 
+                          'width = 400, height = 250, top = 100, left = 150, menubar = 1, status = 1, toolbar = 1');
+  }
+  function windowOpen_coffee(){
+    alert("windowOpen_coffee() 실행");
+    let coffee = window.open("25_JS_BOM_window-clsoe.html", "coffee", 
+                          'width = 400, height = 250, top = 100, left = 150, menubar = 1, status = 1, toolbar = 1');
+  }
+
+</script>
+</head>
+<body>
+  <h2>BOM window.open()</h2>
+  <button onclick="windowOpen()">Naver 창 열기</button>
+  <button onclick="windowOpen_coffee()">커피한잔</button>
+
+
+</body>
+</html>

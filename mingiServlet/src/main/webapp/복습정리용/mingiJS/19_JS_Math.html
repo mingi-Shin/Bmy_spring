@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS: Math</title>
+<script>
+  /* Math 내장객체
+  Math.PI : 파이값(3.141592..)
+  Math.abs(숫자) : 절대값
+  Math.max(숫자1, 숫자2, ..., 숫자n) : 최대값 선택(반환)
+  Math.min(숫자1, 숫자2, ..., 숫자n) : 최tho값 선택(반환)
+  Math.pow(숫자, 제곱값) : 숫자의 거듭제곱 값 반환
+  Math.random() : 0~1 사이에 실수형 난수 반환(0부터 1미만)
+  Math.ceil(숫자) : 소수점 첫째자리에서 올림 (큰숫자 선택)
+  Math.floor(숫자) : 정수 데이터 반환(작은 숫자 선택)
+  Math.trunc(숫자) : 정수 데이터 반환(소수점 이하 버림)
+  Math.round(숫자) : 정수 데이터 반환(소수점 이하 반올림)
+  ********************************************************/
+  document.write("Math.PI : " + Math.PI, "<br>");
+
+  //최대값 구하기
+  let maxNum = Math.max(10, 5, 6, 8, 100);
+  document.write("Math.max(10, 5, 6, 8, 100) : " + maxNum, "<br>");
+
+  //최tho값 구하기
+  let minNum = Math.min(10, 5, 6, 8, 100);
+  document.write("Math.min(10, 5, 6, 8, 100) : " + minNum, "<br>");
+
+  let num1 = 2.5234;
+  let num2 = 2.0234;
+  let num3 = -2.9999999999;
+  //반올림
+  let roundNum1 = Math.round(num1);
+  let roundNum2 = Math.round(num2);
+  document.write(roundNum1 +"-round-"+ roundNum2, "<br>");
+  //큰 숫자를 가짐
+  let ceilNum1 = Math.ceil(num1);
+  let ceilNum2 = Math.ceil(num2);
+  document.write(ceilNum1 +"-ceil-"+ ceilNum2, "<br>");
+  //작은 숫자를 가짐
+  let floorNum1 = Math.floor(num1);
+  let floorNum2 = Math.floor(num2);
+  let floorNum3 = Math.floor(num3);
+  document.write(floorNum1 +"-floor-"+ floorNum2 + "-floorNum3: " + floorNum3, "<br>");
+  //tho수점 버림 : Math.trunc();
+
+  //Math.random() : 0부터 1미만 실수형 난수 생성(반환) -> 0.0 <= ran < 1
+  let randomNum = Math.random();
+  document.write("randomNum() : " + randomNum, "<br>");
+
+  for (let i = 0; i < 100; i++){
+    randomNum = Math.trunc(Math.random() * 10);
+    document.write("randomNum() : " + randomNum, "<br>");
+  } 
+  //0부터 9까지의 난수 생성 (정수)
+
+
+
+</script>
+</head>
+<body>
+  
+
+</body>
+</html>

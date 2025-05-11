@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS논리_삼항 연산자</title>
+<script>
+  //논리연산자 : &&(AND), ||(OR), !(NOT)
+  document.write("<h3>논리연산자 : &&(AND), ||(OR), !(NOT)</h3>");
+
+  document.write("20>10 && 300>200 : " + (20>10 && 300>200), "<br>");
+  document.write("20>10 || 300<200 : " + (20>10 || 300<200), "<br>");
+  
+  document.write("!true : " + !true, "<br>");
+  document.write("!false : " + !false, "<br>");
+
+  document.write("!(20>10 && 300>200) : " + !(20>10 && 300>200), "<br>");
+  
+  document.write("<hr>");
+  
+  //삼항연산자 : 조건식 ? 실행문1 : 실행문2;
+  document.write("<h3>삼항연산자 : 조건식 ? 실행문1 : 실행문2</h3>");
+  let a = 500;
+  let b = 300;
+  document.write("a : " + a + ", b : " + b, "<br>");
+  let result = (a > b) ? "a > b" : "a <= b";
+  document.write("결과값 : " + result, "<br>");
+  document.write("-----------<br>");
+
+  if (a>b) {
+    document.write("결과값 : a > b");
+  } else {
+    document.write("결과값 : a < b");
+  }
+
+
+
+</script>
+</head>
+<body>
+  
+
+</body>
+</html>

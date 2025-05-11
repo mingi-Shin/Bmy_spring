@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS 익명함수</title>
+<script>
+  // 익명함수 : 함수 선언시에 이름이 정의되지 않은 함수
+  // function() {}
+  // function(매개변수) {}
+  // 익명함수는 이름이 없기 때문에 변수에 저장해서 호출한다.
+  //------------------------------------------------------------------------
+  
+  var fn = function(param) {
+    document.write("익명함수 ~~ param : " + param, "<br>");
+  };
+  fn(); //변수에 저장된 함수 호출 사용;
+  fn("홍길동!!");
+
+  //========================================================================
+  // 자동실행 함수
+  // 매개변수 없는 형태 : (function(){})();
+  // 매개변수 있는 형태 : (function(){})(매개변수값);
+  document.write("<h3>자동실행 함수</h3>");
+  (function(){
+    document.write(">>> 자동실행함수 실행 - ", "<br>");
+  }) ();
+
+  (function(param){
+    document.write(">>> 자동실행함수 실행 - param : " + param, "<br>");
+  }) ("신민기!");
+  document.write("<hr><hr>");
+
+  //========================================================================
+  // 콜백(callback) 함수 : 함수의 파라미터 값으로 전달한 함수
+  document.write("<h3>콜백 callback 함수</h3>");
+
+  function showMessage(msg){
+    document.write("<p>" + msg + "<p>");
+  }
+
+  //----------------------------------------------
+  var fn2 = function(param){
+    param("안녕 나는 졸려함수야"); //전달 받은 함수 호출
+  };
+  fn2(showMessage); // 파라미터 값으로 showMessage 함수를 전달하는 것
+  // fn2의 파라미터 param함수가 showmessage의 매개변수로 들어감
+  
+  //showMessage 함수가 fn2 함수의 인자로 전달되고, fn2 함수 내에서 param으로 받아진 showMessage 함수가 호출됩니다.
+  //결과적으로, "안녕 나는 졸려함수야"라는 문자열이 showMessage 함수로 전달되고 웹 페이지에 출력됩니다.
+
+
+  
+  //----------------------------------------------
+  fn2(function(msg){
+    document.write("<h3>" + msg + "</h3>");
+  });
+
+
+</script>
+</head>
+<body>
+  
+
+</body>
+</html>

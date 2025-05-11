@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>slideDown, slideUp, slideToggle</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+  //slideDown() : 아래쪽으로 나타타기
+  //slideUp() : 위쪽으로 사라지기
+  //slideToggle() : 아래쪽으로 나타나기 / 위쪽으로 사라지기 반복
+
+  $().ready(function(){
+    $("p:eq(0)").click(function(){
+      $("#myDiv").slideToggle(2000);
+    });
+
+    //---------------------------------------------------------------------------
+    // 두번째 p태그 click 되면 
+    // 두번째 p태그 사라지고, 세번째 p태그 나타나게 처리
+    $("#p2").click(function(){
+      // p3 나타난 후 p2 사라지기 
+      $("#p3").slideDown("slow", function(){
+        $("#p2").slideUp("slow");
+      });
+    });
+
+    // 세번째 p태그 click되면
+    // 세번째 p태그 사라지고, 두번째 p태그 나타나게 처리
+    $("#p3").click(function(){
+      // p3 사라진 후 p2 나타나기 
+      $("#p3").slideUp("slow", function(){
+        $("#p2").slideDown(2000);
+      });
+    });
+
+  });
+</script>
+<style>
+  p {border: 2px solid greenyellow;}
+  #myDiv {border: 2px solid green;}
+  #p2, #p3 {height: 50px; }
+  #p2 {border-color: blueviolet;}
+  #p3 {border-color: red; display: none;}
+
+</style>
+</head>
+<body>
+  <p>첫번째 : 자동차보이기(slideDown), 자동차 숨기기(slideUp)</p>
+
+  <p id="p2">두번째 p태그 </p>
+  <p id="p3">세번째 p태그 </p>
+  <p>네번째 p태그 </p>
+
+  <hr>
+  <div id="myDiv">
+    <img src="image/미래자동차.avif" alt="자동차사진">
+  </div>
+
+</body>
+</html>

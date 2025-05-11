@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>while, do-while</title>
+<script>
+  //while (조건식) {}
+  //do {} while (조건식);
+  //-----------------------------
+  //while 문으로 1~10까지의 합 구하기
+  let sum = 0;
+  let num = 1;
+  while (num <= 10) {
+    document.write(num, "<br>");
+    if (num == 10) {
+      document.write("num의 값이 최대에 도달했습니다.", "<br>");
+    }
+    sum += num;
+    document.write("1부터"+ num + "까지의 합계는 " + sum + "입니다", "<br>");
+    num++
+  }
+  document.write("<hr><hr>");
+
+  //================================================================================
+  let tot = 0;
+  let shu = 0;
+  while (shu <= 10) {
+    document.write(shu, "<br>");
+    if (shu == 10) {
+      document.write("shu의 값이 최대에 도달했습니다.", "<br>");
+    }
+    tot += shu;
+    document.write(shu + "까지의 합계는 " + tot + "입니다", "<br>");
+    shu++
+  }
+  document.write("<hr><hr>");
+
+  //================================================================================
+
+document.write("<h3>do ~ while 문</h3>");
+//(실습) do ~while 문으로 1~10까지의 합 구하기
+sum = 0;
+num = 1;
+do {
+  document.write(num, "<br>");
+  sum += num;
+  num++
+} while (num <= 10);
+document.write("sum : " + sum);
+
+document.write("<hr><hr>");
+  //===============================================================================
+  // continue, break
+  document.write("<h3>continue, break 적용 </h3>");
+  outFor : for (let outer = 1; outer <=5; outer++) {
+    document.write("outer : " + outer + "---------------", "<br>");
+
+    if (outer == 2) {
+      continue; //다음 반복 진행
+    }
+
+    for (let inner = 1; inner <= 5; inner++){
+      if (outer == 3 && inner ==3) break; //현재 진행중인 반복문 종료
+      if (outer == 4 && inner ==3) break outFor; //outFor 반복문을 종료
+      document.write("outer : " + outer + ", inner : " + inner, "<br>");
+    } 
+
+  }
+
+  
+</script>
+</head>
+<body>
+  
+
+</body>
+</html>

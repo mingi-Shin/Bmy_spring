@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS 로또만들기</title>
+  <style>
+    /* 공(ball)  공통적용스타일 */
+    .ball {
+      border: 1px solid black;
+      width: 100px;
+      height: 100px;     
+      display: inline-block;
+      border-radius: 50%;
+      
+      /* 글자 크기 조정, 중앙정렬 */
+      font-size: 300%;
+      text-align: center;
+      line-height: 100px; /* height과 같게 */
+    }
+    .ball0 {
+background-color: red;
+    }
+    .ball1 {
+background-color: aqua;
+    }
+    .ball2 {
+background-color: bisque;
+    }
+    .ball3 {
+background-color: cornflowerblue;
+    }
+    .ball4 {
+background-color: brown;
+    }
+    .ball5 {
+background-color: chartreuse;
+    }
+  </style>
+<script>
+
+  document.write("<h3>JS 사용 로또번호 만들기</h3>");
+
+  //1. 로또번호 저장할 배열을 만들고
+  let lotto = new Array();
+
+  //2. 1~45 숫자중 선택해서 6개 숫자를 배열에 저장(중복값 없이)
+  while (lotto.length < 6){
+    let lottoNum = Math.trunc((Math.random()*45))+1;
+    console.log("lottoNum : " + lottoNum);
+
+  //   중복값 여부 확인 후 중복이면 입력하지 않고 다시 작업-------------------
+        
+    //방법1. 내가 직접 만든 메서드 쓰기
+  //   if (!isDuplicate(lottoNum)){ // 중복이냐 아니냐?
+  //     lotto[lotto.length] = lottoNum;
+  //   } 
+    
+    // 방법2. Array 의 includes 메서드 쓰기
+    if (lotto.includes(lottoNum)) continue; //중복이면 다시 작업
+    lotto[lotto.length] = lottoNum;
+  }
+  
+  console.log(lotto);
+
+  //2.5 발표 전에 보기 좋게 로또번호 오름차순 정렬하기.
+  lotto.sort(); //문자열 기준으로 정렬 처리됨.
+
+  lotto.sort(function(a, b){
+    return a - b; //오름차순 
+    // return  b - a; //내림차순
+  });
+
+  //3. 배열 데이터를 화면에 출력
+  for (let i = 0; i < 6; i++){
+    document.write('<div class="ball ball' + i + '">' + lotto[i] + '</div>');
+  }
+
+  document.write("<hr><hr>");
+
+  //중복 여부 확인 함수
+  function isDuplicate(arr, value){
+    let result = false;
+    console.log("function value : " + value);
+
+    for (let lottoValue of arr) {
+      if (lottoValue == value){
+        result = true;
+        break;
+      }
+    }
+    return result;
+  }
+</script>
+</head>
+<body>
+  잇히
+</body>
+</html>

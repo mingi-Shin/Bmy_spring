@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>jq 선택자 id, class, child</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<style>
+  .bg-aqua {
+    background-color: aqua;
+  }
+  .bg-yellow {
+    background-color: yellow;
+  }
+
+  .red {
+    color: red;
+  }
+  .green {
+    color: green;
+  }
+  .blue {
+    color: blue;
+  }
+
+  .horizontal {
+    float: left;
+    list-style: none;
+    margin: 10px;
+  }
+  .clear {
+    clear: both;
+  }
+  .sizeUp {
+    font-size: 1.5em;
+  }
+  .bold {
+    font-weight: bold;
+  }
+
+  li {
+    margin: 5px;
+  }
+</style>
+<script>
+  //jQuery 사용해서 문서가 준비된 후 
+  $(document).ready(function(){
+    // 아이디 속성명으로 찾고, 클래스 속성명 green을 부여
+    // 클래스 속성을 미리 설정해놓고, 객체들에 클래스를 부여
+    $("#jsp").addClass("green");
+
+    // 클래스명 (.)으로 선택하고, 클래스 속성명 red를 추가로 부여
+    $(".js").addClass("red");
+
+    // 태그명으로 요소(element) 선택하기
+    // li 태그를 찾고 배경색 지정 (addClass보다 우선권을 갖는다.)
+    $("li").css("background-color", "antiquewhite");
+
+    // 태그명으로 찾고, 클래스명 추가
+    $("li").addClass("bg-aqua");
+
+    //---------------------------------------------------------------------------------
+    //자식, 자손 태그 컨트롤 
+    //자식(자녀) 선택(>) : 하위 자녀(child) 요소 선택
+    $("ul>li").addClass("horizontal");
+    $("hr").addClass("clear");
+
+    //자손 선택자(빈칸) : 부모선택자 + 빈칸 + 찾을태그
+    // $("div>p") : 직계 p만 해당
+    // $("div p") : div아래 모든 p에 해당
+    $("div p").addClass("sizeUp");
+
+    $("div > p").addClass("bold");
+    $("div > p").css("border", "5px dotted pink");
+
+    $("div > div p").css("border", "3px solid blue")
+
+  });
+  
+</script>
+</head>
+<body>
+  <ul>
+    <li class="red sizeUP">Java</li>
+    <li>HTML5 &amp; CSS3</li>
+    <li class="js">JavaScript &amp; jQuery</li>
+    <li id="jsp">Servlet &amp; JSP</li>
+  </ul>
+  <hr>
+  <ol>
+    <li>Java</li>
+    <li>HTML5 &amp; CSS3</li>
+    <li class="js">JavaScript &amp; jQuery</li>
+    <li>Servlet &amp; JSP</li>
+  </ol>
+  <hr>
+  <div>
+    <p>div-p : p태그</p>
+    <div>
+      <span>
+        <p>div-div-span-p : p태그</p>
+      </span>
+      <span>div-div-span 태그</span>
+    </div>
+    <div>
+      <p>div-div-p 태그</p>
+    </div>
+    <p>div-p : p태그</p>
+  </div>
+
+</body>
+</html>

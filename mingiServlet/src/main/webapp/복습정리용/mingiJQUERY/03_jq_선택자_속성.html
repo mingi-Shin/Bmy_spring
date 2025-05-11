@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>선택자 속성</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+  /* 요소(element)의 속성, 속성값으로 찾기
+  태그명[속성명] : 속성이 있는 요소
+  태그명[속성명=값] : 속성값이 일치하는 요소
+  태그명[속성명!=값] : 속성값이 일치하지 않는 요소
+  태그명[속성명^=값] : 속성값으로 시작하는 요소
+  태그명[속성명$=값] : 속성값으로 끝나는 요소
+  태그명[속성명*=값] : 속성값을 포함하는 요소
+  *****************************************/
+
+  $().ready(function(){
+    // a 태그에 href 속성이 있는 요소
+    // $("a[href]").css("color","red");
+    $("a[href]").addClass("c_red");
+
+    //---------------------------------------------------------------------------------
+
+    // a 태그중 href 속성값이 naver인 것
+    $("a[href='naver']").addClass("c_orange");
+    $("a[href!='naver']").addClass("c_orange");
+
+    // a 태그중 href 속성값이 mail로 시작하는 것
+    $("a[href^='mail']").css("color", "silver");
+
+    // a 태그중 href 속성값이 net으로 끝나는 것
+    $("a[href$='net']").css("color", "blue");
+
+    // a 태그중 href 속성값에 naver가 있는 것
+    $("a[href*='naver']").css("border", "1px solid black");
+
+    //==================================================================================
+    // AND, OR 조건 형태로 속성값 찾기
+    // AND 조건 형태로 속성값 찾기([][] : AND조건)
+    $("a[href^='mailto'][href*='naver']").css("background-color", "yellow");
+
+    // OR 조건 형태로 속성값 찾기([],[] : OR조건)
+    $("a[href^='mailto'],a[href*='naver']").css("border", "2px solid blue");
+
+  });
+  
+</script>
+
+<style>
+  .c_red{ color : red; }
+  .c_orange { color : orange; }
+
+  .c_silver { color: silver; }
+  .c_purple { color: purple; }
+  .c_blue { color: blue; }
+
+  .bg_red { background-color: red; }
+  .bg_green { background-color: green; }
+
+  .sizeup { font-size: 1.5rem; }
+
+</style>
+</head>
+<body>
+  <h2>jQuery 속성을 찾아 클래스를 추가</h2>
+  <a href="https://www.naver.com">네이버</a>
+  <a href="https://www.daum.net">다음</a>
+  <a href="https://www.google.com">구글</a>
+
+  <a>버디버디</a>
+  <a href="naver">네이버(href="naver")</a>
+  <hr>
+
+  <a href="mailto:naver@naver.com">네이버 메일</a>
+  <a href="mailto:daum@daum.net">다음 메일</a>
+  <a href="mailto:google@google.com">구글 메일</a>
+
+</body>
+</html>

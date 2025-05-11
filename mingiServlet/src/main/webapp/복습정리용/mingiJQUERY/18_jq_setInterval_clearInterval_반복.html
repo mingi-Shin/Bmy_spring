@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>timer 시작/중지</title>
+    <!-- jQuery import 방식2(CDN 방식) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>    
+<script>
+    // Java, HTML, CSS, JavaScript, jQuery 문자열을 배열에 저장하고
+    // 1초마다 순차적으로 #myDiv 위치에 출력
+    let subject = ["Java", "HTML", "CSS", "JavaScript", "jQuery"];
+    let index = 0;
+    let timer = null;
+    $(document).ready(function(){
+        $("#startJQ").click(startTimer);
+        $("#stopJQ").click(stopTimer);
+    });
+    
+    function startTimer() {
+        console.log(">> startTimer() 실행~~");
+        //timer 값에 따라 타이머 생성여부 결정
+        // timer == null : 타이머 생성
+        // timer != null : 생성하지 않고 있다고 메시지 띄우기
+        if (timer == null) {
+            timer = window.setInterval(function(){
+                console.log(index + " : " + subject[index]);
+                $("#myDiv").html(subject[index]);
+                index++;
+
+                if (index >= subject.length) index = 0;  
+            }, 1000);
+            console.log(":: timer 생성 : " + timer);
+        } else {
+            alert("동작중인 작업(timer)이 있습니다");
+        }
+    }
+    
+    function stopTimer() {
+        console.log(">> stopTimer() 실행--------");
+        console.log(":: timer : " + timer);
+        window.clearInterval(timer);
+        // 타이머 중지(취소) 처리 후 초기화 작업
+        timer = null;
+    }
+    
+    //JavaScript 이벤트 처리
+    window.onload = function(){
+        console.log(">>>> window.onload 이벤트 처리~~~");
+        let startJS = document.getElementById("startJS");
+        //startJS.onclick = startTimer;
+        startJS.addEventListener("click", startTimer);
+        
+        //document.querySelector("#stopJS").onclick = stopTimer;
+        document.querySelector("#stopJS").addEventListener("click", stopTimer);
+    };
+</script>
+<style>
+    #myDiv { background-color: yellow; font-size: 2em; }
+</style>    
+</head>
+<body>
+    <button id="startJQ">목록보여주기(JQ 이벤트 연결)</button>
+    <button id="stopJQ">중지(JQ 이벤트 연결)</button>
+    <hr>
+    
+    <!-- HTML 인라인 방식 이벤트 연결 -->
+    <button onclick="startTimer()">목록보여주기(HTML 이벤트 연결-인라인)</button>
+    <button onclick="stopTimer()">중지(HTML 이벤트 연결-인라인)</button>
+    <hr>
+    
+    <!-- JavaScript 코드로 이벤트 연결 -->
+    <button id="startJS">목록보여주기(JavaScript 이벤트 연결)</button>
+    <button id="stopJS">중지(JavaScript 이벤트 연결)</button>
+    
+    <hr><hr>
+    <p>Java, HTML, CSS, JavaScript, jQuery</p>
+    <div id="myDiv">Java</div>
+    
+    
+    
+</body>
+</html>
