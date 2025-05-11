@@ -3,8 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>   
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>    
-<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="application" /> 
-<!-- scope: application > page(기본값), 다른 페이지에서 var사용가능 -->
+
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/> 
+<!-- scope: request > page(기본값), 다른 페이지에서 ${contextPath} 사용가능 -->
 
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal }" />
@@ -18,21 +19,24 @@
 	let csrfTokenValue = "${_csrf.token}";
 	let name = "${mvo.member.memName}";
 	
-	function logout(){
+	function logout() {
 		$.ajax({
-			url:"${contextPath}/logout",
+			url: "${contextPath}/logout",
 			type: "post",
-			beforeSend: function(xhr){
-				xhr.setRequestHeader(csrfHeaderName, csrfTokenValue)
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+			}, // ← 쉼표 뒤에는 꼭 세미콜론으로 함수 끝내주기!
+			success: function() {
+				location.href = "${contextPath}/";
+				alert(name + "님 로그아웃 하셨습니다.");
 			},
-			success: function(){
-				location.href="${contextPath}/";
-				alert(name+"님 로그아웃 하셨습니다.");
-			},
-			error: function(){ alert("error");}
+			error: function() {
+				alert("error");
+			}
 		});
 	}
 
+	$("#logoutBtn").on("click", logout);
 </script>
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
@@ -49,10 +53,10 @@
           <a class="nav-link" href="${contextPath}/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="${contextPath}/synchBoard/list">동기식 게시판1</a>
+          <a class="nav-link" href="${contextPath}/synchBoard/list">동기식 게시판</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="${contextPath}/asynchBoard/viewPage">비동기식 게시판2</a>
+          <a class="nav-link" href="${contextPath}/asynchBoard/viewPage">비동기식 게시판</a>
         </li>  
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">고객센터</a>
@@ -104,7 +108,7 @@
 	          <ul class="dropdown-menu dropdown-menu-end">
 	            <li><a class="dropdown-item" href="${contextPath}/member/memUpdateForm.do">회원정보수정</a></li>
 	            <li><a class="dropdown-item" href="${contextPath}/member/memImageForm.do">프로필사진등록</a></li>
-	            <li><a class="dropdown-item" href="javascript:logout()">로그아웃</a></li>
+	            <li><a class="dropdown-item" role="button" id="logoutBtn" style="cursor: pointer;">로그아웃</a></li>
 	          </ul>
 	        </li>
 	      </ul>

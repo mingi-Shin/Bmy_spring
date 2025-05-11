@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
@@ -7,23 +6,18 @@
 <title>Spring MVC019</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <script type="text/javascript">
-  	$(document).ready(function(){
-  	  if(${!empty msgBody}){
-			$("#myMessage").modal("show"); //회원가입 축하 모달
-
-  	  }
-  	});
-  	
-  </script>
+		
+		$(function(){
+			if(${!empty msgBody}){
+				$("#myMessage").modal("show"); //회원가입 축하 모달
+		});
+		
+</script>
 </head>
 <body>
 
@@ -51,9 +45,9 @@
 				<!-- Tab panes -->
 				<div class="tab-content">
 					<div class="tab-pane container active" id="home">
-						<img alt="고용량이미지 테스트 "
+						<%-- <img alt="고용량이미지 테스트 "
 							src="${contextPath }/resources/images/HighLevelPic.jpg"
-							loading="lazy">
+							loading="lazy" style="display: none"> --%>
 
 					</div>
 					<div class="tab-pane container fade" id="menu1">
@@ -74,7 +68,7 @@
 
 
 
-	<!-- 회원 관련 모달창 -->
+	<!-- 회원 관련 모달창 : window.open과는 다르다. 간단한 UI를 쓸 때 사용함 -->
 	<div class="modal fade" id="myMessage" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">

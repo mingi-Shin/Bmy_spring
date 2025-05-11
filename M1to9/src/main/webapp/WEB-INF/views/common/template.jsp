@@ -22,13 +22,12 @@
   
  	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   
-    
   <script type="text/javascript">
 		$(document).ready(function(){
 			
 			//로그인 오류시 실패 모달창show
 		  if(${!empty msgBody}){
-			  $("#myMessage").modal("show"); 
+			  $("#myMessage").modal("show"); //"hide"
 		  }
 			  
 		});
@@ -63,6 +62,7 @@
   
   
   <!--  모달  -->
+  <!--  모델은 사용자ui를 나타낼 때, 소셜로그인 같은 경우는 window.open() -->
 	<div class="modal fade" id="myMessage" role="dialog">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
