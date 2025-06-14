@@ -21,13 +21,13 @@
 	</delete>
 	
 	<!-- 로그인: Member와 Auth 둘다 가져오기 => resultMap, collection -->
-	<select id="login" resultMap="memberMap">
+	<select id="login" resultMap="memberMap"> <!-- resultMap="memberMap": 이 SQL 결과를 어떻게 자바 객체에 넣을지 정의한 매핑 ID -->
 		SELECT * FROM smgMember member LEFT OUTER JOIN smgAuth auth
 			ON member.memID = auth.memID WHERE member.memID = #{username} <!-- security에서 username던짐 -->
 	</select>
 	
-	<resultMap type="kr.mingi.entity.Member" id="memberMap">
-		<id property="memIdx" column="memIdx"/>
+	<resultMap type="kr.mingi.entity.Member" id="memberMap"> 
+		<id property="memIdx" column="memIdx"/> <!-- <id>는 기본 키(primary key), 나머지는 <result> -->
 		<result property="memID" column="memID"/>
 		<result property="memPwd" column="memPwd"/>
 		<result property="memName" column="memName"/>
@@ -37,8 +37,10 @@
 		<result property="memAddr" column="memAddr"/>
 		<result property="latitude" column="latitude"/>
 		<result property="longitude" column="longitude"/>
-		<collection property="authList" resultMap="authMap"/>
+		<collection property="authList" resultMap="authMap"/> <!-- 각각의 AuthVO 객체는 아래의 authMap에 따라 매핑됨 -->	
 	</resultMap>
+	<!-- 	column="memID" → DB 테이블의 컬럼명
+				property="memID" → Java 클래스의 필드명 (멤버변수) -->
 
 	<resultMap type="kr.mingi.entity.AuthVO" id="authMap">
 		<id property="num" column="num"/>
