@@ -41,7 +41,7 @@
 	  if(${!empty msgBody}){
 		  $("#myMessage").modal("show"); 
 		  //.modal("show") : 회원가입 오류시 실패 모달창show, bootstrap과 JQuery가 같이 있어야 동작하는 함수 
-	  }
+	  } 
 	  
 	  
   });
