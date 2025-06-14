@@ -67,9 +67,9 @@ public class SecurityConfig {
 	        	.anyRequest().permitAll() // 모든 요청을 허용: 맨밑 위치 
 	        .and()
 		    .formLogin()
-		        .loginPage("/member/memLoginForm.do")
-		        .loginProcessingUrl("/memLogin.do")
-		        .failureUrl("/member/memLoginForm.do?error=true")
+		        .loginPage("/member/memLoginForm.do") // 로그인 폼 URL
+		        .loginProcessingUrl("/memLogin.do") // 로그인 처리 URL
+		        .failureUrl("/member/memLoginForm.do?error=true") // 로그인 실패 시 이동할 URL
 		        .permitAll()
 		        .and()
 		    .logout()
