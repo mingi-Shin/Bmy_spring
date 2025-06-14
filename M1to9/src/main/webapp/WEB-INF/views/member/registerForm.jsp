@@ -34,7 +34,7 @@
 	  checkPasswordConfirm();
 	  checkSubmit();
 	  if(${!empty msgBody}){
-		  $("#myMessage").modal("show"); //회원가입 오류시 실패 모달창show
+		  $("#myMessage").modal("show"); //회원가입 오류시 실패 모달창show / .modal : Bootstrap 모달 기능을 동작시키는 jQuery 기반 함수, Bootstrap과 jQuery가 로딩되어 있어야 작동!
 	  }
 	  
 	  
